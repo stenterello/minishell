@@ -2,17 +2,24 @@
 
 void	cd(char *line)
 {
-	char	**act_path;
-	char	**dest;
-	int		i;
+	char	*dest;
+	int		ret;
 
-	i = 0;
-	act_path = ft_split(pwd(), '/');
-	dest = ft_split(line, '/');
-	while (act_path[i])
-		printf("%s\n", act_path[i++]);
-	i = 0;
-	while (dest[i])
-		printf("%s\n", dest[i++]);
-	
+	if (ft_strlen(line) == 2)
+	{
+		ret = chdir(getenv("HOME"));
+		if (ret != -1)
+			die("cd error going home");
+	}
+	else
+	{
+		dest = get_path(line);
+		ret = chdir(dest);
+		if (ret == -1)
+		{
+			ft_putendl_fd("no such file/directory, change my message, thanks", 2);
+			return ;
+		}
+		free(dest);
+	}
 }

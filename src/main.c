@@ -28,7 +28,9 @@ char	*read_input(void)
 		ft_strlcat(line, tmp, ft_strlen(line) + ft_strlen(tmp) + 2);
 		free(tmp);
 	}
-	return (line);
+	tmp = ft_strtrim(line, " ");
+	free(line);
+	return (tmp);
 }
 
 void	cmd_not_found(char *line)
@@ -41,14 +43,15 @@ void	elaborate_cmd(char *line)
 {
 	char	*ret;
 
-	if (!ft_strncmp(line, "pwd\0", 4))
+	if (!ft_strncmp(line, "pwd\0", 4) || !ft_strncmp(line, "pwd ", 4))
 	{
 		ret = pwd();
+		ft_putendl_fd(ret, 1);
 		free(ret);
 	}
-	else if (!ft_strncmp(line, "exit\0", 5))
+	else if (!ft_strncmp(line, "exit\0", 5) || !ft_strncmp(line, "exit ", 5))
 		exit(0);
-	else if (!ft_strncmp(line, "cd\0", 3))
+	else if (!ft_strncmp(line, "cd\0", 3) ||!ft_strncmp(line, "cd ", 3))
 		cd(line);
 	else
 		cmd_not_found(line);
@@ -64,8 +67,11 @@ int	main(int argc, char **argv)
 	while (1)
 	{
 		line = read_input();
-		add_history(line);
-		elaborate_cmd(line);
+		if (ft_strlen(line) > 0)
+		{
+			add_history(line);
+			elaborate_cmd(line);
+		}
 		free(line);
 	}
 	return (0);

@@ -4,12 +4,17 @@
 # include "../includes/libft/libft.h"
 # include <stdio.h>
 # include <stdlib.h>
+# include <unistd.h>
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <errno.h>
+# include <sys/types.h>
+# include <dirent.h>
 
-char	*ft_strjoin_plus(char *s1, char *s2);
+void	die(char *msg);
 char	*pwd(void);
 void	cd(char *line);
+int		is_abs_path(char *line);
+char	*get_path(char *line);
 
 #endif
