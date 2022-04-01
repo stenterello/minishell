@@ -20,7 +20,7 @@ $(LIBFT):
 all: $(NAME)
 
 clean:
-	rm -f $(OBJS)
+	rm -f $(OBJS) $(BUILTIN_OBJS)
 	$(MAKE) clean -C ./includes/libft
 
 fclean: clean

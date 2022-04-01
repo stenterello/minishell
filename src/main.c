@@ -49,7 +49,7 @@ void	elaborate_cmd(char *line)
 	else if (!ft_strncmp(line, "exit\0", 5))
 		exit(0);
 	else if (!ft_strncmp(line, "cd\0", 3))
-		cd_home(line);
+		cd(line);
 	else
 		cmd_not_found(line);
 }

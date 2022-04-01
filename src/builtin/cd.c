@@ -1,6 +1,6 @@
 #include "../minishell.h"
 
-void	cd_home(char *line)
+void	cd(char *line)
 {
 	char	**act_path;
 	char	**dest;
