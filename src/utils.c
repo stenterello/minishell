@@ -6,72 +6,27 @@ void	die(char *msg)
 	exit(-1);
 }
 
-int	is_abs_path(char *line)
-{
-	int	i;
-
-	i = 2;
-	while (line[i] == 32 || (line[i] > 8 && line[i] < 14))
-		i++;
-	if (line[i] == '/')
-		return (1);
-	return (0);
-}
-
-char	*get_path(char *line)
-{
-	char	*ret;
-	int		i;
-
-	i = 2;
-	while (line[i] == 32 || (line[i] > 8 && line[i] < 14))
-		i++;
-	ret = malloc(sizeof(char) * (ft_strlen(line) - i + 1));
-	if (!ret)
-		die("Malloc error trying to get absolute path [CD]");
-	ft_strlcpy(ret, &line[i], ft_strlen(line) - i + 1);
-	return (ret);
-}
-
-char	*get_full_path(char *dir_name, char *name)
-{
-	char	*ret;
-
-	ret = malloc(sizeof(char) * (ft_strlen(dir_name) + ft_strlen(name) + 2));
-	if (!ret)
-		die("Malloc error");
-	ft_strlcpy(ret, dir_name, ft_strlen(dir_name) + 1);
-	ft_strlcat(ret, "/", ft_strlen(dir_name) + 2);
-	ft_strlcat(ret, name, ft_strlen(dir_name) + ft_strlen(name) + 2);
-	return (ret);
-}
-
-int	search_in_dir(DIR *stream, char *line, char *dir_name)
+int	search_in_dir(DIR *stream, char **args, char *dir_name)
 {
 	struct dirent	*entry;
-	char			*args[2];
 	pid_t			child;
 	int				status;
 
 	entry = readdir(stream);
 	while (entry)
 	{
-		if (!ft_strncmp(entry->d_name, line, (ft_strlen(line) + 1)))
+		if (!ft_strncmp(entry->d_name, args[0], (ft_strlen(args[0]) + 1)))
 		{
-			args[0] = get_full_path(dir_name, line);
+			args[0] = get_full_path(dir_name, args[0]);
 			if (!access(args[0], X_OK))
 			{
-				args[1] = NULL;
 				child = fork();
 				if (child == -1)
 					die("Error while forking");
 				if (child == 0)
-				{
 					execve(args[0], args, NULL);
-				}
 				else
 					waitpid(-1, &status, 0);
-				free(args[0]);
 				return (1);
 			}
 			else
@@ -82,7 +37,7 @@ int	search_in_dir(DIR *stream, char *line, char *dir_name)
 	return (0);
 }
 
-int	find_script(char *line)
+int	find_script(char **args)
 {
 	char	**path;
 	DIR		*stream;
@@ -101,7 +56,7 @@ int	find_script(char *line)
 		// Lasciare o no questo avviso?
 		if (stream == NULL)
 			die("Error opening directory");
-		is_exec = search_in_dir(stream, line, path[i]);
+		is_exec = search_in_dir(stream, args, path[i]);
 		if (is_exec == 2)
 		{
 			printf("%s\n", strerror(errno));
@@ -110,10 +65,18 @@ int	find_script(char *line)
 		else if (is_exec == 1)
 		{
 			closedir(stream);
+			i = 0;
+			while (path[i])
+				free(path[i++]);
+			free(path);
 			return (0);
 		}
 		closedir(stream);
 		i++;
 	}
+	i = 0;
+	while (path[i])
+		free(path[i++]);
+	free(path);
 	return (-1);
 }

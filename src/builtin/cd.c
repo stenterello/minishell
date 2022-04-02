@@ -1,23 +1,26 @@
 #include "../minishell.h"
 
-void	cd(char *line)
+void	cd(char **args)
 {
 	char	*dest;
 	int		ret;
 
-	if (ft_strlen(line) == 2)
+	if (!args[1])
 	{
 		ret = chdir(getenv("HOME"));
-		if (ret != -1)
-			die("cd error going home");
+		if (ret == -1)
+		{
+			printf("%s\n", strerror(errno));
+			return ;
+		}
 	}
 	else
 	{
-		dest = get_path(line);
+		dest = get_path(args[1]);
 		ret = chdir(dest);
 		if (ret == -1)
 		{
-			ft_putendl_fd("no such file/directory, change my message, thanks", 2);
+			printf("%s: %s\n", dest, strerror(errno));
 			return ;
 		}
 		free(dest);

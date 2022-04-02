@@ -6,6 +6,7 @@ char	*pwd(void)
 	int		i;
 
 	i = 1;
+	path = NULL;
 	path = getcwd(path, i);
 	while (path == NULL)
 	{

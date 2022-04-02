@@ -15,10 +15,19 @@
 
 void	die(char *msg);
 char	*pwd(void);
-void	cd(char *line);
+void	cd(char **args);
+void	echo(char **args);
 int		is_abs_path(char *line);
 char	*get_path(char *line);
-int		find_script(char *line);
-int		search_in_dir(DIR *stream, char *line, char *dir_name);
+char	*get_full_path(char *dir_name, char *name);
+int		find_script(char **args);
+int		search_in_dir(DIR *stream, char **args, char *dir_name);
+int		go_nl(char *line);
+void	cmd_not_found(char *line);
+int		ft_isupper(char c);
+char	*get_variable(char *line);
+void	elaborate_cmd(char *line);
+int		dollar_pos(char *line);
+int		single_quoted(char *line, int ind);
 
 #endif
