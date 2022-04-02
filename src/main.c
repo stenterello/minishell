@@ -54,16 +54,16 @@ void	elaborate_cmd(char *line)
 	else if (!ft_strncmp(line, "cd\0", 3) ||!ft_strncmp(line, "cd ", 3))
 		cd(line);
 	else
-		cmd_not_found(line);
+	{
+		if (find_script(line) == -1)
+			cmd_not_found(line);
+	}
 }
 
 int	main(int argc, char **argv)
 {
 	char	*line;
-	// char	*var;
 
-	// var = getenv("PATH");
-	// printf("%s\n", var);
 	while (1)
 	{
 		line = read_input();
