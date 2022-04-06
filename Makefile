@@ -1,47 +1,33 @@
 NAME=minishell
 CC=gcc
-FLAGS=-Wall -Werror -Wextra -g
-LIBFT=./includes/libft/libft.a
+FLAGS=-Wall -Werror -Wextra -g 
 SRC=main.c \
 	utils.c \
-	utils_2.c \
-	get_input_utils.c \
-	expand.c \
-	elaborate_command.c
+	execute_utils.c
 SRCS=$(addprefix src/, $(SRC))
+OBJS=$(SRCS:.c=.o)
 BUILTIN=pwd.c \
 		cd.c \
 		echo.c
 BUILTINS=$(addprefix src/builtin/, $(BUILTIN))
-OBJ=$(SRC:.c=.o)
-OBJS=$(SRCS:.c=.o)
-BUILTIN_OBJ=$(BUILTIN:.c=.o)
 BUILTIN_OBJS=$(BUILTINS:.c=.o)
+LIBFT=./include/libft/libft.a
 
 $(NAME): $(LIBFT) $(OBJS) $(BUILTIN_OBJS)
 	$(CC) $(FLAGS) $(SRCS) $(BUILTINS) $(LIBFT) -o $(NAME) -lreadline
 
 $(LIBFT):
-	$(MAKE) bonus -C ./includes/libft
-
-$(OBJS):
-	$(CC) $(FLAGS) -c $(SRCS)
-	mv $(OBJ) src/
-
-$(BUILTIN_OBJS):
-	$(CC) $(FLAGS) -c $(SRCS) $(BUILTINS)
-	mv $(BUILTIN_OBJ) src/builtin
+	$(MAKE) -C ./include/libft
 
 all: $(NAME)
 
 clean:
-	rm -f $(OBJS)
-	rm -f $(BUILTIN_OBJS)
-	$(MAKE) clean -C ./includes/libft
+	rm -f $(BUILTINS) $(OBJS)
+	$(MAKE) clean -C ./include/libft
 
 fclean: clean
 	rm -f $(NAME)
-	$(MAKE) fclean -C ./includes/libft
+	$(MAKE) fclean -C ./include/libft
 
 re: fclean all
 

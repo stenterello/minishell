@@ -1,6 +1,6 @@
 #include "../minishell.h"
 
-void	ls(void)
+void	export(t_input *input)
 {
-
+	
 }

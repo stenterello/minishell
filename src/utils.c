@@ -6,77 +6,127 @@ void	die(char *msg)
 	exit(-1);
 }
 
-int	search_in_dir(DIR *stream, char **args, char *dir_name)
+int	ft_isupper(char c)
 {
-	struct dirent	*entry;
-	pid_t			child;
-	int				status;
-
-	entry = readdir(stream);
-	while (entry)
-	{
-		if (!ft_strncmp(entry->d_name, args[0], (ft_strlen(args[0]) + 1)))
-		{
-			args[0] = get_full_path(dir_name, args[0]);
-			if (!access(args[0], X_OK))
-			{
-				child = fork();
-				if (child == -1)
-					die("Error while forking");
-				if (child == 0)
-					execve(args[0], args, NULL);
-				else
-					waitpid(-1, &status, 0);
-				return (1);
-			}
-			else
-				return (2);
-		}
-		entry = readdir(stream);
-	}
+	if (c >= 65 && c <= 90)
+		return (1);
 	return (0);
 }
 
-int	find_script(char **args)
+int	var_name_len(char *variable)
 {
-	char	**path;
-	DIR		*stream;
-	int		is_exec;
-	int		i;
+	int	i;
 
-	path = ft_split(getenv("PATH"), ':');
 	i = 0;
-	while (path[i])
+	while (ft_isupper(variable[i]))
+		i++;
+	return (i);
+}
+
+void	take_variable(char *variable, t_input *input, int init_len)
+{
+	int		i;
+	char	*var_name;
+	char	*ret;
+
+	i = -1;
+	var_name = malloc(sizeof(char) * (var_name_len(variable) + 1));
+	if (!var_name)
+		die("Malloc error");
+	while (ft_isupper(variable[++i]))
+		var_name[i] = variable[i];
+	var_name[i] = '\0';
+	input->expanded = getenv(var_name);
+	if (input->expanded == NULL)
+		input->expanded = ft_calloc(1, sizeof(char));
+	free(var_name);
+	ret = malloc(sizeof(char) * (ft_strlen(input->line) + 1 - i + ft_strlen(input->expanded)));
+	if (!ret)
+		die("Malloc error");
+	ft_strlcpy(ret, input->line, init_len + 1);
+	ft_strlcpy(&ret[init_len], input->expanded, ft_strlen(input->expanded) + 1);
+	if (input->line[var_name_len(variable) + 1 + init_len])
+		ft_strlcpy(&ret[i + ft_strlen(input->expanded)], &input->line[init_len + i], ft_strlen(input->line) - (init_len + i));
+	free(input->line);
+	input->line = ret;
+}
+
+void	try_expand(t_input *input)
+{
+	int	i;
+
+	i = 0;
+	while (input->line[i])
 	{
-		if (ft_strlen(path[i]) > 255)
-			die("Path name too long");
-		stream = opendir(path[i]);
-		// Quando la shell cerca nelle cartelle del PATH
-		// non restituisce errore se la cartella non può essere letta
-		// Lasciare o no questo avviso?
-		if (stream == NULL)
-			die("Error opening directory");
-		is_exec = search_in_dir(stream, args, path[i]);
-		if (is_exec == 2)
+		if (input->line[i] == '$')
 		{
-			printf("%s\n", strerror(errno));
-			return (2);
+			i++;
+			if (ft_isupper(input->line[i]) || input->line[i] == '?')
+				take_variable(&input->line[i], input, i - 1);
+			else
+				return ;
 		}
-		else if (is_exec == 1)
-		{
-			closedir(stream);
-			i = 0;
-			while (path[i])
-				free(path[i++]);
-			free(path);
-			return (0);
-		}
-		closedir(stream);
 		i++;
 	}
+}
+
+int	builtin(t_input *input)
+{
+	char	*ret;
+
+	input->args = ft_split(input->line, ' ');
+	if (!ft_strncmp(input->args[0], "pwd\0", 4))
+	{
+		ret = pwd();
+		ft_putendl_fd(ret, 1);
+		free(ret);
+	}
+	else if (!ft_strncmp(input->args[0], "exit\0", 5))
+		exit(0);
+	else if (!ft_strncmp(input->args[0], "cd\0", 3))
+		cd(input->args);
+	else if (!ft_strncmp(input->args[0], "echo\0", 5))
+		echo(input);
+	else
+		return (0);
+	return (1);
+}
+
+void	execute(t_input *input)
+{
+	int	i;
+
+	if (builtin(input))
+	{
+		i = 0;
+		while (input->args[i])
+			free(input->args[i++]);
+		free(input->args);
+		return ;
+	}
+	else
+	{
+		if (find_script(input) == -1)
+			cmd_not_found(input->line);
+		i = 0;
+		while (input->args[i])
+			free(input->args[i++]);
+		free(input->args);
+	}
+	
+}
+
+char	*get_path(char *line)
+{
+	char	*ret;
+	int		i;
+
 	i = 0;
-	while (path[i])
-		free(path[i++]);
-	free(path);
-	return (-1);
+	while (line[i] == 32 || (line[i] > 8 && line[i] < 14))
+		i++;
+	ret = malloc(sizeof(char) * (ft_strlen(line) - i + 1));
+	if (!ret)
+		die("Malloc error trying to get absolute path [CD]");
+	ft_strlcpy(ret, &line[i], ft_strlen(line) - i + 1);
+	return (ret);
 }

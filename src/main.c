@@ -1,43 +1,108 @@
 #include "minishell.h"
 
-char	*read_input(void)
+// Inizializza la struttura input a 0
+
+void	init_input(t_input *input)
 {
-	char	*line;
+	input->s_quot = 0;
+	input->d_quot = 0;
+	input->to_expand = 0;
+	input->is_open = 0;
+	input->last_exit = 0;
+}
+
+// Controlla se sono state lasciate aperte le virgolette,
+// se c'è un token da espandere
+
+void	check(char	*typed, t_input *input)
+{
+	int	i;
+
+	i = 0;
+	input->s_quot = 0;
+	input->d_quot = 0;
+	while (typed[i])
+	{
+		if (typed[i] == '\'' && !input->s_quot && !input->d_quot)
+			input->s_quot = 1;
+		else if (typed[i] == '\'' && input->s_quot && !input->d_quot)
+			input->s_quot = 0;
+		else if (typed[i] == '$' && !input->s_quot)
+			input->to_expand = 1;
+		else if (typed[i] == '\"' && !input->d_quot && !input->s_quot)
+			input->d_quot = 1;
+		else if (typed[i] == '\"' && input->d_quot && !input->s_quot)
+			input->d_quot = 0;
+		i++;
+	}
+	i--;
+	if (typed[i] == '\\' || input->s_quot || input->d_quot)
+		input->is_open = 1;
+	if (!input->s_quot && !input->d_quot)
+		input->is_open = 0;
+}
+
+// Legge l'input finché ce n'è bisogno
+
+void	take_input(t_input *input)
+{
+	char	*typed;
 	char	*tmp;
 
-	// Prendi input e salvalo nella history
-	line = NULL;
-	tmp = NULL;
-	line = readline("whisper_hole: ");
-	while (go_nl(line))
+	typed = readline("whisper_hole: ");
+	check(typed, input);
+	while (input->is_open)
 	{
 		tmp = readline("> ");
-		ft_strlcat(line, tmp, ft_strlen(line) + ft_strlen(tmp) + 2);
+		ft_strlcat(typed, tmp, ft_strlen(typed) + ft_strlen(tmp) + 2);
 		free(tmp);
+		check(typed, input);
 	}
-	tmp = ft_strtrim(line, " ");
-	free(line);
-	return (tmp);
+	tmp = ft_strtrim(typed, " ");
+	free(typed);
+	input->line = malloc(sizeof(char) * (ft_strlen(tmp) + 1));
+	if (!input->line)
+		die("Malloc error");
+	ft_strlcpy(input->line, tmp, ft_strlen(tmp) + 1);
+	free(tmp);
 }
 
 int	main(void)
 {
-	char	*line;
-	char	*tmp;
+	t_input	input;
 
 	while (1)
 	{
-		line = read_input();
-		if (ft_strlen(line) > 0)
+		// Inizializza struttura
+		init_input(&input);
+		// Leggi
+		take_input(&input);
+		if (ft_strlen(input.line) > 0)
 		{
-			add_history(line);
-			tmp = ft_strtrim(line, "\"'");
-			free(line);
-			line = tmp;
-			elaborate_cmd(line);
+			// Salva nella history
+			add_history(input.line);
+
+			// Espandi se serve
+			if (input.to_expand)
+				try_expand(&input);
+			
+			// Divide et impera
+			execute(&input);
 		}
-		//free(line);
+		free(input.line);
 	}
 	rl_clear_history();
 	return (0);
 }
+
+// aggiorna l'ultimo codice di uscita
+
+// setta le variabili ambientali (export, unset, env)
+
+// aggiungi i segnali Ctrl-D Ctrl-C Ctrl-\ 
+
+// implementa i redirezionamenti
+
+// implementa le pipe
+
+// aggiungi gli eseguibili

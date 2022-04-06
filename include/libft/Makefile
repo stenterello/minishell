@@ -56,7 +56,7 @@ BONUSFLS = ft_lstnew.c \
 		ft_lstiter.c \
 		ft_lstmap.c
 
-FLAGS = -Wall -Werror -Wextra -c
+FLAGS = -Wall -Werror -Wextra -c -g
 CC = gcc
 OBJS = $(SRCS:.c=.o)
 OBJSB = $(BONUSFLS:.c=.o)
