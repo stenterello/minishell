@@ -1,7 +1,5 @@
 #include "minishell.h"
 
-// Inizializza la struttura input a 0
-
 void	init_input(t_input *input)
 {
 	input->s_quot = 0;
@@ -9,9 +7,6 @@ void	init_input(t_input *input)
 	input->to_expand = 0;
 	input->is_open = 0;
 }
-
-// Controlla se sono state lasciate aperte le virgolette,
-// se c'è un token da espandere
 
 void	check(char	*typed, t_input *input)
 {
@@ -53,9 +48,6 @@ void	take_environ(void)
 		die("Malloc error");
 	while(__environ[i])
 	{
-		// line = malloc(sizeof(char) * (ft_strlen(__environ[i]) + 1));
-		// if (!line)
-		// 	die("Malloc error");
 		line = __environ[i];
 		tmp = malloc(sizeof(char *) * 3);
 		tmp = ft_split(line, '=');
@@ -80,11 +72,8 @@ void	take_environ(void)
 		g_term->env[i]->next = NULL;
 		free(tmp);
 		i++;
-		// free(line);
 	}
 }
-
-// Legge l'input finché ce n'è bisogno
 
 void	take_input(t_input *input)
 {
@@ -112,7 +101,6 @@ void	take_input(t_input *input)
 void	free_env(t_env_elem **env)
 {
 	int			i;
-	// t_env_elem	*next;
 
 	i = 0;
 	while (env[i]->next)
@@ -124,43 +112,62 @@ void	free_env(t_env_elem **env)
 	}
 }
 
+void	term_data(char *line)
+{
+	int	ret;
+
+	ret = tgetent(NULL, line);
+	if (ret < 0)
+		die("No such entry for TERM variable");
+	else if (ret == -1)
+		die("Terminal database could not be found");
+}
+
+void	init_terminal(char *line)
+{
+	int	ret;
+
+	term_data(line);
+	ret = tcgetattr(STDIN_FILENO, g_term->termi);
+	if (ret < 0)
+		die("tcgetattr error");
+	g_term->termi->c_lflag &= (ECHO | ICANON);
+	g_term->termi->c_cc[VMIN] = 1;
+	g_term->termi->c_cc[VTIME] = 0;
+	ret = tcsetattr(STDIN_FILENO, TCSAFLUSH, g_term->termi);
+	if (ret < 0)
+		die("tcsetattr error");
+}
+
 int	main(void)
 {
 	t_input		input;
-	//t_command	parsed;
 
 	g_term = NULL;
 	g_term = malloc(sizeof(t_term));
 	if (g_term == NULL)
 		die("Malloc error");
+	g_term->termi = malloc(sizeof(struct termios));
+	if (!g_term->termi)
+		die("Malloc error");
 	take_environ();
 	while (1)
 	{
-		// Inizializza struttura dell'input
+		init_terminal(getenv("TERM"));
 		init_input(&input);
-		// Inizializza struttura del comando
-		//init_command(&parsed);
-		// Leggi
 		take_input(&input);
 		if (ft_strlen(input.line) > 0)
 		{
-			// Salva nella history
 			add_history(input.line);
-
-			// Espandi se serve
 			if (input.to_expand)
 				try_expand(&input);
-			
-			// Parse del comando
-			//parse(&input, &parsed);
-
-			// Dividi et impera
 			execute(&input);
 		}
 		free(input.line);
 	}
 	rl_clear_history();
 	free_env(g_term->env);
+	free(g_term->termi);
 	free(g_term);
 	return (0);
 }

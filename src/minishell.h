@@ -14,6 +14,7 @@
 # include <fcntl.h>
 # include <sys/wait.h>
 # include <termios.h>
+# include <term.h>
 
 typedef struct	s_input
 {

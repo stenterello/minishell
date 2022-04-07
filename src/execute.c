@@ -40,8 +40,8 @@ void	execute(t_input *input)
 					free(input->args[i++]);
 				free(input->args);
 			}
-			exit(0);
-		//}
+			// exit(0);
+		// }
 		// else
 		// 	waitpid(child, &status, 0);
 		// if (WIFEXITED(status))
