@@ -69,12 +69,15 @@ void	take_input(t_input *input)
 
 int	main(void)
 {
-	t_input	input;
+	t_input		input;
+	//t_command	parsed;
 
 	while (1)
 	{
-		// Inizializza struttura
+		// Inizializza struttura dell'input
 		init_input(&input);
+		// Inizializza struttura del comando
+		//init_command(&parsed);
 		// Leggi
 		take_input(&input);
 		if (ft_strlen(input.line) > 0)
@@ -86,6 +89,9 @@ int	main(void)
 			if (input.to_expand)
 				try_expand(&input);
 			
+			// Parse del comando
+			//parse(&input, &parsed);
+
 			// Divide et impera
 			execute(&input);
 		}
@@ -94,7 +100,7 @@ int	main(void)
 	rl_clear_history();
 	return (0);
 }
-
+/*
 // aggiorna l'ultimo codice di uscita
 
 // setta le variabili ambientali (export, unset, env)
@@ -106,3 +112,4 @@ int	main(void)
 // implementa le pipe
 
 // aggiungi gli eseguibili
+*/

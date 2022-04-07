@@ -21,6 +21,7 @@ typedef struct	s_input
 	int		d_quot;
 	int		to_expand;
 	int		is_open;
+	char	**args;
 	char	*expanded;
 	int		last_exit;
 }				t_input;
@@ -30,6 +31,9 @@ typedef struct	s_command
 	char	*cmd;
 	char	*opt;
 	char	**args;
+	int		stdin;
+	int		stdout;
+	int		stderr;
 }				t_command;
 
 void	die(char *msg);
@@ -39,7 +43,9 @@ char	*get_path(char *line);
 char	*pwd(void);
 void	echo(t_input *input);
 void	cd(char **args);
+void	exit_cmd(char **args);
 void	cmd_not_found(char *line);
 int		find_script(char **args);
+int		builtin(t_input *input);
 
 #endif

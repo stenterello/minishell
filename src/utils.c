@@ -46,7 +46,7 @@ void	take_variable(char *variable, t_input *input, int init_len)
 	ft_strlcpy(ret, input->line, init_len + 1);
 	ft_strlcpy(&ret[init_len], input->expanded, ft_strlen(input->expanded) + 1);
 	if (input->line[var_name_len(variable) + 1 + init_len])
-		ft_strlcpy(&ret[i + ft_strlen(input->expanded)], &input->line[init_len + i], ft_strlen(input->line) - (init_len + i));
+		ft_strlcpy(&ret[init_len + ft_strlen(input->expanded)], &input->line[init_len + var_name_len(variable) + 1], ft_strlen(input->line) - (init_len + var_name_len(variable)) + 1);
 	free(input->line);
 	input->line = ret;
 }
@@ -82,7 +82,7 @@ int	builtin(t_input *input)
 		free(ret);
 	}
 	else if (!ft_strncmp(input->args[0], "exit\0", 5))
-		exit(0);
+		exit_cmd(input->args);
 	else if (!ft_strncmp(input->args[0], "cd\0", 3))
 		cd(input->args);
 	else if (!ft_strncmp(input->args[0], "echo\0", 5))
@@ -92,29 +92,7 @@ int	builtin(t_input *input)
 	return (1);
 }
 
-void	execute(t_input *input)
-{
-	int	i;
 
-	if (builtin(input))
-	{
-		i = 0;
-		while (input->args[i])
-			free(input->args[i++]);
-		free(input->args);
-		return ;
-	}
-	else
-	{
-		if (find_script(input) == -1)
-			cmd_not_found(input->line);
-		i = 0;
-		while (input->args[i])
-			free(input->args[i++]);
-		free(input->args);
-	}
-	
-}
 
 char	*get_path(char *line)
 {
