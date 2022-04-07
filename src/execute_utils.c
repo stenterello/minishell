@@ -16,8 +16,18 @@ char	*get_full_path(char *dir_name, char *name)
 
 void	cmd_not_found(char *line)
 {
-	ft_putstr_fd(line, 2);
+	char	*tmp;
+	int		i;
+
+	i = 0;
+	while (line[i] && line[i] != ' ')
+		i++;
+	tmp = malloc(sizeof(char) * (i + 1));
+	ft_strlcpy(tmp, line, i + 1);
+	ft_putstr_fd(tmp, 2);
 	ft_putendl_fd(": command not found", 2);
+	free(tmp);
+	exit(127);
 }
 
 int	search_in_dir(DIR *stream, char **args, char *dir_name)

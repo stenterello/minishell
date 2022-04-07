@@ -8,7 +8,6 @@ void	init_input(t_input *input)
 	input->d_quot = 0;
 	input->to_expand = 0;
 	input->is_open = 0;
-	input->last_exit = 0;
 }
 
 // Controlla se sono state lasciate aperte le virgolette,
@@ -42,6 +41,49 @@ void	check(char	*typed, t_input *input)
 		input->is_open = 0;
 }
 
+void	take_environ(void)
+{
+	int		i;
+	char	**tmp;
+	char	*line;
+
+	i = 0;
+	g_term->env = malloc(sizeof(t_env_elem *));
+	if (!g_term->env)
+		die("Malloc error");
+	while(__environ[i])
+	{
+		// line = malloc(sizeof(char) * (ft_strlen(__environ[i]) + 1));
+		// if (!line)
+		// 	die("Malloc error");
+		line = __environ[i];
+		tmp = malloc(sizeof(char *) * 3);
+		tmp = ft_split(line, '=');
+		g_term->env[i] = malloc(sizeof(t_env_elem));
+		if (!g_term->env[i])
+			die("Malloc error");
+		g_term->env[i]->key = malloc(sizeof(char) * (ft_strlen(tmp[0]) + 1));
+		if (!g_term->env[i]->key)
+			die("Malloc error");
+		g_term->env[i]->value = malloc(sizeof(char) * (ft_strlen(tmp[1]) + 1));
+		if (!g_term->env[i]->value)
+			die("Malloc error");
+		ft_strlcpy(g_term->env[i]->key, tmp[0], ft_strlen(tmp[0]) + 1);
+		ft_strlcpy(g_term->env[i]->value, tmp[1], ft_strlen(tmp[0]) + 1);
+		if (i == 0)
+			g_term->env[i]->prev = NULL;
+		else
+		{
+			g_term->env[i]->prev = g_term->env[i - 1];
+			g_term->env[i - 1]->next = g_term->env[i];
+		}
+		g_term->env[i]->next = NULL;
+		free(tmp);
+		i++;
+		// free(line);
+	}
+}
+
 // Legge l'input finché ce n'è bisogno
 
 void	take_input(t_input *input)
@@ -67,11 +109,31 @@ void	take_input(t_input *input)
 	free(tmp);
 }
 
+void	free_env(t_env_elem **env)
+{
+	int			i;
+	// t_env_elem	*next;
+
+	i = 0;
+	while (env[i]->next)
+	{
+		free(env[i]->key);
+		free(env[i]->value);
+		free(env[i]);
+		i++;
+	}
+}
+
 int	main(void)
 {
 	t_input		input;
 	//t_command	parsed;
 
+	g_term = NULL;
+	g_term = malloc(sizeof(t_term));
+	if (g_term == NULL)
+		die("Malloc error");
+	take_environ();
 	while (1)
 	{
 		// Inizializza struttura dell'input
@@ -92,16 +154,18 @@ int	main(void)
 			// Parse del comando
 			//parse(&input, &parsed);
 
-			// Divide et impera
+			// Dividi et impera
 			execute(&input);
 		}
 		free(input.line);
 	}
 	rl_clear_history();
+	free_env(g_term->env);
+	free(g_term);
 	return (0);
 }
+
 /*
-// aggiorna l'ultimo codice di uscita
 
 // setta le variabili ambientali (export, unset, env)
 

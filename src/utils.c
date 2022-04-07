@@ -18,7 +18,7 @@ int	var_name_len(char *variable)
 	int	i;
 
 	i = 0;
-	while (ft_isupper(variable[i]))
+	while (ft_isupper(variable[i]) || variable[i] == '?')
 		i++;
 	return (i);
 }
@@ -29,14 +29,20 @@ void	take_variable(char *variable, t_input *input, int init_len)
 	char	*var_name;
 	char	*ret;
 
-	i = -1;
+	i = 0;
 	var_name = malloc(sizeof(char) * (var_name_len(variable) + 1));
 	if (!var_name)
 		die("Malloc error");
-	while (ft_isupper(variable[++i]))
+	while (ft_isupper(variable[i]) || variable[i] == '?')
+	{
 		var_name[i] = variable[i];
+		i++;
+	}
 	var_name[i] = '\0';
-	input->expanded = getenv(var_name);
+	if (!ft_strncmp(var_name, "?", 1))
+		input->expanded = ft_itoa(g_term->last_exit);
+	else
+		input->expanded = getenv(var_name);
 	if (input->expanded == NULL)
 		input->expanded = ft_calloc(1, sizeof(char));
 	free(var_name);
@@ -63,8 +69,7 @@ void	try_expand(t_input *input)
 			i++;
 			if (ft_isupper(input->line[i]) || input->line[i] == '?')
 				take_variable(&input->line[i], input, i - 1);
-			else
-				return ;
+			return ;
 		}
 		i++;
 	}
@@ -74,15 +79,12 @@ int	builtin(t_input *input)
 {
 	char	*ret;
 
-	input->args = ft_split(input->line, ' ');
 	if (!ft_strncmp(input->args[0], "pwd\0", 4))
 	{
 		ret = pwd();
 		ft_putendl_fd(ret, 1);
 		free(ret);
 	}
-	else if (!ft_strncmp(input->args[0], "exit\0", 5))
-		exit_cmd(input->args);
 	else if (!ft_strncmp(input->args[0], "cd\0", 3))
 		cd(input->args);
 	else if (!ft_strncmp(input->args[0], "echo\0", 5))

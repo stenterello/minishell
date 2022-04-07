@@ -13,6 +13,7 @@
 # include <dirent.h>
 # include <fcntl.h>
 # include <sys/wait.h>
+# include <termios.h>
 
 typedef struct	s_input
 {
@@ -23,8 +24,24 @@ typedef struct	s_input
 	int		is_open;
 	char	**args;
 	char	*expanded;
-	int		last_exit;
 }				t_input;
+
+typedef struct	s_env_elem
+{
+	char	*key;
+	char	*value;
+	void	*prev;
+	void	*next;
+}				t_env_elem;
+
+
+typedef struct	s_term
+{
+	t_env_elem		**env;
+	struct termios	*termi;
+	int				last_exit;
+}				t_term;
+
 
 typedef struct	s_command
 {
@@ -35,6 +52,8 @@ typedef struct	s_command
 	int		stdout;
 	int		stderr;
 }				t_command;
+
+t_term	*g_term;
 
 void	die(char *msg);
 void	try_expand(t_input *input);
