@@ -18,9 +18,47 @@ int	var_name_len(char *variable)
 	int	i;
 
 	i = 0;
-	while (ft_isupper(variable[i]) || variable[i] == '?')
+	while (variable[i])
 		i++;
 	return (i);
+}
+
+char	*search_env_vars(char *var_name, t_term *term)
+{
+	t_env_var	*tmp;
+
+	if (term->env)
+	{
+		tmp = term->env;
+		while (tmp->next)
+		{
+			if (!ft_strncmp(tmp->key, var_name, ft_strlen(var_name)))
+				return (tmp->value);
+			tmp = tmp->next;
+		}
+		if (!ft_strncmp(tmp->key, var_name, ft_strlen(var_name)))
+			return (tmp->value);
+	}
+	return (NULL);
+}
+
+char	*search_sh_vars(char *var_name, t_term *term)
+{
+	t_sh_var	*tmp;
+
+	if (term->var)
+	{
+		tmp = term->var;
+		while (tmp->next)
+		{
+			if (!ft_strncmp(tmp->key, var_name, ft_strlen(var_name)))
+				return (tmp->value);
+			tmp = tmp->next;
+		}
+		if (!ft_strncmp(tmp->key, var_name, ft_strlen(var_name)))
+			return (tmp->value);
+	}
+	return (NULL);
 }
 
 void	take_variable(char *variable, t_input *input, int init_len, t_term *term)
@@ -33,7 +71,7 @@ void	take_variable(char *variable, t_input *input, int init_len, t_term *term)
 	var_name = malloc(sizeof(char) * (var_name_len(variable) + 1));
 	if (!var_name)
 		die("Malloc error");
-	while (ft_isupper(variable[i]) || variable[i] == '?')
+	while (variable[i])
 	{
 		var_name[i] = variable[i];
 		i++;
@@ -42,7 +80,9 @@ void	take_variable(char *variable, t_input *input, int init_len, t_term *term)
 	if (!ft_strncmp(var_name, "?", 1))
 		input->expanded = ft_itoa(term->last_exit);
 	else
-		input->expanded = getenv(var_name);
+		input->expanded = search_env_vars(var_name, term);
+	if (input->expanded == NULL)
+		input->expanded = search_sh_vars(var_name, term);
 	if (input->expanded == NULL)
 		input->expanded = ft_calloc(1, sizeof(char));
 	free(var_name);
@@ -55,6 +95,7 @@ void	take_variable(char *variable, t_input *input, int init_len, t_term *term)
 		ft_strlcpy(&ret[init_len + ft_strlen(input->expanded)], &input->line[init_len + var_name_len(variable) + 1], ft_strlen(input->line) - (init_len + var_name_len(variable)) + 1);
 	free(input->line);
 	input->line = ret;
+	free(input->expanded);
 }
 
 void	try_expand(t_input *input, t_term *term)
@@ -67,7 +108,7 @@ void	try_expand(t_input *input, t_term *term)
 		if (input->line[i] == '$')
 		{
 			i++;
-			if (ft_isupper(input->line[i]) || input->line[i] == '?')
+			if (ft_isalpha(input->line[i]) || input->line[i] == '?')
 				take_variable(&input->line[i], input, i - 1, term);
 			return ;
 		}

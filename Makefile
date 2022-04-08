@@ -6,6 +6,7 @@ SRC=main.c \
 	execute.c \
 	execute_utils.c \
 	init_utils.c \
+	set_sh_var.c \
 	term.c
 SRCS=$(addprefix src/, $(SRC))
 OBJS=$(SRCS:.c=.o)

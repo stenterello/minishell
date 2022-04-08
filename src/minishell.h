@@ -83,5 +83,7 @@ void	take_environ(t_term *term);
 void	take_input(t_input *input);
 void	free_env(t_env_var *env);
 int		key_len(char *line);
+int		value_len(char *line);
+void	set_sh_var(char *line, t_term *term);
 
 #endif

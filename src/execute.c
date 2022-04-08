@@ -7,6 +7,8 @@ void	execute(t_input *input, t_term *term)
 	input->args = ft_split(input->line, ' ');
 	if (!ft_strncmp(input->args[0], "exit\0", 5))
 		exit_cmd(input->args);
+	else if (!input->args[1] && ft_strchr(input->args[0], '=') && input->args[0][0] != '=')
+		set_sh_var(input->args[0], term);
 	else
 	{
 		if (builtin(input, term))
