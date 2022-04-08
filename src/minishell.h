@@ -31,14 +31,15 @@ typedef struct	s_env_elem
 {
 	char	*key;
 	char	*value;
-	void	*prev;
 	void	*next;
+	void	*prev;
+	int		start;
 }				t_env_elem;
 
 
 typedef struct	s_term
 {
-	t_env_elem		**env;
+	t_env_elem		*env;
 	struct termios	*termi;
 	int				last_exit;
 }				t_term;
@@ -64,8 +65,15 @@ char	*pwd(void);
 void	echo(t_input *input);
 void	cd(char **args);
 void	exit_cmd(char **args);
+void	env(void);
+void	export(t_input *input);
 void	cmd_not_found(char *line);
 int		find_script(char **args);
 int		builtin(t_input *input);
+void	init_terminal(char *line);
+void	init_input(t_input *input);
+void	take_environ(void);
+void	take_input(t_input *input);
+void	free_env(t_env_elem *env);
 
 #endif

@@ -104,3 +104,26 @@ int	find_script(char **args)
 	free(path);
 	return (-1);
 }
+
+int	builtin(t_input *input)
+{
+	char	*ret;
+
+	if (!ft_strncmp(input->args[0], "pwd\0", 4))
+	{
+		ret = pwd();
+		ft_putendl_fd(ret, 1);
+		free(ret);
+	}
+	else if (!ft_strncmp(input->args[0], "cd\0", 3))
+		cd(input->args);
+	else if (!ft_strncmp(input->args[0], "echo\0", 5))
+		echo(input);
+	// else if (!ft_strncmp(input->args[0], "env\0", 4))
+	// 	env();
+	// else if (!ft_strncmp(input->args[0], "export\0", 7))
+	// 	export(input);
+	else
+		return (0);
+	return (1);
+}
