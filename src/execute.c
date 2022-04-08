@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-void	execute(t_input *input)
+void	execute(t_input *input, t_term *term)
 {
 	int		i;
 
@@ -9,7 +9,7 @@ void	execute(t_input *input)
 		exit_cmd(input->args);
 	else
 	{
-		if (builtin(input))
+		if (builtin(input, term))
 		{
 			i = 0;
 			while (input->args[i])

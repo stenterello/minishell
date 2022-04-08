@@ -105,7 +105,7 @@ int	find_script(char **args)
 	return (-1);
 }
 
-int	builtin(t_input *input)
+int	builtin(t_input *input, t_term *term)
 {
 	char	*ret;
 
@@ -119,8 +119,8 @@ int	builtin(t_input *input)
 		cd(input->args);
 	else if (!ft_strncmp(input->args[0], "echo\0", 5))
 		echo(input);
-	// else if (!ft_strncmp(input->args[0], "env\0", 4))
-	// 	env();
+	else if (!ft_strncmp(input->args[0], "env\0", 4))
+		env(term);
 	// else if (!ft_strncmp(input->args[0], "export\0", 7))
 	// 	export(input);
 	else

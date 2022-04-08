@@ -29,7 +29,7 @@ int	main(void)
 			add_history(input.line);
 			if (input.to_expand)
 				try_expand(&input, term);
-			execute(&input);
+			execute(&input, term);
 		}
 		free(input.line);
 	}

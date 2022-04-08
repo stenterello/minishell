@@ -59,7 +59,7 @@ extern char **environ;
 
 void	die(char *msg);
 void	try_expand(t_input *input, t_term *term);
-void	execute(t_input *input);
+void	execute(t_input *input, t_term *term);
 char	*get_path(char *line);
 char	*pwd(void);
 void	echo(t_input *input);
@@ -69,7 +69,7 @@ void	env(t_term *g_term);
 void	export(t_input *input);
 void	cmd_not_found(char *line);
 int		find_script(char **args);
-int		builtin(t_input *input);
+int		builtin(t_input *input, t_term *term);
 void	init_terminal(char *line, t_term *term);
 void	init_input(t_input *input);
 void	take_environ(t_term *term);
