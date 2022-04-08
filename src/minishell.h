@@ -27,23 +27,29 @@ typedef struct	s_input
 	char	*expanded;
 }				t_input;
 
-typedef struct	s_env_elem
+typedef struct	s_env_var
 {
 	char	*key;
 	char	*value;
 	void	*next;
 	void	*prev;
 	int		start;
-}				t_env_elem;
+}				t_env_var;
 
+typedef struct	s_sh_var
+{
+	char	*key;
+	char	*value;
+	void	*next;
+}				t_sh_var;
 
 typedef struct	s_term
 {
-	t_env_elem		*env;
+	t_env_var		*env;
+	t_sh_var		*var;
 	struct termios	*termi;
 	int				last_exit;
 }				t_term;
-
 
 typedef struct	s_command
 {
@@ -66,7 +72,8 @@ void	echo(t_input *input);
 void	cd(char **args);
 void	exit_cmd(char **args);
 void	env(t_term *g_term);
-void	export(t_input *input);
+void	export(t_input *input, t_term *term);
+void	unset(char *line, t_term *term);
 void	cmd_not_found(char *line);
 int		find_script(char **args);
 int		builtin(t_input *input, t_term *term);
@@ -74,6 +81,7 @@ void	init_terminal(char *line, t_term *term);
 void	init_input(t_input *input);
 void	take_environ(t_term *term);
 void	take_input(t_input *input);
-void	free_env(t_env_elem *env);
+void	free_env(t_env_var *env);
+int		key_len(char *line);
 
 #endif

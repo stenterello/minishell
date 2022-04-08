@@ -14,7 +14,8 @@ BUILTIN=pwd.c \
 		echo.c \
 		exit.c \
 		env.c \
-		export.c
+		export.c \
+		unset.c
 BUILTINS=$(addprefix src/builtin/, $(BUILTIN))
 BUILTIN_OBJS=$(BUILTINS:.c=.o)
 LIBFT=./include/libft/libft.a

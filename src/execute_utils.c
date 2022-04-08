@@ -121,8 +121,10 @@ int	builtin(t_input *input, t_term *term)
 		echo(input);
 	else if (!ft_strncmp(input->args[0], "env\0", 4))
 		env(term);
-	// else if (!ft_strncmp(input->args[0], "export\0", 7))
-	// 	export(input);
+	else if (!ft_strncmp(input->args[0], "export\0", 7))
+		export(input, term);
+	else if (!ft_strncmp(input->args[0], "unset\0", 6))
+		unset(input->args[1], term);
 	else
 		return (0);
 	return (1);

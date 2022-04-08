@@ -36,11 +36,11 @@ void	init_input(t_input *input)
 	input->is_open = 0;
 }
 
-void	free_env(t_env_elem *env)
+void	free_env(t_env_var *env)
 {
 	int			i;
-	t_env_elem	*tmp;
-	t_env_elem	*tmp2;
+	t_env_var	*tmp;
+	t_env_var	*tmp2;
 
 	i = 0;
 	tmp = env;
@@ -78,13 +78,10 @@ void	take_input(t_input *input)
 	free(tmp);
 }
 
-void	take_elem(t_env_elem *elem, int *ind)
+void	take_elem(t_env_var *elem, int *ind)
 {
 	int			i;
 
-	// elem = malloc(sizeof(t_env_elem));
-	// if (!elem)
-	// 	die("Malloc error");
 	i = 0;
 	while (__environ[*ind][i] != '=')
 		i++;
@@ -106,18 +103,18 @@ void	take_elem(t_env_elem *elem, int *ind)
 void	take_environ(t_term *term)
 {
 	int			i;
-	t_env_elem	*new;
-	t_env_elem	*prev;
+	t_env_var	*new;
+	t_env_var	*prev;
 
 	i = 0;
-	term->env = malloc(sizeof(t_env_elem));
+	term->env = malloc(sizeof(t_env_var));
 	if (!term->env)
 		die("Malloc error");
 	take_elem(term->env, &i);
 	prev = term->env;
 	while (__environ[i])
 	{
-		new = malloc(sizeof(t_env_elem));
+		new = malloc(sizeof(t_env_var));
 		if (!new)
 			die("Malloc error");
 		prev->next = new;
