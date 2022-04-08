@@ -23,7 +23,7 @@ int	var_name_len(char *variable)
 	return (i);
 }
 
-void	take_variable(char *variable, t_input *input, int init_len)
+void	take_variable(char *variable, t_input *input, int init_len, t_term *term)
 {
 	int		i;
 	char	*var_name;
@@ -40,7 +40,7 @@ void	take_variable(char *variable, t_input *input, int init_len)
 	}
 	var_name[i] = '\0';
 	if (!ft_strncmp(var_name, "?", 1))
-		input->expanded = ft_itoa(g_term->last_exit);
+		input->expanded = ft_itoa(term->last_exit);
 	else
 		input->expanded = getenv(var_name);
 	if (input->expanded == NULL)
@@ -57,7 +57,7 @@ void	take_variable(char *variable, t_input *input, int init_len)
 	input->line = ret;
 }
 
-void	try_expand(t_input *input)
+void	try_expand(t_input *input, t_term *term)
 {
 	int	i;
 
@@ -68,7 +68,7 @@ void	try_expand(t_input *input)
 		{
 			i++;
 			if (ft_isupper(input->line[i]) || input->line[i] == '?')
-				take_variable(&input->line[i], input, i - 1);
+				take_variable(&input->line[i], input, i - 1, term);
 			return ;
 		}
 		i++;

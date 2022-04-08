@@ -8,34 +8,35 @@ void	add_signals(void)
 int	main(void)
 {
 	t_input		input;
+	t_term		*term;
 
-	g_term = NULL;
-	g_term = malloc(sizeof(t_term));
-	if (g_term == NULL)
+	term = NULL;
+	term = malloc(sizeof(t_term));
+	if (term == NULL)
 		die("Malloc error");
-	g_term->termi = malloc(sizeof(struct termios));
-	if (!g_term->termi)
+	term->termi = malloc(sizeof(struct termios));
+	if (!term->termi)
 		die("Malloc error");
-	take_environ();
+	take_environ(term);
 	add_signals();
 	while (1)
 	{
-		init_terminal(getenv("TERM"));
+		init_terminal(getenv("TERM"), term);
 		init_input(&input);
 		take_input(&input);
 		if (ft_strlen(input.line) > 0)
 		{
 			add_history(input.line);
 			if (input.to_expand)
-				try_expand(&input);
+				try_expand(&input, term);
 			execute(&input);
 		}
 		free(input.line);
 	}
 	rl_clear_history();
-	free_env(g_term->env);
-	free(g_term->termi);
-	free(g_term);
+	free_env(term->env);
+	free(term->termi);
+	free(term);
 	return (0);
 }
 

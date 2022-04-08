@@ -82,9 +82,9 @@ void	take_elem(t_env_elem *elem, int *ind)
 {
 	int			i;
 
-	elem = malloc(sizeof(t_env_elem));
-	if (!elem)
-		die("Malloc error");
+	// elem = malloc(sizeof(t_env_elem));
+	// if (!elem)
+	// 	die("Malloc error");
 	i = 0;
 	while (__environ[*ind][i] != '=')
 		i++;
@@ -98,20 +98,23 @@ void	take_elem(t_env_elem *elem, int *ind)
 	elem->value = malloc(sizeof(char) * (i - ft_strlen(elem->key)));
 	if (!elem->value)
 		die("Malloc error");
-	ft_strlcpy(elem->value, &__environ[*ind][ft_strlen(elem->key)], i - ft_strlen(elem->key));
+	ft_strlcpy(elem->value, &__environ[*ind][ft_strlen(elem->key) + 1], i - ft_strlen(elem->key));
 	elem->next = NULL;
+	*ind += 1;
 }
 
-void	take_environ(void)
+void	take_environ(t_term *term)
 {
 	int			i;
 	t_env_elem	*new;
 	t_env_elem	*prev;
 
 	i = 0;
-	prev = g_term->env;
-	take_elem(g_term->env, &i);
-	i++;
+	term->env = malloc(sizeof(t_env_elem));
+	if (!term->env)
+		die("Malloc error");
+	take_elem(term->env, &i);
+	prev = term->env;
 	while (__environ[i])
 	{
 		new = malloc(sizeof(t_env_elem));

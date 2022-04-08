@@ -55,24 +55,24 @@ typedef struct	s_command
 	int		stderr;
 }				t_command;
 
-t_term	*g_term;
+extern char **environ;
 
 void	die(char *msg);
-void	try_expand(t_input *input);
+void	try_expand(t_input *input, t_term *term);
 void	execute(t_input *input);
 char	*get_path(char *line);
 char	*pwd(void);
 void	echo(t_input *input);
 void	cd(char **args);
 void	exit_cmd(char **args);
-void	env(void);
+void	env(t_term *g_term);
 void	export(t_input *input);
 void	cmd_not_found(char *line);
 int		find_script(char **args);
 int		builtin(t_input *input);
-void	init_terminal(char *line);
+void	init_terminal(char *line, t_term *term);
 void	init_input(t_input *input);
-void	take_environ(void);
+void	take_environ(t_term *term);
 void	take_input(t_input *input);
 void	free_env(t_env_elem *env);
 
