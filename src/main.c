@@ -1,13 +1,29 @@
 #include "minishell.h"
 
-void	add_signals(void)
-{
+// void	print_newline(int num)
+// {
 
-}
+// }
+
+// void	add_signals(void)
+// {
+// 	struct sigaction	d;
+// 	struct sigaction	c;
+// 	struct sigaction	back;
+// 	int					*sigs;
+
+// 	d.sa_sigaction = &print_newline;
+// 	sigemptyset(&d.sa_mask);
+// 	sigs[0] = sigaction(SIGINT, &d, NULL);
+
+// 	if (sigs[0] || sigs[1] || sigs[2])
+// 		die("Signal error");
+// }
 
 int	main(void)
 {
 	t_input		input;
+	t_command	cmd;
 	t_term		*term;
 
 	term = NULL;
@@ -18,23 +34,25 @@ int	main(void)
 	if (!term->termi)
 		die("Malloc error");
 	take_environ(term);
-	add_signals();
+	//add_signals();
 	while (1)
 	{
 		init_terminal(getenv("TERM"), term);
-		init_input(&input);
+		init_input_and_cmd(&input, &cmd);
 		take_input(&input);
 		if (ft_strlen(input.line) > 0)
 		{
 			add_history(input.line);
 			if (input.to_expand)
 				try_expand(&input, term);
-			execute(&input, term);
+			split_command(input.line, &cmd);
+			execute(&cmd, term);
 		}
 		free(input.line);
 	}
 	rl_clear_history();
 	free_env(term->env);
+	free_sh(term->var);
 	free(term->termi);
 	free(term);
 	return (0);
@@ -42,13 +60,12 @@ int	main(void)
 
 /*
 
-// setta le variabili ambientali (export, unset, env)
-
 // aggiungi i segnali Ctrl-D Ctrl-C Ctrl-\ 
 
 // implementa i redirezionamenti
 
 // implementa le pipe
 
-// aggiungi gli eseguibili
+// implementa exit status
+
 */

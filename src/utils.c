@@ -6,13 +6,6 @@ void	die(char *msg)
 	exit(-1);
 }
 
-int	ft_isupper(char c)
-{
-	if (c >= 65 && c <= 90)
-		return (1);
-	return (0);
-}
-
 int	var_name_len(char *variable)
 {
 	int	i;
@@ -27,17 +20,12 @@ char	*search_env_vars(char *var_name, t_term *term)
 {
 	t_env_var	*tmp;
 
-	if (term->env)
+	tmp = term->env;
+	while (tmp)
 	{
-		tmp = term->env;
-		while (tmp->next)
-		{
-			if (!ft_strncmp(tmp->key, var_name, ft_strlen(var_name)))
-				return (tmp->value);
-			tmp = tmp->next;
-		}
 		if (!ft_strncmp(tmp->key, var_name, ft_strlen(var_name)))
 			return (tmp->value);
+		tmp = tmp->next;
 	}
 	return (NULL);
 }
@@ -46,17 +34,12 @@ char	*search_sh_vars(char *var_name, t_term *term)
 {
 	t_sh_var	*tmp;
 
-	if (term->var)
+	tmp = term->var;
+	while (tmp && tmp->key)
 	{
-		tmp = term->var;
-		while (tmp->next)
-		{
-			if (!ft_strncmp(tmp->key, var_name, ft_strlen(var_name)))
-				return (tmp->value);
-			tmp = tmp->next;
-		}
 		if (!ft_strncmp(tmp->key, var_name, ft_strlen(var_name)))
 			return (tmp->value);
+		tmp = tmp->next;
 	}
 	return (NULL);
 }

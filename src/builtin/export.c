@@ -26,7 +26,7 @@ int	value_len(char *line)
 	return (i - j);
 }
 
-void	export(t_input *input, t_term *term)
+void	export(t_command *cmd, t_term *term)
 {
 	int			len;
 	int			i;
@@ -36,7 +36,7 @@ void	export(t_input *input, t_term *term)
 	new = malloc(sizeof(t_env_var));
 	if (!new)
 		die("Malloc error");
-	len = key_len(input->args[1]);
+	len = key_len(cmd->args[1]);
 	if (len == -1)
 	{
 		free(new);
@@ -45,9 +45,9 @@ void	export(t_input *input, t_term *term)
 	new->key = malloc(sizeof(char) * (len + 1));
 	if (!new->key)
 		die("Malloc error");
-	ft_strlcpy(new->key, input->args[1], len + 1);
+	ft_strlcpy(new->key, cmd->args[1], len + 1);
 	i = len;
-	len = value_len(input->args[1]);
+	len = value_len(cmd->args[1]);
 	if (len == -1)
 	{
 		free(new->key);
@@ -57,7 +57,7 @@ void	export(t_input *input, t_term *term)
 	new->value = malloc(sizeof(char) * (len + 1));
 	if (!new->value)
 		die("Malloc error");
-	ft_strlcpy(new->value, &input->args[1][i + 1], len + 1);
+	ft_strlcpy(new->value, &cmd->args[1][i + 1], len + 1);
 	new->next = NULL;
 	tmp = term->env;
 	while (tmp->next)

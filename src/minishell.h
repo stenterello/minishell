@@ -6,6 +6,7 @@
 # include <stdlib.h>
 # include <string.h>
 # include <unistd.h>
+# include <signal.h>
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <errno.h>
@@ -65,25 +66,30 @@ extern char **environ;
 
 void	die(char *msg);
 void	try_expand(t_input *input, t_term *term);
-void	execute(t_input *input, t_term *term);
+void	execute(t_command *cmd, t_term *term);
 char	*get_path(char *line);
 char	*pwd(void);
-void	echo(t_input *input);
-void	cd(char **args);
+void	echo(t_command *cmd);
+void	cd(t_command *cmd);
 void	exit_cmd(char **args);
 void	env(t_term *g_term);
-void	export(t_input *input, t_term *term);
-void	unset(char *line, t_term *term);
+void	export(t_command *cmd, t_term *term);
+void	unset(t_command *cmd, t_term *term);
 void	cmd_not_found(char *line);
-int		find_script(char **args);
-int		builtin(t_input *input, t_term *term);
+int		find_script(t_command *cmd);
+int		builtin(t_command *cmd, t_term *term);
 void	init_terminal(char *line, t_term *term);
-void	init_input(t_input *input);
+void	init_input_and_cmd(t_input *input, t_command *cmd);
 void	take_environ(t_term *term);
 void	take_input(t_input *input);
+void	split_command(char *line, t_command *cmd);
 void	free_env(t_env_var *env);
+void	free_sh(t_sh_var *var);
 int		key_len(char *line);
 int		value_len(char *line);
-void	set_sh_var(char *line, t_term *term);
+int		is_open(char *typed, int limit);
+int		is_var_def(char *line);
+void	set_sh_var(char **args, t_term *term);
+void	check(char *typed, t_input *input);
 
 #endif

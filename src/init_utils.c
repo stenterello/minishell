@@ -1,58 +1,17 @@
 #include "minishell.h"
 
-void	check(char	*typed, t_input *input)
-{
-	int	i;
-
-	i = 0;
-	input->s_quot = 0;
-	input->d_quot = 0;
-	while (typed[i])
-	{
-		if (typed[i] == '\'' && !input->s_quot && !input->d_quot)
-			input->s_quot = 1;
-		else if (typed[i] == '\'' && input->s_quot && !input->d_quot)
-			input->s_quot = 0;
-		else if (typed[i] == '$' && !input->s_quot)
-			input->to_expand = 1;
-		else if (typed[i] == '\"' && !input->d_quot && !input->s_quot)
-			input->d_quot = 1;
-		else if (typed[i] == '\"' && input->d_quot && !input->s_quot)
-			input->d_quot = 0;
-		i++;
-	}
-	i--;
-	if (typed[i] == '\\' || input->s_quot || input->d_quot)
-		input->is_open = 1;
-	if (!input->s_quot && !input->d_quot)
-		input->is_open = 0;
-}
-
-void	init_input(t_input *input)
+void	init_input_and_cmd(t_input *input, t_command *cmd)
 {
 	input->s_quot = 0;
 	input->d_quot = 0;
 	input->to_expand = 0;
 	input->is_open = 0;
-}
-
-void	free_env(t_env_var *env)
-{
-	int			i;
-	t_env_var	*tmp;
-	t_env_var	*tmp2;
-
-	i = 0;
-	tmp = env;
-	while (tmp->next)
-	{
-		tmp2 = env;
-		free(tmp->key);
-		free(tmp->value);
-		tmp = tmp->next;
-		free(tmp2);
-		i++;
-	}
+	cmd->cmd = NULL;
+	cmd->opt = NULL;
+	cmd->args = NULL;
+	cmd->stdin = STDIN_FILENO;
+	cmd->stdout = STDOUT_FILENO;
+	cmd->stderr = STDERR_FILENO;
 }
 
 void	take_input(t_input *input)

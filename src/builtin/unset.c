@@ -64,18 +64,18 @@ void	search_and_delete(char *search, t_term *term)
 	}
 }
 
-void	unset(char *line, t_term *term)
+void	unset(t_command *cmd, t_term *term)
 {
 	int		i;
 	char	*search;
 
-	i = ft_strlen(line);
+	i = ft_strlen(cmd->args[0]);
 	if (i == 0)
 		return ;
 	search = malloc(sizeof(char) * (i + 1));
 	if (!search)
 		die("Malloc error");
-	ft_strlcpy(search, line, i + 1);
+	ft_strlcpy(search, cmd->args[0], i + 1);
 	search_and_delete(search, term);
 	free(search);
 }

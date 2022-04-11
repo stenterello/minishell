@@ -30,7 +30,7 @@ void	cmd_not_found(char *line)
 	exit(127);
 }
 
-int	search_in_dir(DIR *stream, char **args, char *dir_name)
+int	search_in_dir(DIR *stream, t_command *cmd, char *dir_name)
 {
 	struct dirent	*entry;
 	pid_t			child;
@@ -39,16 +39,16 @@ int	search_in_dir(DIR *stream, char **args, char *dir_name)
 	entry = readdir(stream);
 	while (entry)
 	{
-		if (!ft_strncmp(entry->d_name, args[0], (ft_strlen(args[0]) + 1)))
+		if (!ft_strncmp(entry->d_name, cmd->cmd, (ft_strlen(cmd->cmd) + 1)))
 		{
-			args[0] = get_full_path(dir_name, args[0]);
-			if (!access(args[0], X_OK))
+			cmd->cmd = get_full_path(dir_name, cmd->cmd);
+			if (!access(cmd->cmd, X_OK))
 			{
 				child = fork();
 				if (child == -1)
 					die("Error while forking");
 				if (child == 0)
-					execve(args[0], args, NULL);
+					execve(cmd->cmd, cmd->args, NULL);
 				else
 					waitpid(-1, &status, 0);
 				return (1);
@@ -61,7 +61,7 @@ int	search_in_dir(DIR *stream, char **args, char *dir_name)
 	return (0);
 }
 
-int	find_script(char **args)
+int	find_script(t_command *cmd)
 {
 	char	**path;
 	DIR		*stream;
@@ -80,7 +80,7 @@ int	find_script(char **args)
 		// Lasciare o no questo avviso?
 		if (stream == NULL)
 			die("Error opening directory");
-		is_exec = search_in_dir(stream, args, path[i]);
+		is_exec = search_in_dir(stream, cmd, path[i]);
 		if (is_exec == 2)
 		{
 			printf("%s\n", strerror(errno));
@@ -103,29 +103,4 @@ int	find_script(char **args)
 		free(path[i++]);
 	free(path);
 	return (-1);
-}
-
-int	builtin(t_input *input, t_term *term)
-{
-	char	*ret;
-
-	if (!ft_strncmp(input->args[0], "pwd\0", 4))
-	{
-		ret = pwd();
-		ft_putendl_fd(ret, 1);
-		free(ret);
-	}
-	else if (!ft_strncmp(input->args[0], "cd\0", 3))
-		cd(input->args);
-	else if (!ft_strncmp(input->args[0], "echo\0", 5))
-		echo(input);
-	else if (!ft_strncmp(input->args[0], "env\0", 4))
-		env(term);
-	else if (!ft_strncmp(input->args[0], "export\0", 7))
-		export(input, term);
-	else if (!ft_strncmp(input->args[0], "unset\0", 6))
-		unset(input->args[1], term);
-	else
-		return (0);
-	return (1);
 }

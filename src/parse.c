@@ -1,83 +1,128 @@
 #include "minishell.h"
 
-void	copy_in(char *line, char *splitted)
+int	count_params(char *line)
 {
-	line = malloc(sizeof(char) * (ft_strlen(splitted) + 1));
-	if (!line)
-		die("Malloc error");
-	ft_strlcpy(line, splitted, ft_strlen(splitted) + 1);
-}
-
-void	copy_in_arg(char **args, char *line)
-{
+	int	count;
 	int	i;
+	int	s_quot;
+	int	d_quot;
 
+	count = 1;
 	i = 0;
-	while (args[i] != NULL)
-		i++;
-	args[i] = malloc(sizeof(char) * (ft_strlen(line) + 1));
-	if (!args[i])
-		die("Malloc error");
-	copy_in(args[i], line);
-	args[++i] = NULL;
-}
-
-void	alloc_args(t_command *parsed, char **splitted)
-{
-	int	i;
-
-	i = 0;
-	while (splitted[i])
-		i++;
-	parsed->args = malloc(sizeof(char *) * i);
-	if (!parsed->args)
-		die ("Malloc error");
-	parsed->args[0] = NULL;
-}
-
-void	parse(t_input *input, t_command *parsed)
-{
-	char	**splitted;
-	char	*tokens;
-	int		i;
-	int		i2;
-	int		j;
-
-	splitted = ft_split(input->line, ' ');
-	tokens = malloc(sizeof(char) * 4);
-	if (!tokens)
-		die("Malloc error");
-	ft_strlcpy(tokens, "<>|", 4);
-	i = 0;
-	alloc_args(parsed, splitted);
-	while (splitted[i])
+	s_quot = 0;
+	d_quot = 0;
+	while (line[i])
 	{
-		if (ft_strchr(tokens, splitted[i][0]) != NULL)
-			break;
-		if (i == 1)
-			copy_in(parsed->cmd, splitted[i]);
-		else if (i > 1 && is_option(splitted))
-			copy_in(parsed->opt, splitted[i]);
-		else
-			copy_in_arg(parsed->args, splitted[i]);
+		if (line[i] == ' ' && !d_quot && !s_quot)
+			count++;
+		else if (line[i] == '"' && !s_quot && !d_quot)
+			d_quot = 1;
+		else if (line[i] == '"' && !s_quot && d_quot)
+			d_quot = 0;
+		else if (line[i] == '\'' && !s_quot && !d_quot)
+			s_quot = 1;
+		else if (line[i] == '\'' && s_quot && !d_quot)
+			s_quot = 0;
+		i++;
 	}
-	j = 0;
-	while (ft_strchr(tokens, splitted[i][j]) != NULL)
+	return (count);
+}
+
+void	fill_arg(char *line, t_command *cmd, int meas[3])
+{
+	cmd->args[meas[2]] = malloc(sizeof(char) * (meas[0] - meas[1] + 1));
+	if (!cmd->args[meas[2]])
+		die("Malloc error");
+	ft_strlcpy(cmd->args[meas[2]], &line[meas[1]], meas[0] - meas[1] + 1);
+	cmd->args[meas[2] + 1] = NULL;
+}
+
+void	split_var_decl(char *line, t_command *cmd)
+{
+	int	meas[3];
+
+	meas[0] = 0;
+	meas[1] = 0;
+	meas[2] = 0;
+	cmd->args = malloc(sizeof(char *) * (count_params(line) + 1));
+	if (!cmd->args)
+		die("Malloc error");
+	cmd->args[0] = NULL;
+	while (line[meas[0]] != '=')
+		meas[0]++;
+	meas[0]++;
+	while (line[meas[0]])
 	{
-		parsed->opt = ft_calloc(sizeof(char), (j + 2));
-		if (!parsed->opt)
+		if (line[meas[0]] == ' ' && !is_open(line, meas[0]))
+		{
+			fill_arg(line, cmd, meas);
+			meas[2]++;
+			while (line[meas[0]] == ' ')
+				meas[0]++;
+			meas[1] = meas[0];
+		}
+		meas[0]++;
+	}
+	if (!cmd->args[meas[2]])
+	{
+		cmd->args[meas[2]] = malloc(sizeof(char) * (ft_strlen(line) + 1));
+		if (!cmd->args[meas[2]])
 			die("Malloc error");
-		ft_strlcat(parsed->opt, splitted[i][0], ft_strlen(parsed->opt) + 1);
-		j++;
+		ft_strlcpy(cmd->args[meas[2]], &line[meas[1]], ft_strlen(&line[meas[1]]) + 1);
+		meas[2]++;
 	}
+	cmd->args[meas[2]] = NULL;
 }
 
-void	init_command(t_command *parsed)
+int	count_args(char **tmp)
 {
-	parsed->cmd = "\0";
-	parsed->opt = "\0";
-	parsed->args = NULL;
-	parsed->stdin = 0;
-	parsed->stdout = 1;
-	parsed->stderr = 2;
+	int	i;
+
+	i = 0;
+	while (tmp[i])
+		i++;
+	return (i);
+}
+
+void	fill_cmd_fields(char **tmp, t_command *cmd)
+{
+	int	i;
+	int	args_num;
+
+	i = 0;
+	args_num = count_args(tmp);
+	cmd->args = malloc(sizeof(char *) * (args_num + 1));
+	if (!cmd->args)
+		die("Malloc error");
+	while (tmp[i])
+	{
+		if (i == 0)
+		{
+			cmd->cmd = malloc(sizeof(char) * (ft_strlen(tmp[i] + 1)));
+			if (!cmd->cmd)
+				die("Malloc error");
+			ft_strlcpy(cmd->cmd, tmp[i], ft_strlen(tmp[i]) + 1);
+		}
+		cmd->args[i] = malloc(sizeof(char) * (ft_strlen(tmp[i]) + 1));
+		if (!cmd->args[i])
+			die("Malloc error");
+		ft_strlcpy(cmd->args[i], tmp[i], ft_strlen(tmp[i]) + 1);
+		free(tmp[i]);
+		i++;
+	}
+	cmd->args[i] = NULL;
+	free(tmp);
+}
+
+void	split_command(char *line, t_command *cmd)
+{
+	char	**tmp;
+
+	if (is_var_def(line))
+		split_var_decl(line, cmd);
+	else
+	{
+		tmp = ft_split(line, ' ');
+		fill_cmd_fields(tmp, cmd);
+	}
 }

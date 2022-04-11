@@ -7,7 +7,10 @@ SRC=main.c \
 	execute_utils.c \
 	init_utils.c \
 	set_sh_var.c \
-	term.c
+	term.c \
+	parse.c \
+	bools.c \
+	memory.c
 SRCS=$(addprefix src/, $(SRC))
 OBJS=$(SRCS:.c=.o)
 BUILTIN=pwd.c \
@@ -25,7 +28,7 @@ $(NAME): $(LIBFT) $(OBJS) $(BUILTIN_OBJS)
 	$(CC) $(FLAGS) $(SRCS) $(BUILTINS) $(LIBFT) -o $(NAME) -lreadline -lncurses
 
 $(LIBFT):
-	$(MAKE) -C ./include/libft
+	$(MAKE) bonus -C ./include/libft
 
 all: $(NAME)
 
