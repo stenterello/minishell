@@ -4,14 +4,11 @@ void	rewrite_args(t_command *cmd)
 {
 	int	i;
 	int	j;
-	// int	k;
 
 	i = 0;
 	j = 0;
-	// k = 0;
 	while (is_var_def(cmd->args[i]))
 		i++;
-	// k = i;
 	cmd->cmd = malloc(sizeof(char) * (ft_strlen(cmd->args[i]) + 1));
 	if (!cmd->cmd)
 		die("Malloc error");
@@ -57,6 +54,7 @@ void	execute(t_command *cmd, t_term *term)
 		while (cmd->args[i])
 			free(cmd->args[i++]);
 		free(cmd->args);
+		free(cmd->cmd);
 		return ;
 	}
 	else if (!cmd->cmd && ft_strchr(cmd->args[0], '=') && cmd->args[0][0] != '=' && cmd->args[1])
@@ -67,6 +65,7 @@ void	execute(t_command *cmd, t_term *term)
 		while (cmd->args[i])
 			free(cmd->args[i++]);
 		free(cmd->args);
+		free(cmd->cmd);
 		return ;
 	}	
 	if (!builtin(cmd, term))
@@ -85,4 +84,5 @@ void	execute(t_command *cmd, t_term *term)
 	while (cmd->args[i])
 		free(cmd->args[i++]);
 	free(cmd->args);
+	free(cmd->cmd);
 }

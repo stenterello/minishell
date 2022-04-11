@@ -20,6 +20,13 @@
 // 		die("Signal error");
 // }
 
+void	init_sh_var(t_term *term)
+{
+	term->var = malloc(sizeof(t_sh_var));
+	if (!term->var)
+		die("Malloc error");
+}
+
 int	main(void)
 {
 	t_input		input;
@@ -34,6 +41,7 @@ int	main(void)
 	if (!term->termi)
 		die("Malloc error");
 	take_environ(term);
+	init_sh_var(term);
 	//add_signals();
 	while (1)
 	{
@@ -50,7 +58,7 @@ int	main(void)
 		}
 		free(input.line);
 	}
-	rl_clear_history();
+	clear_history();
 	free_env(term->env);
 	free_sh(term->var);
 	free(term->termi);

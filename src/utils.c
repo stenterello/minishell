@@ -78,7 +78,8 @@ void	take_variable(char *variable, t_input *input, int init_len, t_term *term)
 		ft_strlcpy(&ret[init_len + ft_strlen(input->expanded)], &input->line[init_len + var_name_len(variable) + 1], ft_strlen(input->line) - (init_len + var_name_len(variable)) + 1);
 	free(input->line);
 	input->line = ret;
-	free(input->expanded);
+	if (input->expanded)
+		free(input->expanded);
 }
 
 void	try_expand(t_input *input, t_term *term)
