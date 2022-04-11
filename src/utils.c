@@ -102,7 +102,6 @@ char	*clean_text(char *line)
 	char	*tmp2;
 
 	i = 0;
-	tmp = NULL;
 	while (line[i] && line[i] != ' ')
 		i++;
 	tmp = malloc(sizeof(char) * (i + 1));
