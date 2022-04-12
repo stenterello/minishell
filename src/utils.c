@@ -11,7 +11,7 @@ int	var_name_len(char *variable)
 	int	i;
 
 	i = 0;
-	while (variable[i] && variable[i] != ' ')
+	while (variable[i] && ft_isalnum(variable[i]))
 		i++;
 	return (i);
 }
@@ -68,7 +68,7 @@ void	take_variable(char *variable, t_input *input, int init_len, t_term *term)
 	var_name = malloc(sizeof(char) * (var_name_len(variable) + 1));
 	if (!var_name)
 		die("Malloc error");
-	while (variable[i] && variable[i] != ' ')
+	while (variable[i] && ft_isalnum(variable[i]))
 	{
 		var_name[i] = variable[i];
 		i++;
@@ -102,7 +102,7 @@ char	*clean_text(char *line)
 	char	*tmp2;
 
 	i = 0;
-	while (line[i] && line[i] != ' ')
+	while (line[i] && ft_isalnum(line[i]))
 		i++;
 	tmp = malloc(sizeof(char) * (i + 1));
 	if (!tmp)
@@ -111,6 +111,16 @@ char	*clean_text(char *line)
 	tmp2 = ft_strtrim(tmp, "\" ");
 	free(tmp);
 	return (tmp2);
+}
+
+int	dollar_pos(char *line)
+{
+	int	i;
+
+	i = 0;
+	while (line[i] != '$')
+		i++;
+	return (i);
 }
 
 void	try_expand(t_input *input, t_term *term)
@@ -140,8 +150,9 @@ void	try_expand(t_input *input, t_term *term)
 			{
 				if (d_quot)
 				{
-					var = clean_text(&input->line[i - 2]);
-					take_variable(&var[1], input, i - 1, term);
+					i = dollar_pos(input->line) + 1;
+					var = clean_text(&input->line[i]);
+					take_variable(var, input, i - 1, term);
 					free(var);
 				}
 				else
