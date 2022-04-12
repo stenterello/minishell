@@ -37,6 +37,7 @@ void	check(char *typed, t_input *input)
 	i = 0;
 	input->s_quot = 0;
 	input->d_quot = 0;
+	input->to_expand = 0;
 	while (typed[i])
 	{
 		if (typed[i] == '\'' && !input->s_quot && !input->d_quot)
@@ -92,14 +93,14 @@ int	builtin(t_command *cmd, t_term *term)
 
 	if (!ft_strncmp(cmd->cmd, "pwd\0", 4))
 	{
-		ret = pwd();
+		ret = pwd(term);
 		ft_putendl_fd(ret, 1);
 		free(ret);
 	}
 	else if (!ft_strncmp(cmd->cmd, "cd\0", 3))
-		cd(cmd);
+		cd(cmd, term);
 	else if (!ft_strncmp(cmd->cmd, "echo\0", 5))
-		echo(cmd);
+		echo(cmd, term);
 	else if (!ft_strncmp(cmd->cmd, "env\0", 4))
 		env(term);
 	else if (!ft_strncmp(cmd->cmd, "export\0", 7))

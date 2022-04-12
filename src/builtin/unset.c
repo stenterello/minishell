@@ -78,4 +78,5 @@ void	unset(t_command *cmd, t_term *term)
 	ft_strlcpy(search, cmd->args[0], i + 1);
 	search_and_delete(search, term);
 	free(search);
+	term->last_exit = 0;
 }

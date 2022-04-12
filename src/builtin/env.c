@@ -12,4 +12,5 @@ void	env(t_term *term)
 		ft_putendl_fd(tmp->value, 1);
 		tmp = tmp->next;
 	}
+	term->last_exit = 0;
 }

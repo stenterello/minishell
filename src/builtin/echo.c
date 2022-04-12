@@ -20,7 +20,7 @@ int	is_quoted(char	*line)
 	return (0);
 }
 
-void	echo(t_command *cmd)
+void	echo(t_command *cmd, t_term *term)
 {
 	int	i;
 
@@ -45,4 +45,5 @@ void	echo(t_command *cmd)
 		if (ft_strncmp("-n\0", cmd->args[1], 3))
 			ft_putchar_fd('\n', 1);
 	}
+	term->last_exit = 0;
 }

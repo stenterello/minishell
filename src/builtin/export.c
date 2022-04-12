@@ -63,4 +63,5 @@ void	export(t_command *cmd, t_term *term)
 	while (tmp->next)
 		tmp = tmp->next;
 	tmp->next = new;
+	term->last_exit = 0;
 }

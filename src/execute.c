@@ -1,5 +1,12 @@
 #include "minishell.h"
 
+void	print_error(t_command *cmd, t_term *term)
+{
+	ft_putstr_fd(cmd->cmd, cmd->stderr);
+	strerror(errno);
+	term->last_exit = errno;
+}
+
 void	rewrite_args(t_command *cmd)
 {
 	int	i;
@@ -34,7 +41,9 @@ void	rewrite_args(t_command *cmd)
 
 void	execute(t_command *cmd, t_term *term)
 {
-	int		i;
+	int	i;
+	int	ret;
+	int	child;
 
 	i = 0;
 	if (!cmd->cmd)
@@ -61,7 +70,7 @@ void	execute(t_command *cmd, t_term *term)
 		rewrite_args(cmd);
 	else if (!ft_strncmp(cmd->cmd, "exit\0", 5))
 	{
-		exit_cmd(cmd->args);
+		exit_cmd(cmd);
 		while (cmd->args[i])
 			free(cmd->args[i++]);
 		free(cmd->args);
@@ -70,15 +79,26 @@ void	execute(t_command *cmd, t_term *term)
 	}	
 	if (!builtin(cmd, term))
 	{
+		// Se non c'è indirizzo del file, cerca nel PATH
 		if (ft_strchr(cmd->cmd, '/') == NULL)
 		{
-			if (find_script(cmd) == -1)
-				cmd_not_found(cmd->cmd);
+			if (find_script(cmd, term) == -1)
+				cmd_not_found(cmd, term);
 		}
 		else
 		{
-			if (execve(cmd->cmd, cmd->args, NULL) == -1)
-				cmd_not_found(cmd->cmd);
+			// Altrimenti vai alla destinazione
+			child = fork();
+			if (child == -1)
+				die("Error while forking");
+			if (child == 0)
+				execve(cmd->cmd, cmd->args, NULL);
+			else
+				waitpid(-1, &ret, 0);
+			if (WIFEXITED(ret))
+				term->last_exit = ret / 256;
+			else
+				term->last_exit = ret;
 		}
 	}
 	while (cmd->args[i])

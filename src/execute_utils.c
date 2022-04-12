@@ -14,23 +14,14 @@ char	*get_full_path(char *dir_name, char *name)
 	return (ret);
 }
 
-void	cmd_not_found(char *line)
+void	cmd_not_found(t_command *cmd, t_term *term)
 {
-	char	*tmp;
-	int		i;
-
-	i = 0;
-	while (line[i] && line[i] != ' ')
-		i++;
-	tmp = malloc(sizeof(char) * (i + 1));
-	ft_strlcpy(tmp, line, i + 1);
-	ft_putstr_fd(tmp, 2);
-	ft_putendl_fd(": command not found", 2);
-	free(tmp);
-	exit(127);
+	ft_putstr_fd(cmd->cmd, cmd->stderr);
+	ft_putendl_fd(": command not found", cmd->stderr);
+	term->last_exit = 127;
 }
 
-int	search_in_dir(DIR *stream, t_command *cmd, char *dir_name)
+int	search_in_dir(DIR *stream, t_command *cmd, char *dir_name, t_term *term)
 {
 	struct dirent	*entry;
 	pid_t			child;
@@ -51,17 +42,19 @@ int	search_in_dir(DIR *stream, t_command *cmd, char *dir_name)
 					execve(cmd->cmd, cmd->args, NULL);
 				else
 					waitpid(-1, &status, 0);
+				if (WIFEXITED(status))
+					term->last_exit = status / 256;
+				else
+					term->last_exit = status;
 				return (1);
 			}
-			else
-				return (2);
 		}
 		entry = readdir(stream);
 	}
 	return (0);
 }
 
-int	find_script(t_command *cmd)
+int	find_script(t_command *cmd, t_term *term)
 {
 	char	**path;
 	DIR		*stream;
@@ -80,13 +73,8 @@ int	find_script(t_command *cmd)
 		// Lasciare o no questo avviso?
 		if (stream == NULL)
 			die("Error opening directory");
-		is_exec = search_in_dir(stream, cmd, path[i]);
-		if (is_exec == 2)
-		{
-			printf("%s\n", strerror(errno));
-			return (2);
-		}
-		else if (is_exec == 1)
+		is_exec = search_in_dir(stream, cmd, path[i], term);
+		if (is_exec)
 		{
 			closedir(stream);
 			i = 0;

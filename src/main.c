@@ -51,14 +51,17 @@ int	main(void)
 		if (ft_strlen(input.line) > 0)
 		{
 			add_history(input.line);
-			if (input.to_expand)
+			while (input.to_expand)
+			{
 				try_expand(&input, term);
+				check(input.line, &input);
+			}
 			split_command(input.line, &cmd);
 			execute(&cmd, term);
 		}
 		free(input.line);
 	}
-	clear_history();
+	rl_clear_history();
 	free_env(term->env);
 	free_sh(term->var);
 	free(term->termi);
@@ -67,6 +70,10 @@ int	main(void)
 }
 
 /*
+
+// unset provoca segfault
+
+// check dell'errore quando si lancia echo "'$USER'"
 
 // aggiungi i segnali Ctrl-D Ctrl-C Ctrl-\ 
 
