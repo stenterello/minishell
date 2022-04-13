@@ -71,8 +71,6 @@ int	main(void)
 
 /*
 
-// check dell'errore quando si lancia echo "'$USER'"
-
 // aggiungi i segnali Ctrl-D Ctrl-C Ctrl-\ 
 
 // implementa i redirezionamenti
