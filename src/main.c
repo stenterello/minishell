@@ -9,7 +9,6 @@ void	init_sh_var(t_term *term)
 
 int	main(void)
 {
-	t_input		input;
 	t_command	cmd;
 	t_term		*term;
 
@@ -25,21 +24,21 @@ int	main(void)
 	while (1)
 	{
 		init_terminal(getenv("TERM"), term);
-		init_input_and_cmd(&input, &cmd);
+		init_input_and_cmd(&term->input, &cmd);
 		add_signals(term);
-		take_input(&input);
-		if (ft_strlen(input.line) > 0)
+		take_input(&term->input);
+		if (ft_strlen(term->input.line) > 0)
 		{
-			add_history(input.line);
-			while (input.to_expand)
+			add_history(term->input.line);
+			while (term->input.to_expand)
 			{
-				try_expand(&input, term);
-				check(input.line, &input);
+				try_expand(&term->input, term);
+				check(term->input.line, &term->input);
 			}
-			split_command(input.line, &cmd);
+			split_command(term->input.line, &cmd);
 			execute(&cmd, term);
 		}
-		free(input.line);
+		free(term->input.line);
 	}
 	rl_clear_history();
 	free_env(term->env);

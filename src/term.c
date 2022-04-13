@@ -13,9 +13,12 @@ void	flush(int sig, siginfo_t *info, void *context)
 	}
 	if (sig == SIGQUIT)
 	{
-		ft_putchar_fd('\n', 1);
-		ft_putendl_fd("exit", 1);
-		exit(0);
+		// if (ft_strlen(g_term->input.line) > 0)
+		// {
+		// 	ft_putchar_fd('\n', 1);
+		// 	ft_putendl_fd("exit", 1);
+		// 	exit(0);
+		// }
 	}
 }
 

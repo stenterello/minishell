@@ -40,6 +40,7 @@ void	take_input(t_input *input)
 void	take_elem(t_env_var *elem, int *ind)
 {
 	int			i;
+	extern char	**environ;
 
 	i = 0;
 	while (environ[*ind][i] != '=')
@@ -64,6 +65,7 @@ void	take_environ(t_term *term)
 	int			i;
 	t_env_var	*new;
 	t_env_var	*prev;
+	extern char	**environ;
 
 	i = 0;
 	term->env = malloc(sizeof(t_env_var));

@@ -54,6 +54,7 @@ typedef struct	s_term
 	struct termios		*termi;
 	int					last_exit;
 	struct sigaction	acts;
+	t_input				input;
 }				t_term;
 
 typedef struct	s_command
@@ -66,7 +67,7 @@ typedef struct	s_command
 	int		stderr;
 }				t_command;
 
-extern char **environ;
+//extern char	**environ;
 
 void	die(char *msg);
 void	try_expand(t_input *input, t_term *term);
