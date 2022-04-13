@@ -1,11 +1,11 @@
 #include "minishell.h"
 
-void	insert_into_vars(char *key, char *value, t_term *term)
+void	insert_into_vars(char *key, char *value)
 {
 	t_sh_var	*tmp;
 	t_sh_var	*new;
 
-	tmp = term->var;
+	tmp = g_term.var;
 	while (tmp->next)
 		tmp = tmp->next;
 	if (tmp->key)
@@ -28,20 +28,20 @@ void	insert_into_vars(char *key, char *value, t_term *term)
 	new->next = NULL;
 }
 
-int	change_exist_var(char *key, char *value, t_term *term)
+int	change_exist_var(char *key, char *value)
 {
 	t_sh_var	*tmp;
 
-	if (!term->var)
+	if (!g_term.var)
 	{
-		term->var = malloc(sizeof(t_sh_var));
-		if (!term->var)
+		g_term.var = malloc(sizeof(t_sh_var));
+		if (!g_term.var)
 			die("Malloc error");
-		tmp = term->var;
+		tmp = g_term.var;
 		tmp->key = NULL;
 	}
 	else
-		tmp = term->var;
+		tmp = g_term.var;
 	while (tmp && tmp->key)
 	{
 		if (!ft_strncmp(tmp->key, key, ft_strlen(key)))
@@ -58,20 +58,20 @@ int	change_exist_var(char *key, char *value, t_term *term)
 	return (0);
 }
 
-int	change_exist_env(char *key, char *value, t_term *term)
+int	change_exist_env(char *key, char *value)
 {
 	t_env_var	*tmp;
 
-	if (!term->env)
+	if (!g_term.env)
 	{
-		term->env = malloc(sizeof(t_env_var));
-		if (!term->env)
+		g_term.env = malloc(sizeof(t_env_var));
+		if (!g_term.env)
 			die("Malloc error");
-		tmp = term->env;
+		tmp = g_term.env;
 		tmp->key = NULL;
 	}
 	else
-		tmp = term->env;
+		tmp = g_term.env;
 	while (tmp && tmp->key)
 	{
 		if (!ft_strncmp(tmp->key, key, ft_strlen(key)))
@@ -101,7 +101,7 @@ int	quoted(char *line)
 	return (0);
 }
 
-void	set_sh_var(char **args, t_term *term)
+void	set_sh_var(char **args)
 {
 	int		i;
 	int		j;
@@ -130,10 +130,10 @@ void	set_sh_var(char **args, t_term *term)
 			ft_strlcpy(value, &args[k][j + 2], i + 1);
 		else
 			ft_strlcpy(value, &args[k][j + 1], i + 1);
-		if (!change_exist_env(key, value, term))
+		if (!change_exist_env(key, value))
 		{
-			if (!change_exist_var(key, value, term))
-				insert_into_vars(key, value, term);
+			if (!change_exist_var(key, value))
+				insert_into_vars(key, value);
 		}
 		free(key);
 		free(value);

@@ -43,6 +43,12 @@ void	take_elem(t_env_var *elem, int *ind)
 	extern char	**environ;
 
 	i = 0;
+	if (!elem)
+	{
+		elem = malloc(sizeof(t_env_var));
+		if (!elem)
+			die("Malloc error");
+	}
 	while (environ[*ind][i] != '=')
 		i++;
 	elem->key = malloc(sizeof(char) * (i + 1));
@@ -60,7 +66,7 @@ void	take_elem(t_env_var *elem, int *ind)
 	*ind += 1;
 }
 
-void	take_environ(t_term *term)
+void	take_environ(void)
 {
 	int			i;
 	t_env_var	*new;
@@ -68,11 +74,8 @@ void	take_environ(t_term *term)
 	extern char	**environ;
 
 	i = 0;
-	term->env = malloc(sizeof(t_env_var));
-	if (!term->env)
-		die("Malloc error");
-	take_elem(term->env, &i);
-	prev = term->env;
+	take_elem(g_term.env, &i);
+	prev = g_term.env;
 	while (environ[i])
 	{
 		new = malloc(sizeof(t_env_var));

@@ -30,7 +30,7 @@ int	value_len(char *line)
 	return (i - j);
 }
 
-void	export(t_command *cmd, t_term *term)
+void	export(t_command *cmd)
 {
 	int			len;
 	int			i;
@@ -63,9 +63,9 @@ void	export(t_command *cmd, t_term *term)
 		die("Malloc error");
 	ft_strlcpy(new->value, &cmd->args[1][i + 1], len + 1);
 	new->next = NULL;
-	tmp = term->env;
+	tmp = g_term.env;
 	while (tmp->next)
 		tmp = tmp->next;
 	tmp->next = new;
-	term->last_exit = 0;
+	g_term.last_exit = 0;
 }

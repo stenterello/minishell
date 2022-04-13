@@ -16,7 +16,7 @@ void	delete_sh_var(t_sh_var *tmp, int *flag)
 	*flag = 1;
 }
 
-void	search_and_delete(char *search, t_term *term)
+void	search_and_delete(char *search)
 {
 	t_env_var	*tmp;
 	t_env_var	*tmp2;
@@ -25,10 +25,10 @@ void	search_and_delete(char *search, t_term *term)
 	int			flag;
 
 	flag = 0;
-	tmp = term->env;
+	tmp = g_term.env;
 	if (!ft_strncmp(tmp->key, search, ft_strlen(search)))
 	{
-		term->env = tmp->next;
+		g_term.env = tmp->next;
 		delete_env_var(tmp, &flag);
 	}
 	while (tmp && !flag && tmp->next)
@@ -42,12 +42,12 @@ void	search_and_delete(char *search, t_term *term)
 		}
 		tmp = tmp->next;
 	}
-	if (!flag && term->var->key)
+	if (!flag && g_term.var->key)
 	{
-		tmp3 = term->var;
+		tmp3 = g_term.var;
 		if (!ft_strncmp(tmp3->key, search, ft_strlen(search)))
 		{
-			term->var = tmp3->next;
+			g_term.var = tmp3->next;
 			delete_sh_var(tmp3, &flag);
 		}
 		while (tmp3->next && !flag)
@@ -64,7 +64,7 @@ void	search_and_delete(char *search, t_term *term)
 	}
 }
 
-void	unset(t_command *cmd, t_term *term)
+void	unset(t_command *cmd)
 {
 	int		i;
 	char	*search;
@@ -76,7 +76,7 @@ void	unset(t_command *cmd, t_term *term)
 	if (!search)
 		die("Malloc error");
 	ft_strlcpy(search, cmd->args[1], i + 1);
-	search_and_delete(search, term);
+	search_and_delete(search);
 	free(search);
-	term->last_exit = 0;
+	g_term.last_exit = 0;
 }

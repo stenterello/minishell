@@ -109,26 +109,26 @@ int	is_open(char *typed, int limit)
 }
 
 
-int	builtin(t_command *cmd, t_term *term)
+int	builtin(t_command *cmd)
 {
 	char	*ret;
 
 	if (!ft_strncmp(cmd->cmd, "pwd\0", 4))
 	{
-		ret = pwd(term);
+		ret = pwd();
 		ft_putendl_fd(ret, 1);
 		free(ret);
 	}
 	else if (!ft_strncmp(cmd->cmd, "cd\0", 3))
-		cd(cmd, term);
+		cd(cmd);
 	else if (!ft_strncmp(cmd->cmd, "echo\0", 5))
-		echo(cmd, term);
+		echo(cmd);
 	else if (!ft_strncmp(cmd->cmd, "env\0", 4))
-		env(term);
+		env();
 	else if (!ft_strncmp(cmd->cmd, "export\0", 7))
-		export(cmd, term);
+		export(cmd);
 	else if (!ft_strncmp(cmd->cmd, "unset\0", 6))
-		unset(cmd, term);
+		unset(cmd);
 	else
 		return (0);
 	return (1);

@@ -16,12 +16,12 @@ int	var_name_len(char *variable)
 	return (i);
 }
 
-char	*search_env_vars(char *var_name, t_term *term)
+char	*search_env_vars(char *var_name)
 {
 	t_env_var	*tmp;
 	char		*ret;
 
-	tmp = term->env;
+	tmp = g_term.env;
 	while (tmp)
 	{
 		if (!ft_strncmp(tmp->key, var_name, ft_strlen(var_name)))
@@ -37,12 +37,12 @@ char	*search_env_vars(char *var_name, t_term *term)
 	return (NULL);
 }
 
-char	*search_sh_vars(char *var_name, t_term *term)
+char	*search_sh_vars(char *var_name)
 {
 	t_sh_var	*tmp;
 	char		*ret;
 
-	tmp = term->var;
+	tmp = g_term.var;
 	while (tmp && tmp->key)
 	{
 		if (!ft_strncmp(tmp->key, var_name, ft_strlen(var_name)))
@@ -58,7 +58,7 @@ char	*search_sh_vars(char *var_name, t_term *term)
 	return (NULL);
 }
 
-void	take_variable(char *variable, t_input *input, int init_len, t_term *term)
+void	take_variable(char *variable, t_input *input, int init_len)
 {
 	int		i;
 	char	*var_name;
@@ -75,11 +75,11 @@ void	take_variable(char *variable, t_input *input, int init_len, t_term *term)
 	}
 	var_name[i] = '\0';
 	if (!ft_strncmp(var_name, "?", 1))
-		input->expanded = ft_itoa(term->last_exit);
+		input->expanded = ft_itoa(g_term.last_exit);
 	else
-		input->expanded = search_env_vars(var_name, term);
+		input->expanded = search_env_vars(var_name);
 	if (input->expanded == NULL)
-		input->expanded = search_sh_vars(var_name, term);
+		input->expanded = search_sh_vars(var_name);
 	if (input->expanded == NULL)
 		input->expanded = ft_calloc(1, sizeof(char));
 	free(var_name);
@@ -123,7 +123,7 @@ int	dollar_pos(char *line)
 	return (i);
 }
 
-void	try_expand(t_input *input, t_term *term)
+void	try_expand(t_input *input)
 {
 	int		i;
 	int		s_quot;
@@ -152,11 +152,11 @@ void	try_expand(t_input *input, t_term *term)
 				{
 					i = dollar_pos(input->line) + 1;
 					var = clean_text(&input->line[i]);
-					take_variable(var, input, i - 1, term);
+					take_variable(var, input, i - 1);
 					free(var);
 				}
 				else
-					take_variable(&input->line[i], input, i - 1, term);
+					take_variable(&input->line[i], input, i - 1);
 			}
 			return ;
 		}

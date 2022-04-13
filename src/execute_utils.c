@@ -14,14 +14,14 @@ char	*get_full_path(char *dir_name, char *name)
 	return (ret);
 }
 
-void	cmd_not_found(t_command *cmd, t_term *term)
+void	cmd_not_found(t_command *cmd)
 {
 	ft_putstr_fd(cmd->cmd, cmd->stderr);
 	ft_putendl_fd(": command not found", cmd->stderr);
-	term->last_exit = 127;
+	g_term.last_exit = 127;
 }
 
-int	search_in_dir(DIR *stream, t_command *cmd, char *dir_name, t_term *term)
+int	search_in_dir(DIR *stream, t_command *cmd, char *dir_name)
 {
 	struct dirent	*entry;
 	pid_t			child;
@@ -43,9 +43,9 @@ int	search_in_dir(DIR *stream, t_command *cmd, char *dir_name, t_term *term)
 				else
 					waitpid(-1, &status, 0);
 				if (WIFEXITED(status))
-					term->last_exit = status / 256;
+					g_term.last_exit = status / 256;
 				else
-					term->last_exit = status;
+					g_term.last_exit = status;
 				return (1);
 			}
 		}
@@ -54,14 +54,14 @@ int	search_in_dir(DIR *stream, t_command *cmd, char *dir_name, t_term *term)
 	return (0);
 }
 
-char	*ft_getenv(char *line, t_term *term)
+char	*ft_getenv(char *line)
 {
 	t_env_var	*tmp;
 	t_sh_var	*tmp2;
 
-	if (term->env)
+	if (g_term.env)
 	{
-		tmp = term->env;
+		tmp = g_term.env;
 		while (tmp)
 		{
 			if (!ft_strncmp(tmp->key, line, ft_strlen(line) + 1))
@@ -69,9 +69,9 @@ char	*ft_getenv(char *line, t_term *term)
 			tmp = tmp->next;
 		}
 	}
-	if (term->var && term->var->key)
+	if (g_term.var && g_term.var->key)
 	{
-		tmp2 = term->var;
+		tmp2 = g_term.var;
 		while (tmp2)
 		{
 			if (!ft_strncmp(tmp2->key, line, ft_strlen(line) + 1))
@@ -82,14 +82,14 @@ char	*ft_getenv(char *line, t_term *term)
 	return (NULL);
 }
 
-int	find_script(t_command *cmd, t_term *term)
+int	find_script(t_command *cmd)
 {
 	char	**path;
 	DIR		*stream;
 	int		is_exec;
 	int		i;
 
-	path = ft_split(ft_getenv("PATH\0", term), ':');
+	path = ft_split(ft_getenv("PATH\0"), ':');
 	i = 0;
 	if (path)
 	{
@@ -103,7 +103,7 @@ int	find_script(t_command *cmd, t_term *term)
 			// Lasciare o no questo avviso?
 			if (stream == NULL)
 				die("Error opening directory");
-			is_exec = search_in_dir(stream, cmd, path[i], term);
+			is_exec = search_in_dir(stream, cmd, path[i]);
 			if (is_exec)
 			{
 				closedir(stream);

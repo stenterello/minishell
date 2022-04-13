@@ -1,50 +1,45 @@
 #include "minishell.h"
 
-void	init_sh_var(t_term *term)
+void	init_sh_var()
 {
-	term->var = malloc(sizeof(t_sh_var));
-	if (!term->var)
+	g_term.var = malloc(sizeof(t_sh_var));
+	if (!g_term.var)
+		die("Malloc error");
+	g_term.env = malloc(sizeof(t_env_var));
+	if (!g_term.env)
 		die("Malloc error");
 }
 
 int	main(void)
 {
 	t_command	cmd;
-	t_term		*term;
 
-	term = NULL;
-	term = malloc(sizeof(t_term));
-	if (term == NULL)
-		die("Malloc error");
-	term->termi = malloc(sizeof(struct termios));
-	if (!term->termi)
-		die("Malloc error");
-	take_environ(term);
-	init_sh_var(term);
+	init_sh_var();
+	take_environ();
+	
 	while (1)
 	{
-		init_terminal(getenv("TERM"), term);
-		init_input_and_cmd(&term->input, &cmd);
-		add_signals(term);
-		take_input(&term->input);
-		if (ft_strlen(term->input.line) > 0)
+		init_terminal(getenv("g_TERM"));
+		init_input_and_cmd(&g_term.input, &cmd);
+		add_signals();
+		take_input(&g_term.input);
+		if (ft_strlen(g_term.input.line) > 0)
 		{
-			add_history(term->input.line);
-			while (term->input.to_expand)
+			add_history(g_term.input.line);
+			while (g_term.input.to_expand)
 			{
-				try_expand(&term->input, term);
-				check(term->input.line, &term->input);
+				try_expand(&g_term.input);
+				check(g_term.input.line, &g_term.input);
 			}
-			split_command(term->input.line, &cmd);
-			execute(&cmd, term);
+			split_command(g_term.input.line, &cmd);
+			execute(&cmd);
 		}
-		free(term->input.line);
+		free(g_term.input.line);
 	}
 	rl_clear_history();
-	free_env(term->env);
-	free_sh(term->var);
-	free(term->termi);
-	free(term);
+	free_env(g_term.env);
+	free_sh(g_term.var);
+	free(g_term.termi);
 	return (0);
 }
 

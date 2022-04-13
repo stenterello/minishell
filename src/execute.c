@@ -1,10 +1,10 @@
 #include "minishell.h"
 
-void	print_error(t_command *cmd, t_term *term)
+void	print_error(t_command *cmd)
 {
 	ft_putstr_fd(cmd->cmd, cmd->stderr);
 	strerror(errno);
-	term->last_exit = errno;
+	g_term.last_exit = errno;
 }
 
 void	rewrite_args(t_command *cmd)
@@ -39,7 +39,7 @@ void	rewrite_args(t_command *cmd)
 	}
 }
 
-void	execute(t_command *cmd, t_term *term)
+void	execute(t_command *cmd)
 {
 	int	i;
 	int	ret;
@@ -53,12 +53,12 @@ void	execute(t_command *cmd, t_term *term)
 			if (!is_var_def(cmd->args[i]))
 			{
 				rewrite_args(cmd);
-				execute(cmd, term);
+				execute(cmd);
 				return ;
 			}
 			i++;
 		}
-		set_sh_var(cmd->args, term);
+		set_sh_var(cmd->args);
 		i = 0;
 		while (cmd->args[i])
 			free(cmd->args[i++]);
@@ -77,13 +77,13 @@ void	execute(t_command *cmd, t_term *term)
 		free(cmd->cmd);
 		return ;
 	}	
-	if (!builtin(cmd, term))
+	if (!builtin(cmd))
 	{
 		// Se non c'è indirizzo del file, cerca nel PATH
 		if (ft_strchr(cmd->cmd, '/') == NULL)
 		{
-			if (find_script(cmd, term) == -1)
-				cmd_not_found(cmd, term);
+			if (find_script(cmd) == -1)
+				cmd_not_found(cmd);
 		}
 		else
 		{
@@ -96,9 +96,9 @@ void	execute(t_command *cmd, t_term *term)
 			else
 				waitpid(-1, &ret, 0);
 			if (WIFEXITED(ret))
-				term->last_exit = ret / 256;
+				g_term.last_exit = ret / 256;
 			else
-				term->last_exit = ret;
+				g_term.last_exit = ret;
 		}
 	}
 	while (cmd->args[i])

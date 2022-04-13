@@ -1,6 +1,6 @@
 #include "../minishell.h"
 
-char	*pwd(t_term *term)
+char	*pwd(void)
 {
 	char	*path;
 	int		i;
@@ -14,6 +14,6 @@ char	*pwd(t_term *term)
 		i++;
 		path = getcwd(path, i);
 	}
-	term->last_exit = 0;
+	g_term.last_exit = 0;
 	return (path);
 }

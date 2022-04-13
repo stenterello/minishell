@@ -1,10 +1,10 @@
 #include "../minishell.h"
 
-void	env(t_term *term)
+void	env(void)
 {
 	t_env_var	*tmp;
 
-	tmp = term->env;
+	tmp = g_term.env;
 	while (tmp)
 	{
 		ft_putstr_fd(tmp->key, 1);
@@ -12,5 +12,5 @@ void	env(t_term *term)
 		ft_putendl_fd(tmp->value, 1);
 		tmp = tmp->next;
 	}
-	term->last_exit = 0;
+	g_term.last_exit = 0;
 }
