@@ -94,7 +94,7 @@ void	execute(t_command *cmd)
 			if (child == 0)
 				execve(cmd->cmd, cmd->args, NULL);
 			else
-				waitpid(-1, &ret, 0);
+				waitpid(0, &ret, 0);
 			if (WIFEXITED(ret))
 				g_term.last_exit = ret / 256;
 			else

@@ -11,6 +11,8 @@ int	var_name_len(char *variable)
 	int	i;
 
 	i = 0;
+	if (!ft_strncmp(variable, "?", 1) && !ft_isalnum(variable[i + 1]))
+		return (1);
 	while (variable[i] && ft_isalnum(variable[i]))
 		i++;
 	return (i);
@@ -68,7 +70,7 @@ void	take_variable(char *variable, t_input *input, int init_len)
 	var_name = malloc(sizeof(char) * (var_name_len(variable) + 1));
 	if (!var_name)
 		die("Malloc error");
-	while (variable[i] && ft_isalnum(variable[i]))
+	while (variable[i] && (ft_isalnum(variable[i]) || variable[i] == '?'))
 	{
 		var_name[i] = variable[i];
 		i++;
@@ -82,14 +84,24 @@ void	take_variable(char *variable, t_input *input, int init_len)
 		input->expanded = search_sh_vars(var_name);
 	if (input->expanded == NULL)
 		input->expanded = ft_calloc(1, sizeof(char));
-	free(var_name);
 	ret = malloc(sizeof(char) * (ft_strlen(input->line) + 1 - i + ft_strlen(input->expanded)));
 	if (!ret)
 		die("Malloc error");
 	ft_strlcpy(ret, input->line, init_len + 1);
 	ft_strlcpy(&ret[init_len], input->expanded, ft_strlen(input->expanded) + 1);
-	if (input->line[var_name_len(variable) + 1 + init_len])
-		ft_strlcpy(&ret[init_len + ft_strlen(input->expanded)], &input->line[init_len + var_name_len(variable) + 1], ft_strlen(input->line) - (init_len + var_name_len(variable)) + 1);
+	if ((int)ft_strlen(input->expanded) > var_name_len(variable))
+	{
+		if (input->line[var_name_len(variable) + 1 + init_len])
+			ft_strlcpy(&ret[init_len + ft_strlen(input->expanded)], &input->line[init_len + var_name_len(variable) + 1], ft_strlen(input->line) - (init_len + var_name_len(variable)) + 1);
+	}
+	else
+	{
+		if (ft_strncmp(var_name, &input->line[var_name_len(variable) + 1 + init_len], 2))
+		{
+			ft_strlcpy(&ret[init_len + ft_strlen(input->expanded)], &input->line[init_len + var_name_len(variable) + 1], ft_strlen(input->line) - (init_len + var_name_len(variable)) + 1);
+		}
+	}
+	free(var_name);
 	free(input->line);
 	input->line = ret;
 	free(input->expanded);

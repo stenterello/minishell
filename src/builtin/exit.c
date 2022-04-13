@@ -31,6 +31,7 @@ void	exit_cmd(t_command *cmd)
 		ft_putendl_fd("exit: numeric argument required", cmd->stderr);
 		return ;
 	}
+	ft_putendl_fd("exit", cmd->stdout);
 	if (i == 1)
 		exit(0);
 	else

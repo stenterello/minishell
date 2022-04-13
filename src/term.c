@@ -51,6 +51,9 @@ void	init_terminal(char *line)
 	int	ret;
 
 	term_data(line);
+	g_term.termi = malloc(sizeof(struct termios));
+	if (!g_term.termi)
+		die("Malloc error");
 	ret = tcgetattr(STDIN_FILENO, g_term.termi);
 	if (ret < 0)
 		die("tcgetattr error");
