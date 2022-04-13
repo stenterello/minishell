@@ -71,8 +71,6 @@ int	main(void)
 
 /*
 
-// unset provoca segfault
-
 // check dell'errore quando si lancia echo "'$USER'"
 
 // aggiungi i segnali Ctrl-D Ctrl-C Ctrl-\ 
