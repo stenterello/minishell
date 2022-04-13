@@ -7,7 +7,7 @@ void	cd(t_command *cmd, t_term *term)
 
 	if (!cmd->args[1])
 	{
-		ret = chdir(getenv("HOME"));
+		ret = chdir(ft_getenv("HOME", term));
 		if (ret == -1)
 		{
 			printf("%s\n", strerror(errno));

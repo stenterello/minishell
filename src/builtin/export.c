@@ -18,8 +18,12 @@ int	value_len(char *line)
 	int	j;
 
 	i = key_len(line) + 1;
+	if (line[i] == ' ')
+		return (0);
+	while (line[i] == '\"' || line[i] == '\'')
+		i++;
 	j = i;
-	while (line[i])
+	while (line[i] && line[i] != '"' && line[i] != '\'')
 		i++;
 	if (i - j == 0)
 		return (-1);

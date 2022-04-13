@@ -68,6 +68,7 @@ void	die(char *msg);
 void	try_expand(t_input *input, t_term *term);
 void	execute(t_command *cmd, t_term *term);
 char	*get_path(char *line);
+char	*ft_getenv(char *line, t_term *term);
 char	*pwd(t_term *term);
 void	echo(t_command *cmd, t_term *term);
 void	cd(t_command *cmd, t_term *term);
@@ -89,6 +90,7 @@ int		key_len(char *line);
 int		value_len(char *line);
 int		is_open(char *typed, int limit);
 int		is_var_def(char *line);
+int		set_env_var(char **args, t_term *term);
 void	set_sh_var(char **args, t_term *term);
 void	check(char *typed, t_input *input);
 

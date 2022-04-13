@@ -31,7 +31,7 @@ void	search_and_delete(char *search, t_term *term)
 		term->env = tmp->next;
 		delete_env_var(tmp, &flag);
 	}
-	while (tmp->next && !flag)
+	while (tmp && !flag && tmp->next)
 	{
 		tmp2 = tmp->next;
 		if (!ft_strncmp(tmp2->key, search, ft_strlen(search)))
@@ -42,7 +42,7 @@ void	search_and_delete(char *search, t_term *term)
 		}
 		tmp = tmp->next;
 	}
-	if (!flag && term->var)
+	if (!flag && term->var->key)
 	{
 		tmp3 = term->var;
 		if (!ft_strncmp(tmp3->key, search, ft_strlen(search)))
@@ -69,13 +69,13 @@ void	unset(t_command *cmd, t_term *term)
 	int		i;
 	char	*search;
 
-	i = ft_strlen(cmd->args[0]);
+	i = ft_strlen(cmd->args[1]);
 	if (i == 0)
 		return ;
 	search = malloc(sizeof(char) * (i + 1));
 	if (!search)
 		die("Malloc error");
-	ft_strlcpy(search, cmd->args[0], i + 1);
+	ft_strlcpy(search, cmd->args[1], i + 1);
 	search_and_delete(search, term);
 	free(search);
 	term->last_exit = 0;

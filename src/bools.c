@@ -1,5 +1,17 @@
 #include "minishell.h"
 
+// int	is_unset_or_export(char *line)
+// {
+// 	int	i;
+
+// 	i = 0;
+// 	while (!ft_isalpha(line[i]))
+// 		i++;
+// 	if (!ft_strncmp("unset ", &line[i], 6) || !ft_strncmp("export ", &line[i], 7))
+// 		return (1);
+// 	return (0);
+// }
+
 int	is_var_def(char *line)
 {
 	int	i;
@@ -9,6 +21,11 @@ int	is_var_def(char *line)
 	i = 0;
 	s_quot = 0;
 	d_quot = 0;
+	// if (is_unset_or_export(line))
+	// {
+	// 	while (line[i] != ' ')
+	// 		i++;
+	// }
 	if (line[0] == '=')
 		return (0);
 	while (line[i])

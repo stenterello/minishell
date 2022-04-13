@@ -58,6 +58,49 @@ int	change_exist_var(char *key, char *value, t_term *term)
 	return (0);
 }
 
+int	change_exist_env(char *key, char *value, t_term *term)
+{
+	t_env_var	*tmp;
+
+	if (!term->env)
+	{
+		term->env = malloc(sizeof(t_env_var));
+		if (!term->env)
+			die("Malloc error");
+		tmp = term->env;
+		tmp->key = NULL;
+	}
+	else
+		tmp = term->env;
+	while (tmp && tmp->key)
+	{
+		if (!ft_strncmp(tmp->key, key, ft_strlen(key)))
+		{
+			free(tmp->value);
+			tmp->value = malloc(sizeof(char) * (ft_strlen(value) + 1));
+			if (!tmp->value)
+				die("Malloc error");
+			ft_strlcpy(tmp->value, value, ft_strlen(value) + 1);
+			return (1);
+		}
+		tmp = tmp->next;
+	}
+	return (0);
+}
+
+int	quoted(char *line)
+{
+	int	i;
+
+	i = 0;
+	while (line[i] != '=')
+		i++;
+	i++;
+	if (line[i] == '\'' || line[i] == '"')
+		return (1);
+	return (0);
+}
+
 void	set_sh_var(char **args, t_term *term)
 {
 	int		i;
@@ -79,11 +122,19 @@ void	set_sh_var(char **args, t_term *term)
 		j = i;
 		i = value_len(args[k]);
 		value = malloc(sizeof(char) * (i + 1));
+		while (args[k][j] == '\"' || args[k][j] == '\'')
+			j++;
 		if (!value)
 			die("Malloc error");
-		ft_strlcpy(value, &args[k][j + 1], i + 1);
-		if (!change_exist_var(key, value, term))
-			insert_into_vars(key, value, term);
+		if (quoted(args[k]))
+			ft_strlcpy(value, &args[k][j + 2], i + 1);
+		else
+			ft_strlcpy(value, &args[k][j + 1], i + 1);
+		if (!change_exist_env(key, value, term))
+		{
+			if (!change_exist_var(key, value, term))
+				insert_into_vars(key, value, term);
+		}
 		free(key);
 		free(value);
 		k++;

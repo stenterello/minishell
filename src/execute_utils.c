@@ -54,6 +54,34 @@ int	search_in_dir(DIR *stream, t_command *cmd, char *dir_name, t_term *term)
 	return (0);
 }
 
+char	*ft_getenv(char *line, t_term *term)
+{
+	t_env_var	*tmp;
+	t_sh_var	*tmp2;
+
+	if (term->env)
+	{
+		tmp = term->env;
+		while (tmp)
+		{
+			if (!ft_strncmp(tmp->key, line, ft_strlen(line) + 1))
+				return (tmp->value);
+			tmp = tmp->next;
+		}
+	}
+	if (term->var && term->var->key)
+	{
+		tmp2 = term->var;
+		while (tmp2)
+		{
+			if (!ft_strncmp(tmp2->key, line, ft_strlen(line) + 1))
+				return (tmp2->value);
+			tmp2 = tmp2->next;
+		}
+	}
+	return (NULL);
+}
+
 int	find_script(t_command *cmd, t_term *term)
 {
 	char	**path;
@@ -61,34 +89,37 @@ int	find_script(t_command *cmd, t_term *term)
 	int		is_exec;
 	int		i;
 
-	path = ft_split(getenv("PATH"), ':');
+	path = ft_split(ft_getenv("PATH\0", term), ':');
 	i = 0;
-	while (path[i])
+	if (path)
 	{
-		if (ft_strlen(path[i]) > 255)
-			die("Path name too long");
-		stream = opendir(path[i]);
-		// Quando la shell cerca nelle cartelle del PATH
-		// non restituisce errore se la cartella non può essere letta
-		// Lasciare o no questo avviso?
-		if (stream == NULL)
-			die("Error opening directory");
-		is_exec = search_in_dir(stream, cmd, path[i], term);
-		if (is_exec)
+		while (path[i])
 		{
+			if (ft_strlen(path[i]) > 255)
+				die("Path name too long");
+			stream = opendir(path[i]);
+			// Quando la shell cerca nelle cartelle del PATH
+			// non restituisce errore se la cartella non può essere letta
+			// Lasciare o no questo avviso?
+			if (stream == NULL)
+				die("Error opening directory");
+			is_exec = search_in_dir(stream, cmd, path[i], term);
+			if (is_exec)
+			{
+				closedir(stream);
+				i = 0;
+				while (path[i])
+					free(path[i++]);
+				free(path);
+				return (0);
+			}
 			closedir(stream);
-			i = 0;
-			while (path[i])
-				free(path[i++]);
-			free(path);
-			return (0);
+			i++;
 		}
-		closedir(stream);
-		i++;
+		i = 0;
+		while (path[i])
+			free(path[i++]);
+		free(path);
 	}
-	i = 0;
-	while (path[i])
-		free(path[i++]);
-	free(path);
 	return (-1);
 }
