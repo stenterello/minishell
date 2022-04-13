@@ -1,6 +1,8 @@
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
+# define _XOPEN_SOURCE 700
+
 # include "../include/libft/libft.h"
 # include <stdio.h>
 # include <stdlib.h>
@@ -14,6 +16,7 @@
 # include <dirent.h>
 # include <fcntl.h>
 # include <sys/wait.h>
+# include <sys/types.h>
 # include <termios.h>
 # include <term.h>
 
@@ -46,10 +49,11 @@ typedef struct	s_sh_var
 
 typedef struct	s_term
 {
-	t_env_var		*env;
-	t_sh_var		*var;
-	struct termios	*termi;
-	int				last_exit;
+	t_env_var			*env;
+	t_sh_var			*var;
+	struct termios		*termi;
+	int					last_exit;
+	struct sigaction	acts;
 }				t_term;
 
 typedef struct	s_command
@@ -93,5 +97,6 @@ int		is_var_def(char *line);
 int		set_env_var(char **args, t_term *term);
 void	set_sh_var(char **args, t_term *term);
 void	check(char *typed, t_input *input);
+void	add_signals(t_term *term);
 
 #endif

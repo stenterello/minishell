@@ -1,5 +1,37 @@
 #include "minishell.h"
 
+void	flush(int sig, siginfo_t *info, void *context)
+{
+	(void)info;
+	(void)context;
+	if (sig == SIGINT)
+	{
+		rl_replace_line("", 0);
+		ft_putchar_fd('\n', 1);
+		rl_on_new_line();
+		rl_redisplay();
+	}
+	if (sig == SIGQUIT)
+	{
+		ft_putchar_fd('\n', 1);
+		ft_putendl_fd("exit", 1);
+		exit(0);
+	}
+}
+
+void	add_signals(t_term *term)
+{
+	int	sigs[3];
+
+	term->acts.sa_sigaction = &flush;
+	sigemptyset(&term->acts.sa_mask);
+	sigs[0] = sigaction(SIGINT, &term->acts, NULL);
+	sigs[2] = sigaction(SIGQUIT, &term->acts, NULL);
+
+	if (sigs[0] || sigs[2])
+		die("Signal error");
+}
+
 void	term_data(char *line)
 {
 	int	ret;
@@ -25,4 +57,5 @@ void	init_terminal(char *line, t_term *term)
 	ret = tcsetattr(STDIN_FILENO, TCSAFLUSH, term->termi);
 	if (ret < 0)
 		die("tcsetattr error");
+	add_signals(term);
 }

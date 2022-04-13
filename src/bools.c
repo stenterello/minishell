@@ -55,6 +55,11 @@ void	check(char *typed, t_input *input)
 	input->s_quot = 0;
 	input->d_quot = 0;
 	input->to_expand = 0;
+	if (!typed)
+	{
+		ft_putendl_fd("exit", 1);
+		exit(0);
+	}
 	while (typed[i])
 	{
 		if (typed[i] == '\'' && !input->s_quot && !input->d_quot)

@@ -1,25 +1,5 @@
 #include "minishell.h"
 
-// void	print_newline(int num)
-// {
-
-// }
-
-// void	add_signals(void)
-// {
-// 	struct sigaction	d;
-// 	struct sigaction	c;
-// 	struct sigaction	back;
-// 	int					*sigs;
-
-// 	d.sa_sigaction = &print_newline;
-// 	sigemptyset(&d.sa_mask);
-// 	sigs[0] = sigaction(SIGINT, &d, NULL);
-
-// 	if (sigs[0] || sigs[1] || sigs[2])
-// 		die("Signal error");
-// }
-
 void	init_sh_var(t_term *term)
 {
 	term->var = malloc(sizeof(t_sh_var));
@@ -42,11 +22,11 @@ int	main(void)
 		die("Malloc error");
 	take_environ(term);
 	init_sh_var(term);
-	//add_signals();
 	while (1)
 	{
 		init_terminal(getenv("TERM"), term);
 		init_input_and_cmd(&input, &cmd);
+		add_signals(term);
 		take_input(&input);
 		if (ft_strlen(input.line) > 0)
 		{
