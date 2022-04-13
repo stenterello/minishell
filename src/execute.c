@@ -39,6 +39,11 @@ void	rewrite_args(t_command *cmd)
 	}
 }
 
+void	child_signals(void)
+{
+	
+}
+
 void	execute(t_command *cmd)
 {
 	int	i;
@@ -92,7 +97,13 @@ void	execute(t_command *cmd)
 			if (child == -1)
 				die("Error while forking");
 			if (child == 0)
+			{
+				// cancella variabili di shell
+				// crea segnali per il processo figlio
+				// // creare una funzione born_child?
+				//child_signals();
 				execve(cmd->cmd, cmd->args, NULL);
+			}
 			else
 				waitpid(0, &ret, 0);
 			if (WIFEXITED(ret))
