@@ -16,8 +16,8 @@ char	*get_full_path(char *dir_name, char *name)
 
 void	cmd_not_found(t_command *cmd)
 {
-	ft_putstr_fd(cmd->cmd, cmd->stderr);
-	ft_putendl_fd(": command not found", cmd->stderr);
+	ft_putstr_fd(cmd->cmd, STDERR_FILENO);
+	ft_putendl_fd(": command not found", STDERR_FILENO);
 	g_term.last_exit = 127;
 }
 

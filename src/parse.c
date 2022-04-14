@@ -127,8 +127,8 @@ int	is_redir(char *line)
 				return (0);
 			else if (line[i - 1] == ' ' && !ft_strncmp(&line[i], "> ", 2))
 				return (1);
-			else if (line[i - 1] == ' ' && !ft_strncmp(&line[i], "<< ", 3))
-				return (2);
+			// else if (line[i - 1] == ' ' && !ft_strncmp(&line[i], "<< ", 3))
+			// 	return (2);
 			else if (line[i - 1] == ' ' && !ft_strncmp(&line[i], ">> ", 3))
 				return (3);
 		}
@@ -151,8 +151,6 @@ void	check_redirection(char *line, t_command *cmd)
 		define_output(line, cmd);
 		cmd->redir_stdout = 1;
 	}
-	// else if (is_redir(line) == 2)
-	// 	define_here_document();
 	else if (is_redir(line) == 3)
 	{
 		define_append_output(line, cmd);

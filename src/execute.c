@@ -2,7 +2,7 @@
 
 void	print_error(t_command *cmd)
 {
-	ft_putstr_fd(cmd->cmd, cmd->stderr);
+	ft_putstr_fd(cmd->cmd, STDERR_FILENO);
 	strerror(errno);
 	g_term.last_exit = errno;
 }

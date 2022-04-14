@@ -9,22 +9,72 @@ void	init_input_and_cmd(t_input *input, t_command *cmd)
 	cmd->cmd = NULL;
 	cmd->opt = NULL;
 	cmd->args = NULL;
-	cmd->stdin = STDIN_FILENO;
-	cmd->stdout = STDOUT_FILENO;
-	cmd->stderr = STDERR_FILENO;
 	cmd->next = NULL;
 	cmd->redir_stdin = 0;
 	cmd->redir_stdout = 0;
 	cmd->redir_stderr = 0;
 }
 
+int	delimiter_len(char *line)
+{
+	int	i;
+
+	i = 0;
+	while (ft_isalnum(line[i]))
+		i++;
+	return (i);
+}
+
+char	*take_delimiter(char *line)
+{
+	int		i;
+	char	*ret;
+
+	i = 0;
+	while (ft_strncmp(&line[i], " << ", 4))
+		i++;
+	i += 4;
+	while (!ft_isalnum(line[i]))
+		i++;
+	ret = malloc(sizeof(char) * (delimiter_len(&line[i]) + 1));
+	if (!ret)
+		die("Malloc error");
+	ft_strlcpy(ret, &line[i], delimiter_len(&line[i]) + 1);
+	return (ret);
+}
+
+int	to_continue(char *typed, char *delimiter)
+{
+	int	i;
+
+	i = ft_strlen(typed) - ft_strlen(delimiter);
+	if (!ft_strncmp(&typed[i], delimiter, ft_strlen(delimiter) + 1))
+		return (0);
+	return (1);
+}
+
 void	take_input(t_input *input)
 {
 	char	*typed;
 	char	*tmp;
+	char	*delimiter;
 
 	typed = readline("whisper_hole: ");
 	check(typed, input);
+	if (is_heredoc(typed))
+	{
+		delimiter = take_delimiter(typed);
+		tmp = readline("> ");
+		ft_strlcat(typed, tmp, ft_strlen(typed) + ft_strlen(tmp) + 2);
+		free(tmp);
+		while (to_continue(typed, delimiter))
+		{
+			tmp = readline("> ");
+			ft_strlcat(typed, tmp, ft_strlen(typed) + ft_strlen(tmp) + 2);
+			free(tmp);
+		}
+		free(delimiter);
+	}
 	while (input->is_open)
 	{
 		tmp = readline("> ");

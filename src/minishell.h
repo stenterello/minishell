@@ -62,9 +62,6 @@ typedef struct	s_command
 	char	*cmd;
 	char	*opt;
 	char	**args;
-	int		stdin;
-	int		stdout;
-	int		stderr;
 	void	*next;
 	int		redir_stdin;
 	int		redir_stdout;
@@ -112,5 +109,6 @@ void	define_output(char *line, t_command *cmd);
 void	define_append_output(char *line, t_command *cmd);
 void	restore_fd(t_command *cmd);
 int		is_redir(char *line);
+int		is_heredoc(char *line);
 
 #endif

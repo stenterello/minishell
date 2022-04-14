@@ -18,8 +18,8 @@ void	cd(t_command *cmd)
 	}
 	else if (cmd->args[2])
 	{
-		ft_putstr_fd(cmd->cmd, cmd->stderr);
-		ft_putendl_fd(": too many arguments", cmd->stderr);
+		ft_putstr_fd(cmd->cmd, STDERR_FILENO);
+		ft_putendl_fd(": too many arguments", STDERR_FILENO);
 		g_term.last_exit = 1;
 	}
 	else

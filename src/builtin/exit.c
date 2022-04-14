@@ -23,15 +23,15 @@ void	exit_cmd(t_command *cmd)
 		i++;
 	if (i > 2)
 	{
-		ft_putendl_fd("exit: too many arguments", cmd->stderr);
+		ft_putendl_fd("exit: too many arguments", STDERR_FILENO);
 		return ;
 	}
 	else if (i == 2 && !is_number(cmd->args[1]))
 	{
-		ft_putendl_fd("exit: numeric argument required", cmd->stderr);
+		ft_putendl_fd("exit: numeric argument required", STDERR_FILENO);
 		return ;
 	}
-	ft_putendl_fd("exit", cmd->stdout);
+	ft_putendl_fd("exit", STDOUT_FILENO);
 	if (i == 1)
 		exit(0);
 	else

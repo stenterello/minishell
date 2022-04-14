@@ -10,7 +10,7 @@ void	init_sh_var()
 		die("Malloc error");
 }
 
-int	is_here_document(char *line)
+int	is_heredoc(char *line)
 {
 	int	i;
 
@@ -39,7 +39,7 @@ int	main(void)
 		take_input(&g_term.input);
 		if (ft_strlen(g_term.input.line) > 0)
 		{
-			if (!is_here_document(g_term.input.line))
+			if (!is_heredoc(g_term.input.line))
 				add_history(g_term.input.line);
 			while (g_term.input.to_expand)
 			{
