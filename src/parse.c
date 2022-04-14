@@ -142,13 +142,22 @@ void	check_redirection(char *line, t_command *cmd)
 	if (is_redir(line) == -1)
 		return ;
 	else if (is_redir(line) == 0)
+	{
 		define_input(line, cmd);
+		cmd->redir_stdin = 1;
+	}
 	else if (is_redir(line) == 1)
+	{
 		define_output(line, cmd);
+		cmd->redir_stdout = 1;
+	}
 	// else if (is_redir(line) == 2)
 	// 	define_here_document();
-	// else if (is_redir(line) == 3)
-	// 	define_append_output();
+	else if (is_redir(line) == 3)
+	{
+		define_append_output(line, cmd);
+		cmd->redir_stdout = 1;
+	}
 }
 
 void	split_command(char *line, t_command *cmd)

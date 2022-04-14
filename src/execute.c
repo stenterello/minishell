@@ -89,7 +89,6 @@ void	execute(t_command *cmd)
 		{
 			if (find_script(cmd) == -1)
 				cmd_not_found(cmd);
-			close(cmd->stdin);
 		}
 		else
 		{
@@ -111,9 +110,9 @@ void	execute(t_command *cmd)
 				g_term.last_exit = ret / 256;
 			else
 				g_term.last_exit = ret;
-			close(cmd->stdin);
 		}
 	}
+	restore_fd(cmd);
 	while (cmd->args[i])
 		free(cmd->args[i++]);
 	free(cmd->args);

@@ -66,6 +66,13 @@ typedef struct	s_command
 	int		stdout;
 	int		stderr;
 	void	*next;
+	int		redir_stdin;
+	int		redir_stdout;
+	int		redir_stderr;
+	int		saved_in;
+	int		saved_out;
+	int		saved_err;
+	int		fd;
 }				t_command;
 
 t_term	g_term;
@@ -102,6 +109,8 @@ void	check(char *typed, t_input *input);
 void	add_signals(void);
 void	define_input(char *line, t_command *cmd);
 void	define_output(char *line, t_command *cmd);
+void	define_append_output(char *line, t_command *cmd);
+void	restore_fd(t_command *cmd);
 int		is_redir(char *line);
 
 #endif

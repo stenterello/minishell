@@ -11,7 +11,8 @@ SRC=main.c \
 	parse.c \
 	bools.c \
 	memory.c \
-	redirections.c
+	redirections.c \
+	redirections_utils.c
 SRCS=$(addprefix src/, $(SRC))
 OBJS=$(SRCS:.c=.o)
 BUILTIN=pwd.c \

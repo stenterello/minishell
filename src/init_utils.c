@@ -13,6 +13,9 @@ void	init_input_and_cmd(t_input *input, t_command *cmd)
 	cmd->stdout = STDOUT_FILENO;
 	cmd->stderr = STDERR_FILENO;
 	cmd->next = NULL;
+	cmd->redir_stdin = 0;
+	cmd->redir_stdout = 0;
+	cmd->redir_stderr = 0;
 }
 
 void	take_input(t_input *input)
