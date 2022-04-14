@@ -53,6 +53,36 @@ int	to_continue(char *typed, char *delimiter)
 	return (1);
 }
 
+void	clean_heredoc(char *line, char *bench)
+{
+	int	i;
+
+	i = 0;
+	while (ft_strncmp(&line[i], bench, ft_strlen(bench)))
+		i++;
+	//line[i] = '\"';
+	line[i] = '\0';
+}
+
+char	*to_string(char *line)
+{
+	int		i;
+	char	*ret;
+
+	ret = malloc(sizeof(char) * (ft_strlen(line) + 3));
+	if (!ret)
+		die("Malloc error");
+	i = 0;
+	while (line[i] != ' ')
+		i++;
+	i++;
+	ft_strlcpy(ret, line, i + 1);
+	ft_strlcat(ret, "\"", ft_strlen(ret) + 2);
+	ft_strlcat(ret, &line[i + 1], ft_strlen(&line[i]) + ft_strlen(ret) + 1);
+	ft_strlcat(ret, "\"", ft_strlen(ret) + 2);
+	return (ret);
+}
+
 void	take_input(t_input *input)
 {
 	char	*typed;
@@ -64,6 +94,7 @@ void	take_input(t_input *input)
 	if (is_heredoc(typed))
 	{
 		delimiter = take_delimiter(typed);
+		clean_heredoc(typed, "<< ");
 		tmp = readline("> ");
 		ft_strlcat(typed, tmp, ft_strlen(typed) + ft_strlen(tmp) + 2);
 		free(tmp);
@@ -73,6 +104,11 @@ void	take_input(t_input *input)
 			ft_strlcat(typed, tmp, ft_strlen(typed) + ft_strlen(tmp) + 2);
 			free(tmp);
 		}
+		clean_heredoc(typed, delimiter);
+		tmp = to_string(typed);
+		free(typed);
+		typed = tmp;
+		//ft_strlcat(typed, "\"", ft_strlen(typed) + 1 + 2);
 		free(delimiter);
 	}
 	while (input->is_open)
