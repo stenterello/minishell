@@ -79,7 +79,7 @@ int	count_args(char **tmp)
 	int	i;
 
 	i = 0;
-	while (tmp[i])
+	while (tmp[i] && ft_strncmp(tmp[i], "<\0", 2) && ft_strncmp(tmp[i], "<<\0", 3) && ft_strncmp(tmp[i], ">\0", 2) && ft_strncmp(tmp[i], ">>\0", 3))
 		i++;
 	return (i);
 }
@@ -94,7 +94,7 @@ void	fill_cmd_fields(char **tmp, t_command *cmd)
 	cmd->args = malloc(sizeof(char *) * (args_num + 1));
 	if (!cmd->args)
 		die("Malloc error");
-	while (tmp[i])
+	while (tmp[i] && ft_strncmp(tmp[i], "<\0", 2) && ft_strncmp(tmp[i], "<<\0", 3) && ft_strncmp(tmp[i], ">\0", 2) && ft_strncmp(tmp[i], ">>\0", 3))
 	{
 		if (i == 0)
 		{
@@ -114,10 +114,49 @@ void	fill_cmd_fields(char **tmp, t_command *cmd)
 	free(tmp);
 }
 
+int	is_redir(char *line)
+{
+	int	i;
+
+	i = 0;
+	while (line[i])
+	{
+		if ((line[i] == '<' || line[i] == '>') && i != 0)
+		{
+			if (line[i - 1] == ' ' && !ft_strncmp(&line[i], "< ", 2))
+				return (0);
+			else if (line[i - 1] == ' ' && !ft_strncmp(&line[i], "> ", 2))
+				return (1);
+			else if (line[i - 1] == ' ' && !ft_strncmp(&line[i], "<< ", 3))
+				return (2);
+			else if (line[i - 1] == ' ' && !ft_strncmp(&line[i], ">> ", 3))
+				return (3);
+		}
+		i++;
+	}
+	return (-1);
+}
+
+void	check_redirection(char *line, t_command *cmd)
+{
+	if (is_redir(line) == -1)
+		return ;
+	else if (is_redir(line) == 0)
+		define_input(line, cmd);
+	else if (is_redir(line) == 1)
+		define_output(line, cmd);
+	// else if (is_redir(line) == 2)
+	// 	define_here_document();
+	// else if (is_redir(line) == 3)
+	// 	define_append_output();
+}
+
 void	split_command(char *line, t_command *cmd)
 {
 	char	**tmp;
 
+	if (ft_strchr(line, '<') != NULL || ft_strchr(line, '>') != NULL)
+		check_redirection(line, cmd);
 	if (is_var_def(line))
 		split_var_decl(line, cmd);
 	else

@@ -1,0 +1,7 @@
+Makefile
+ciao
+include
+minishell
+minishell.dSYM
+src
+whisper_hole: 

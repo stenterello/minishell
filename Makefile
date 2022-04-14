@@ -10,7 +10,8 @@ SRC=main.c \
 	term.c \
 	parse.c \
 	bools.c \
-	memory.c
+	memory.c \
+	redirections.c
 SRCS=$(addprefix src/, $(SRC))
 OBJS=$(SRCS:.c=.o)
 BUILTIN=pwd.c \

@@ -10,6 +10,20 @@ void	init_sh_var()
 		die("Malloc error");
 }
 
+int	is_here_document(char *line)
+{
+	int	i;
+
+	i = 0;
+	while (line[i])
+	{
+		if (!ft_strncmp(&line[i], " << ", 4))
+			return (1);
+		i++;
+	}
+	return (0);
+}
+
 int	main(void)
 {
 	t_command	cmd;
@@ -25,7 +39,8 @@ int	main(void)
 		take_input(&g_term.input);
 		if (ft_strlen(g_term.input.line) > 0)
 		{
-			add_history(g_term.input.line);
+			if (!is_here_document(g_term.input.line))
+				add_history(g_term.input.line);
 			while (g_term.input.to_expand)
 			{
 				try_expand(&g_term.input);

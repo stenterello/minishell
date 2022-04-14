@@ -89,6 +89,7 @@ void	execute(t_command *cmd)
 		{
 			if (find_script(cmd) == -1)
 				cmd_not_found(cmd);
+			close(cmd->stdin);
 		}
 		else
 		{
@@ -105,11 +106,12 @@ void	execute(t_command *cmd)
 				execve(cmd->cmd, cmd->args, NULL);
 			}
 			else
-				waitpid(0, &ret, 0);
+				waitpid(child, &ret, 0);
 			if (WIFEXITED(ret))
 				g_term.last_exit = ret / 256;
 			else
 				g_term.last_exit = ret;
+			close(cmd->stdin);
 		}
 	}
 	while (cmd->args[i])

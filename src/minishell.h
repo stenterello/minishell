@@ -65,6 +65,7 @@ typedef struct	s_command
 	int		stdin;
 	int		stdout;
 	int		stderr;
+	void	*next;
 }				t_command;
 
 t_term	g_term;
@@ -99,5 +100,8 @@ int		set_env_var(char **args);
 void	set_sh_var(char **args);
 void	check(char *typed, t_input *input);
 void	add_signals(void);
+void	define_input(char *line, t_command *cmd);
+void	define_output(char *line, t_command *cmd);
+int		is_redir(char *line);
 
 #endif
