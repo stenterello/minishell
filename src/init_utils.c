@@ -31,7 +31,7 @@ char	*take_delimiter(char *line)
 	char	*ret;
 
 	i = 0;
-	while (ft_strncmp(&line[i], " << ", 4))
+	while (ft_strncmp(&line[i], " <<", 3))
 		i++;
 	i += 4;
 	while (!ft_isalnum(line[i]))
@@ -58,7 +58,7 @@ void	clean_heredoc(char *line, char *bench)
 	int	i;
 
 	i = 0;
-	while (ft_strncmp(&line[i], bench, ft_strlen(bench)))
+	while (ft_strncmp(&line[i], bench, ft_strlen(bench)) && i <= (int)(ft_strlen(line) - ft_strlen(bench)))
 		i++;
 	//line[i] = '\"';
 	line[i] = '\0';
@@ -94,7 +94,7 @@ void	take_input(t_input *input)
 	if (is_heredoc(typed))
 	{
 		delimiter = take_delimiter(typed);
-		clean_heredoc(typed, "<< ");
+		clean_heredoc(typed, "<<");
 		tmp = readline("> ");
 		ft_strlcat(typed, tmp, ft_strlen(typed) + ft_strlen(tmp) + 2);
 		free(tmp);
