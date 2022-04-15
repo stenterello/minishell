@@ -17,7 +17,7 @@ int	is_heredoc(char *line)
 	i = 0;
 	while (line[i])
 	{
-		if (!ft_strncmp(&line[i], " << ", 4))
+		if (!ft_strncmp(&line[i], " <<", 3))
 			return (1);
 		i++;
 	}
