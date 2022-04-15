@@ -83,11 +83,22 @@ char	*to_string(char *line)
 	return (ret);
 }
 
+void	write_to_stdin(char *line)
+{
+	int	i;
+
+	i = 0;
+	while (line[i])
+		ft_putchar_fd(line[i++], 1);
+}
+
 void	take_input(t_input *input)
 {
 	char	*typed;
 	char	*tmp;
 	char	*delimiter;
+	int		i;
+	int		j;
 
 	typed = readline("whisper_hole: ");
 	check(typed, input);
@@ -108,8 +119,20 @@ void	take_input(t_input *input)
 		tmp = to_string(typed);
 		free(typed);
 		typed = tmp;
-		//ft_strlcat(typed, "\"", ft_strlen(typed) + 1 + 2);
+		i = 0;
+		while (!ft_isalpha(typed[i]))
+			i++;
+		j = i;
+		while (ft_isalpha(typed[i]))
+			i++;
+		input->line = malloc(sizeof(char) * (i + 1));
+		if (!input->line)
+			die("Malloc error");
+		ft_strlcpy(input->line, &typed[j], i - j + 1);
 		free(delimiter);
+		free(typed);
+		write_to_stdin(input->line);
+		return ;
 	}
 	while (input->is_open)
 	{
