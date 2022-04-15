@@ -33,7 +33,7 @@ int	main(void)
 	
 	while (1)
 	{
-		init_terminal(getenv("g_TERM"));
+		init_terminal(getenv("TERM"));
 		init_input_and_cmd(&g_term.input, &cmd);
 		add_signals();
 		take_input(&g_term.input);
