@@ -61,6 +61,8 @@ typedef struct	s_command
 	int		saved_out;
 	int		saved_err;
 	int		fd;
+	int		to_pipe;
+	int		piped_fd[2];
 }				t_command;
 
 t_term	g_term;
@@ -81,7 +83,8 @@ void	cmd_not_found(t_command *cmd);
 int		find_script(t_command *cmd);
 int		builtin(t_command *cmd);
 void	init_terminal(char *line);
-void	init_input_and_cmd(t_input *input, t_command *cmd);
+void	init_input(t_input *input);
+void	init_cmd(t_command *cmd);
 void	take_environ(void);
 void	take_input(t_input *input);
 void	split_command(char *line, t_command *cmd);

@@ -108,16 +108,14 @@ void	execute(t_command *cmd)
 		}
 		else
 		{
-			// Altrimenti vai alla destinazione
 			child = fork();
 			if (child == -1)
 				die("Error while forking");
 			if (child == 0)
 			{
-				// cancella variabili di shell
+				free_dict(g_term.var);
 				// crea segnali per il processo figlio
-				// // creare una funzione born_child?
-				child_signals();
+				// child_signals();
 				execve(cmd->cmd, cmd->args, NULL);
 			}
 			else
@@ -126,6 +124,10 @@ void	execute(t_command *cmd)
 				g_term.last_exit = ret / 256;
 			else
 				g_term.last_exit = ret;
+			if (cmd->next != NULL)
+			{
+				execute((t_command *)cmd->next);
+			}
 		}
 	}
 	restore_fd(cmd);

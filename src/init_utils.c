@@ -1,11 +1,15 @@
 #include "minishell.h"
 
-void	init_input_and_cmd(t_input *input, t_command *cmd)
+void	init_input(t_input *input)
 {
 	input->s_quot = 0;
 	input->d_quot = 0;
 	input->to_expand = 0;
 	input->is_open = 0;
+}
+
+void	init_cmd(t_command *cmd)
+{
 	cmd->cmd = NULL;
 	cmd->opt = NULL;
 	cmd->args = NULL;
@@ -13,6 +17,7 @@ void	init_input_and_cmd(t_input *input, t_command *cmd)
 	cmd->redir_stdin = 0;
 	cmd->redir_stdout = 0;
 	cmd->redir_stderr = 0;
+	cmd->to_pipe = 0;
 }
 
 void	take_input(t_input *input)

@@ -145,8 +145,6 @@ void	try_expand(t_input *input)
 					take_variable(&input->line[i], input, i - 1);
 					malloc_and_check_char(&tmp, ft_strlen(input->line) + 1);
 					ft_strlcpy(tmp, input->line, ft_strlen(input->line) + 1);
-					
-					
 					free(input->line);
 					clean_text(input->line, tmp);
 					free(tmp);

@@ -11,7 +11,8 @@ int	main(void)
 	while (1)
 	{
 		init_terminal(ft_getenv("TERM"));
-		init_input_and_cmd(&g_term.input, &cmd);
+		init_input(&g_term.input);
+		init_cmd(&cmd);
 		add_signals();
 		take_input(&g_term.input);
 		if (ft_strlen(g_term.input.line) > 0)
