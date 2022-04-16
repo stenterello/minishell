@@ -51,7 +51,7 @@ int	main(void)
 		}
 		free(g_term.input.line);
 	}
-	rl_clear_history();
+	clear_history();
 	free_env(g_term.env);
 	free_sh(g_term.var);
 	free(g_term.termi);
