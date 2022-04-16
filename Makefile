@@ -1,6 +1,7 @@
 NAME=minishell
 CC=gcc
 FLAGS=-Wall -Werror -Wextra -g 
+FLAGS_MAC=-Wall -Werror -Wextra -g -L$(HOME)/.brew/opt/readline/lib -I$(HOME)/.brew/opt/readline/include
 SRC=main.c \
 	utils.c \
 	execute.c \
@@ -26,8 +27,11 @@ BUILTINS=$(addprefix src/builtin/, $(BUILTIN))
 BUILTIN_OBJS=$(BUILTINS:.c=.o)
 LIBFT=./include/libft/libft.a
 
-$(NAME): $(LIBFT) $(OBJS) $(BUILTIN_OBJS)
+lin: $(LIBFT) $(OBJS) $(BUILTIN_OBJS)
 	$(CC) $(FLAGS) $(SRCS) $(BUILTINS) $(LIBFT) -o $(NAME) -lreadline -lncurses
+
+$(NAME): $(LIBFT) $(OBJS) $(BUILTIN_OBJS)
+	$(CC) $(FLAGS_MAC) $(SRCS) $(BUILTINS) $(LIBFT) -o $(NAME) -lreadline -lncurses
 
 $(LIBFT):
 	$(MAKE) bonus -C ./include/libft
