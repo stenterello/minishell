@@ -28,6 +28,7 @@ int	search_in_dir(DIR *stream, t_command *cmd, char *dir_name)
 	int				status;
 
 	entry = readdir(stream);
+	status = 0;
 	while (entry)
 	{
 		if (!ft_strncmp(entry->d_name, cmd->cmd, (ft_strlen(cmd->cmd) + 1)))

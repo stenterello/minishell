@@ -5,6 +5,7 @@ void	cd(t_command *cmd)
 	char	*dest;
 	int		ret;
 
+	ret = 0;
 	if (!cmd->args[1])
 	{
 		ret = chdir(ft_getenv("HOME"));
