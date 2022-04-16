@@ -116,12 +116,10 @@ void	take_input(t_input *input)
 			free(tmp);
 		}
 		clean_heredoc(typed, delimiter);
-		tmp = to_string(typed);
-		free(typed);
-		typed = tmp;
 		i = 0;
-		while (!ft_isalpha(typed[i]))
+		while (typed[i] != ' ')
 			i++;
+		i++;
 		j = i;
 		while (ft_isalpha(typed[i]))
 			i++;
@@ -130,8 +128,8 @@ void	take_input(t_input *input)
 			die("Malloc error");
 		ft_strlcpy(input->line, &typed[j], i - j + 1);
 		free(delimiter);
+		write_to_stdin(&typed[j]);
 		free(typed);
-		write_to_stdin(input->line);
 		return ;
 	}
 	while (input->is_open)

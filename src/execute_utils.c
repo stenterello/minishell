@@ -39,7 +39,10 @@ int	search_in_dir(DIR *stream, t_command *cmd, char *dir_name)
 				if (child == -1)
 					die("Error while forking");
 				if (child == 0)
+				{
+					child_signals();
 					execve(cmd->cmd, cmd->args, NULL);
+				}
 				else
 					waitpid(-1, &status, 0);
 				if (WIFEXITED(status))

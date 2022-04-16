@@ -107,22 +107,24 @@ void	take_variable(char *variable, t_input *input, int init_len)
 	free(input->expanded);
 }
 
-char	*clean_text(char *line)
+void	clean_text(char *dst, char *src)
 {
-	int		i;
-	char	*tmp;
-	char	*tmp2;
+	int	i;
+	int	j;
 
 	i = 0;
-	while (line[i] && ft_isalnum(line[i]))
-		i++;
-	tmp = malloc(sizeof(char) * (i + 1));
-	if (!tmp)
+	j = 0;
+	dst = malloc(sizeof(char) * (ft_strlen(src)));
+	if (!dst)
 		die("Malloc error");
-	ft_strlcpy(tmp, line, i + 1);
-	tmp2 = ft_strtrim(tmp, "\" ");
-	free(tmp);
-	return (tmp2);
+	while (src[i])
+	{
+		if (src[i] != '\"')
+			dst[j++] = src[i++];
+		else
+			i++;
+	}
+	dst[j] = '\0';
 }
 
 int	dollar_pos(char *line)
@@ -140,7 +142,7 @@ void	try_expand(t_input *input)
 	int		i;
 	int		s_quot;
 	int		d_quot;
-	char	*var;
+	char	*tmp;
 
 	i = 0;
 	s_quot = 0;
@@ -162,10 +164,15 @@ void	try_expand(t_input *input)
 			{
 				if (d_quot)
 				{
-					i = dollar_pos(input->line) + 1;
-					var = clean_text(&input->line[i]);
-					take_variable(var, input, i - 1);
-					free(var);
+					tmp = malloc(sizeof(char) * (ft_strlen(input->line) + 1));
+					if (!tmp)
+						die("Malloc error");
+					ft_strlcpy(tmp, input->line, ft_strlen(input->line) + 1);
+					free(input->line);
+					// i = dollar_pos(input->line) + 1;
+					clean_text(input->line, tmp);
+					// take_variable(var, input, i - 1);
+					free(tmp);
 				}
 				else
 					take_variable(&input->line[i], input, i - 1);

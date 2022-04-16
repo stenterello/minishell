@@ -39,9 +39,28 @@ void	rewrite_args(t_command *cmd)
 	}
 }
 
+void	kill_proc(int sig, siginfo_t *info, void *context)
+{
+	(void) info;
+	(void) context;
+	if (sig == SIGINT)
+	{
+		printf("ao\n");
+		kill(0, SIGINT);
+	}
+}
+
 void	child_signals(void)
 {
-	
+	int					sigs[3];
+	struct sigaction	acts;
+
+	acts.sa_sigaction = &kill_proc;
+	sigemptyset(&acts.sa_mask);
+	sigs[0] = sigaction(SIGINT, &acts, NULL);
+	if (sigs[0])
+		die("Signal error");
+	printf("AO");
 }
 
 void	execute(t_command *cmd)
@@ -101,7 +120,7 @@ void	execute(t_command *cmd)
 				// cancella variabili di shell
 				// crea segnali per il processo figlio
 				// // creare una funzione born_child?
-				//child_signals();
+				child_signals();
 				execve(cmd->cmd, cmd->args, NULL);
 			}
 			else

@@ -110,5 +110,7 @@ void	define_append_output(char *line, t_command *cmd);
 void	restore_fd(t_command *cmd);
 int		is_redir(char *line);
 int		is_heredoc(char *line);
+void	child_signals(void);
+void	kill_proc(int sig, siginfo_t *info, void *context);
 
 #endif

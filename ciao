@@ -1,0 +1,7 @@
+ARGS_NUM: 1
+Makefile
+ciao
+include
+minishell
+minishell.dSYM
+src

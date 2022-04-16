@@ -111,6 +111,8 @@ void	fill_cmd_fields(char **tmp, t_command *cmd)
 		i++;
 	}
 	cmd->args[i] = NULL;
+	while (tmp[i])
+		free(tmp[i++]);
 	free(tmp);
 }
 

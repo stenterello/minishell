@@ -33,6 +33,7 @@ void	define_input(char *line, t_command *cmd)
 	cmd->saved_in = dup(0);
 	close(0);
 	dup2(cmd->fd, 0);
+	free(input);
 }
 
 void	define_output(char *line, t_command *cmd)
@@ -58,6 +59,7 @@ void	define_output(char *line, t_command *cmd)
 	cmd->saved_out = dup(1);
 	close(1);
 	dup2(cmd->fd, STDOUT_FILENO);
+	free(file);
 }
 
 void	define_append_output(char *line, t_command *cmd)
@@ -83,4 +85,5 @@ void	define_append_output(char *line, t_command *cmd)
 	cmd->saved_out = dup(1);
 	close(1);
 	dup2(cmd->fd, STDOUT_FILENO);
+	free(file);
 }
