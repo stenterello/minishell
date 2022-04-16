@@ -31,26 +31,17 @@ typedef struct	s_input
 	char	*expanded;
 }				t_input;
 
-typedef struct	s_env_var
+typedef struct	s_dict
 {
 	char	*key;
 	char	*value;
 	void	*next;
-	void	*prev;
-	int		start;
-}				t_env_var;
-
-typedef struct	s_sh_var
-{
-	char	*key;
-	char	*value;
-	void	*next;
-}				t_sh_var;
+}				t_dict;
 
 typedef struct	s_term
 {
-	t_env_var			*env;
-	t_sh_var			*var;
+	t_dict				*env;
+	t_dict				*var;
 	struct termios		*termi;
 	int 				last_exit;
 	struct sigaction	acts;
@@ -94,16 +85,17 @@ void	init_input_and_cmd(t_input *input, t_command *cmd);
 void	take_environ(void);
 void	take_input(t_input *input);
 void	split_command(char *line, t_command *cmd);
-void	free_env(t_env_var *env);
-void	free_sh(t_sh_var *var);
+void	free_dict(t_dict *env);
 int		key_len(char *line);
 int		value_len(char *line);
 int		is_open(char *typed, int limit);
 int		is_var_def(char *line);
+int		quoted(char *line);
 int		set_env_var(char **args);
 void	set_sh_var(char **args);
 void	check(char *typed, t_input *input);
 void	add_signals(void);
+void	check_redirection(char *line, t_command *cmd);
 void	define_input(char *line, t_command *cmd);
 void	define_output(char *line, t_command *cmd);
 void	define_append_output(char *line, t_command *cmd);
@@ -112,5 +104,16 @@ int		is_redir(char *line);
 int		is_heredoc(char *line);
 void	child_signals(void);
 void	kill_proc(int sig, siginfo_t *info, void *context);
+void	malloc_and_check_char(char **dst, int len);
+void	malloc_and_check_char_ptr(char ***dst, int len);
+void	malloc_and_check_dict(t_dict **dst, int len);
+void	malloc_and_check_list(t_list **dst, int len);
+char	*take_delimiter(char *line);
+void	clean_heredoc(char *line, char *bench);
+int		to_continue(char *typed, char *delimiter);
+void	write_to_stdin(char *line);
+int		count_params(char *line);
+int		count_args(char **tmp);
+int		next_arg_len(char *line);
 
 #endif

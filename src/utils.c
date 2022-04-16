@@ -18,42 +18,23 @@ int	var_name_len(char *variable)
 	return (i);
 }
 
-char	*search_env_vars(char *var_name)
+char	*search_vars(char *var_name, t_dict *where)
 {
-	t_env_var	*tmp;
-	char		*ret;
+	t_dict	*tmp;
+	char	*ret;
 
-	tmp = g_term.env;
+	ret = NULL;
+	tmp = where;
 	while (tmp)
 	{
-		if (!ft_strncmp(tmp->key, var_name, ft_strlen(var_name)))
+		if (ft_strlen(tmp->key) == ft_strlen(var_name))
 		{
-			ret = malloc(sizeof(char) * (ft_strlen(tmp->value) + 1));
-			if (!ret)
-				die("Malloc error");
-			ft_strlcpy(ret, tmp->value, ft_strlen(tmp->value) + 1);
-			return (ret);
-		}
-		tmp = tmp->next;
-	}
-	return (NULL);
-}
-
-char	*search_sh_vars(char *var_name)
-{
-	t_sh_var	*tmp;
-	char		*ret;
-
-	tmp = g_term.var;
-	while (tmp && tmp->key)
-	{
-		if (!ft_strncmp(tmp->key, var_name, ft_strlen(var_name)))
-		{
-			ret = malloc(sizeof(char) * (ft_strlen(tmp->value) + 1));
-			if (!ret)
-				die("Malloc error");
-			ft_strlcpy(ret, tmp->value, ft_strlen(tmp->value) + 1);
-			return (ret);
+			if (!ft_strncmp(tmp->key, var_name, ft_strlen(var_name)))
+			{
+				malloc_and_check_char(&ret, ft_strlen(tmp->value) + 1);
+				ft_strlcpy(ret, tmp->value, ft_strlen(tmp->value) + 1);
+				return (ret);
+			}
 		}
 		tmp = tmp->next;
 	}
@@ -67,9 +48,8 @@ void	take_variable(char *variable, t_input *input, int init_len)
 	char	*ret;
 
 	i = 0;
-	var_name = malloc(sizeof(char) * (var_name_len(variable) + 1));
-	if (!var_name)
-		die("Malloc error");
+	var_name = NULL;
+	malloc_and_check_char(&var_name, var_name_len(variable) + 1);
 	while (variable[i] && (ft_isalnum(variable[i]) || variable[i] == '?'))
 	{
 		var_name[i] = variable[i];
@@ -79,14 +59,13 @@ void	take_variable(char *variable, t_input *input, int init_len)
 	if (!ft_strncmp(var_name, "?", 1))
 		input->expanded = ft_itoa(g_term.last_exit);
 	else
-		input->expanded = search_env_vars(var_name);
+		input->expanded = search_vars(var_name, g_term.env);
 	if (input->expanded == NULL)
-		input->expanded = search_sh_vars(var_name);
+		input->expanded = search_vars(var_name, g_term.var);
 	if (input->expanded == NULL)
 		input->expanded = ft_calloc(1, sizeof(char));
-	ret = malloc(sizeof(char) * (ft_strlen(input->line) + 1 - i + ft_strlen(input->expanded)));
-	if (!ret)
-		die("Malloc error");
+	ret = NULL;
+	malloc_and_check_char(&ret, ft_strlen(input->line) + 1 - i + ft_strlen(input->expanded));
 	ft_strlcpy(ret, input->line, init_len + 1);
 	ft_strlcpy(&ret[init_len], input->expanded, ft_strlen(input->expanded) + 1);
 	if ((int)ft_strlen(input->expanded) > var_name_len(variable))
@@ -114,9 +93,7 @@ void	clean_text(char *dst, char *src)
 
 	i = 0;
 	j = 0;
-	dst = malloc(sizeof(char) * (ft_strlen(src)));
-	if (!dst)
-		die("Malloc error");
+	malloc_and_check_char(&dst, ft_strlen(src));
 	while (src[i])
 	{
 		if (src[i] != '\"')
@@ -147,6 +124,7 @@ void	try_expand(t_input *input)
 	i = 0;
 	s_quot = 0;
 	d_quot = 0;
+	tmp = NULL;
 	while (input->line[i])
 	{
 		if (input->line[i] == '\'' && !s_quot && !d_quot)
@@ -164,14 +142,13 @@ void	try_expand(t_input *input)
 			{
 				if (d_quot)
 				{
-					tmp = malloc(sizeof(char) * (ft_strlen(input->line) + 1));
-					if (!tmp)
-						die("Malloc error");
+					take_variable(&input->line[i], input, i - 1);
+					malloc_and_check_char(&tmp, ft_strlen(input->line) + 1);
 					ft_strlcpy(tmp, input->line, ft_strlen(input->line) + 1);
+					
+					
 					free(input->line);
-					// i = dollar_pos(input->line) + 1;
 					clean_text(input->line, tmp);
-					// take_variable(var, input, i - 1);
 					free(tmp);
 				}
 				else
@@ -189,11 +166,10 @@ char	*get_path(char *line)
 	int		i;
 
 	i = 0;
+	ret = NULL;
 	while (line[i] == 32 || (line[i] > 8 && line[i] < 14))
 		i++;
-	ret = malloc(sizeof(char) * (ft_strlen(line) - i + 1));
-	if (!ret)
-		die("Malloc error trying to get absolute path [CD]");
+	malloc_and_check_char(&ret, ft_strlen(line) - i + 1);
 	ft_strlcpy(ret, &line[i], ft_strlen(line) - i + 1);
 	return (ret);
 }

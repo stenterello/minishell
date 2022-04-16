@@ -1,34 +1,11 @@
 #include "minishell.h"
 
-void	init_sh_var()
-{
-	g_term.var = malloc(sizeof(t_sh_var));
-	if (!g_term.var)
-		die("Malloc error");
-	g_term.env = malloc(sizeof(t_env_var));
-	if (!g_term.env)
-		die("Malloc error");
-}
-
-int	is_heredoc(char *line)
-{
-	int	i;
-
-	i = 0;
-	while (line[i])
-	{
-		if (!ft_strncmp(&line[i], " <<", 3))
-			return (1);
-		i++;
-	}
-	return (0);
-}
-
 int	main(void)
 {
 	t_command	cmd;
 
-	init_sh_var();
+	malloc_and_check_dict(&g_term.env, 1);
+	malloc_and_check_dict(&g_term.var, 1);
 	take_environ();
 	
 	while (1)
@@ -52,8 +29,8 @@ int	main(void)
 		free(g_term.input.line);
 	}
 	clear_history();
-	free_env(g_term.env);
-	free_sh(g_term.var);
+	free_dict(g_term.env);
+	free_dict(g_term.var);
 	free(g_term.termi);
 	return (0);
 }
@@ -62,10 +39,6 @@ int	main(void)
 
 // aggiungi i segnali Ctrl-D Ctrl-C Ctrl-\ 
 
-// implementa i redirezionamenti
-
 // implementa le pipe
-
-// implementa exit status
 
 */

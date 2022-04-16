@@ -4,9 +4,8 @@ char	*get_full_path(char *dir_name, char *name)
 {
 	char	*ret;
 
-	ret = malloc(sizeof(char) * (ft_strlen(dir_name) + ft_strlen(name) + 2));
-	if (!ret)
-		die("Malloc error");
+	ret = NULL;
+	malloc_and_check_char(&ret, ft_strlen(dir_name) + ft_strlen(name) + 2);
 	ft_strlcpy(ret, dir_name, ft_strlen(dir_name) + 1);
 	ft_strlcat(ret, "/", ft_strlen(dir_name) + 2);
 	ft_strlcat(ret, name, ft_strlen(dir_name) + ft_strlen(name) + 2);
@@ -60,8 +59,8 @@ int	search_in_dir(DIR *stream, t_command *cmd, char *dir_name)
 
 char	*ft_getenv(char *line)
 {
-	t_env_var	*tmp;
-	t_sh_var	*tmp2;
+	t_dict	*tmp;
+	t_dict	*tmp2;
 
 	if (g_term.env)
 	{

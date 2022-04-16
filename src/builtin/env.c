@@ -2,7 +2,7 @@
 
 void	env(void)
 {
-	t_env_var	*tmp;
+	t_dict	*tmp;
 
 	tmp = g_term.env;
 	while (tmp)

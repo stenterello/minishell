@@ -7,13 +7,16 @@ SRC=main.c \
 	execute.c \
 	execute_utils.c \
 	init_utils.c \
-	set_sh_var.c \
+	set_var.c \
 	term.c \
 	parse.c \
 	bools.c \
+	bools2.c \
+	count.c \
 	memory.c \
 	redirections.c \
-	redirections_utils.c
+	redirections_utils.c \
+	heredoc.c
 SRCS=$(addprefix src/, $(SRC))
 OBJS=$(SRCS:.c=.o)
 BUILTIN=pwd.c \

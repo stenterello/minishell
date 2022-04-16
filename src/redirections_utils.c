@@ -21,3 +21,15 @@ void	restore_fd(t_command *cmd)
 	if (cmd->redir_stdin)
 		restore_input(cmd);
 }
+
+void	check_redirection(char *line, t_command *cmd)
+{
+	if (is_redir(line) == -1)
+		return ;
+	else if (is_redir(line) == 0)
+		define_input(line, cmd);
+	else if (is_redir(line) == 1)
+		define_output(line, cmd);
+	else if (is_redir(line) == 3)
+		define_append_output(line, cmd);
+}

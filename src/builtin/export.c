@@ -32,23 +32,20 @@ int	value_len(char *line)
 
 void	export(t_command *cmd)
 {
-	int			len;
-	int			i;
-	t_env_var	*tmp;
-	t_env_var	*new;
+	int		len;
+	int		i;
+	t_dict	*tmp;
+	t_dict	*new;
 
-	new = malloc(sizeof(t_env_var));
-	if (!new)
-		die("Malloc error");
+	new = NULL;
+	malloc_and_check_dict(&new, 1);
 	len = key_len(cmd->args[1]);
 	if (len == -1)
 	{
 		free(new);
 		return ;
 	}
-	new->key = malloc(sizeof(char) * (len + 1));
-	if (!new->key)
-		die("Malloc error");
+	malloc_and_check_char(&new->key, len + 1);
 	ft_strlcpy(new->key, cmd->args[1], len + 1);
 	i = len;
 	len = value_len(cmd->args[1]);
@@ -58,9 +55,7 @@ void	export(t_command *cmd)
 		free(new);
 		return ;
 	}
-	new->value = malloc(sizeof(char) * (len + 1));
-	if (!new->value)
-		die("Malloc error");
+	malloc_and_check_char(&new->value, len + 1);
 	ft_strlcpy(new->value, &cmd->args[1][i + 1], len + 1);
 	new->next = NULL;
 	tmp = g_term.env;

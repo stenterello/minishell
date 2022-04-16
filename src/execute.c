@@ -16,16 +16,12 @@ void	rewrite_args(t_command *cmd)
 	j = 0;
 	while (is_var_def(cmd->args[i]))
 		i++;
-	cmd->cmd = malloc(sizeof(char) * (ft_strlen(cmd->args[i]) + 1));
-	if (!cmd->cmd)
-		die("Malloc error");
+	malloc_and_check_char(&cmd->cmd, ft_strlen(cmd->args[i]) + 1);
 	ft_strlcpy(cmd->cmd, cmd->args[i], ft_strlen(cmd->args[i]) + 1);
 	while (cmd->args[i])
 	{
 		free(cmd->args[j]);
-		cmd->args[j] = malloc(sizeof(char) * (ft_strlen(cmd->args[i]) + 1));
-		if (!cmd->args[j])
-			die("Malloc error");
+		malloc_and_check_char(&cmd->args[j], ft_strlen(cmd->args[i]) + 1);
 		ft_strlcpy(cmd->args[j], cmd->args[i], ft_strlen(cmd->args[i]) + 1);
 		free(cmd->args[i]);
 		cmd->args[i] = NULL;

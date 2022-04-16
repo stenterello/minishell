@@ -17,15 +17,14 @@ void	define_input(char *line, t_command *cmd)
 	char	*input;
 	
 	i = 0;
+	input = NULL;
 	while (line[i] != '<')
 		i++;
 	i++;
 	while (!ft_isalnum(line[i]))
 		i++;
 	len = file_len(&line[i]);
-	input = malloc(sizeof(char) * (len + 1));
-	if (!input)
-		die("Malloc error");
+	malloc_and_check_char(&input, len + 1);
 	ft_strlcpy(input, &line[i], len + 1);
 	cmd->fd = open(input, O_CREAT);
 	if (cmd->fd < 0)
@@ -34,6 +33,7 @@ void	define_input(char *line, t_command *cmd)
 	close(0);
 	dup2(cmd->fd, 0);
 	free(input);
+	cmd->redir_stdin = 1;
 }
 
 void	define_output(char *line, t_command *cmd)
@@ -43,15 +43,14 @@ void	define_output(char *line, t_command *cmd)
 	char	*file;
 	
 	i = 0;
+	file = NULL;
 	while (line[i] != '>')
 		i++;
 	i++;
 	while (!ft_isalnum(line[i]))
 		i++;
 	len = file_len(&line[i]);
-	file = malloc(sizeof(char) * (len + 1));
-	if (!file)
-		die("Malloc error");
+	malloc_and_check_char(&file, len + 1);
 	ft_strlcpy(file, &line[i], len + 1);
 	cmd->fd = open(file, O_WRONLY | O_CREAT, 0666);
 	if (cmd->fd < 0)
@@ -60,6 +59,7 @@ void	define_output(char *line, t_command *cmd)
 	close(1);
 	dup2(cmd->fd, STDOUT_FILENO);
 	free(file);
+	cmd->redir_stdout = 1;
 }
 
 void	define_append_output(char *line, t_command *cmd)
@@ -69,15 +69,14 @@ void	define_append_output(char *line, t_command *cmd)
 	char	*file;
 	
 	i = 0;
+	file = NULL;
 	while (line[i] != '>')
 		i++;
 	i++;
 	while (!ft_isalnum(line[i]))
 		i++;
 	len = file_len(&line[i]);
-	file = malloc(sizeof(char) * (len + 1));
-	if (!file)
-		die("Malloc error");
+	malloc_and_check_char(&file, len + 1);
 	ft_strlcpy(file, &line[i], len + 1);
 	cmd->fd = open(file, O_WRONLY | O_APPEND | O_CREAT, 0666);
 	if (cmd->fd < 0)
@@ -86,4 +85,5 @@ void	define_append_output(char *line, t_command *cmd)
 	close(1);
 	dup2(cmd->fd, STDOUT_FILENO);
 	free(file);
+	cmd->redir_stdout = 1;
 }
