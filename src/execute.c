@@ -70,6 +70,7 @@ void	execute(t_command *cmd)
 	int	child;
 
 	i = 0;
+	ret = 0;
 	if (!cmd->cmd)
 	{
 		while (cmd->args[i])
