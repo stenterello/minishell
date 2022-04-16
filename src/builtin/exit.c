@@ -32,6 +32,8 @@ void	exit_cmd(t_command *cmd)
 		return ;
 	}
 	ft_putendl_fd("exit", STDOUT_FILENO);
+	free_env(g_term.env);
+	free_sh(g_term.var);
 	if (i == 1)
 		exit(0);
 	else
