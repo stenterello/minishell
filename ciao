@@ -1,0 +1,6 @@
+Makefile
+ciao
+include
+minishell
+minishell.dSYM
+src

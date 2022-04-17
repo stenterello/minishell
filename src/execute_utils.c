@@ -1,16 +1,18 @@
 #include "minishell.h"
 
-char	*get_full_path(char *dir_name, char *name)
+void	get_full_path(char *dir_name, t_command *cmd)
 {
-	char	*ret;
+	char	*tmp;
 
-	ret = NULL;
-	malloc_and_check_char(&ret, ft_strlen(dir_name) + ft_strlen(name) + 2);
-	ft_strlcpy(ret, dir_name, ft_strlen(dir_name) + 1);
-	ft_strlcat(ret, "/", ft_strlen(dir_name) + 2);
-	ft_strlcat(ret, name, ft_strlen(dir_name) + ft_strlen(name) + 2);
-	free(name);
-	return (ret);
+	tmp = NULL;
+	malloc_and_check_char(&tmp, ft_strlen(dir_name) + ft_strlen(cmd->cmd) + 2);
+	ft_strlcpy(tmp, dir_name, ft_strlen(dir_name) + 1);
+	ft_strlcat(tmp, "/", ft_strlen(dir_name) + 2);
+	ft_strlcat(tmp, cmd->cmd, ft_strlen(dir_name) + ft_strlen(cmd->cmd) + 2);
+	free(cmd->cmd);
+	malloc_and_check_char(&cmd->cmd, ft_strlen(tmp) + 1);
+	ft_strlcpy(cmd->cmd, tmp, ft_strlen(tmp) + 1);
+	free(tmp);
 }
 
 void	cmd_not_found(t_command *cmd)
@@ -32,23 +34,32 @@ int	search_in_dir(DIR *stream, t_command *cmd, char *dir_name)
 	{
 		if (!ft_strncmp(entry->d_name, cmd->cmd, (ft_strlen(cmd->cmd) + 1)))
 		{
-			cmd->cmd = get_full_path(dir_name, cmd->cmd);
+			get_full_path(dir_name, cmd);
 			if (!access(cmd->cmd, X_OK))
 			{
+				if (cmd->to_pipe)
+					define_pipe(cmd);
+				if (cmd->to_pipe_to)
+					define_pipe_to(cmd);
 				child = fork();
 				if (child == -1)
 					die("Error while forking");
 				if (child == 0)
 				{
-					child_signals();
+					free_dict(g_term.var);
 					execve(cmd->cmd, cmd->args, NULL);
 				}
 				else
-					waitpid(-1, &status, 0);
+				{
+					close(cmd->piped_fd);
+					// change_signals();
+					waitpid(child, &status, 0);
+				}
 				if (WIFEXITED(status))
 					g_term.last_exit = status / 256;
 				else
 					g_term.last_exit = status;
+				restore_fd(cmd);
 				return (1);
 			}
 		}

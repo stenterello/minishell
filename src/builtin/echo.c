@@ -25,6 +25,10 @@ void	echo(t_command *cmd)
 	int	i;
 
 	i = 1;
+	if (cmd->to_pipe)
+		define_pipe(cmd);
+	if (cmd->to_pipe_to)
+		define_pipe_to(cmd);
 	if (!cmd->args[1])
 		ft_putendl_fd(NULL, 1);
 	else

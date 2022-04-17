@@ -100,6 +100,10 @@ int	builtin(t_command *cmd)
 	if (!ft_strncmp(cmd->cmd, "pwd\0", 4))
 	{
 		ret = pwd();
+		if (cmd->to_pipe)
+			define_pipe(cmd);
+		if (cmd->to_pipe_to)
+			define_pipe_to(cmd);
 		ft_putendl_fd(ret, 1);
 		free(ret);
 	}
@@ -108,13 +112,21 @@ int	builtin(t_command *cmd)
 	else if (!ft_strncmp(cmd->cmd, "echo\0", 5))
 		echo(cmd);
 	else if (!ft_strncmp(cmd->cmd, "env\0", 4))
+	{
+		if (cmd->to_pipe)
+			define_pipe(cmd);
+		if (cmd->to_pipe_to)
+			define_pipe_to(cmd);
 		env();
+	}
 	else if (!ft_strncmp(cmd->cmd, "export\0", 7))
 		export(cmd);
 	else if (!ft_strncmp(cmd->cmd, "unset\0", 6))
 		unset(cmd);
 	else
 		return (0);
+	if (cmd->to_pipe || cmd->to_pipe_to)
+		restore_fd(cmd);
 	return (1);
 }
 

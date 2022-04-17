@@ -54,6 +54,7 @@ typedef struct	s_command
 	char	*opt;
 	char	**args;
 	void	*next;
+	void	*prev;
 	int		redir_stdin;
 	int		redir_stdout;
 	int		redir_stderr;
@@ -62,7 +63,9 @@ typedef struct	s_command
 	int		saved_err;
 	int		fd;
 	int		to_pipe;
-	int		piped_fd[2];
+	int		to_pipe_to;
+	int		piped_fd;
+	int		first;
 }				t_command;
 
 t_term	g_term;
@@ -93,15 +96,19 @@ int		key_len(char *line);
 int		value_len(char *line);
 int		is_open(char *typed, int limit);
 int		is_var_def(char *line);
+int		is_token(char *line);
 int		quoted(char *line);
 int		set_env_var(char **args);
 void	set_sh_var(char **args);
 void	check(char *typed, t_input *input);
 void	add_signals(void);
 void	check_redirection(char *line, t_command *cmd);
+void	check_pipe(char *line, t_command *cmd);
 void	define_input(char *line, t_command *cmd);
 void	define_output(char *line, t_command *cmd);
 void	define_append_output(char *line, t_command *cmd);
+void	define_pipe(t_command *cmd);
+void	define_pipe_to(t_command *cmd);
 void	restore_fd(t_command *cmd);
 int		is_redir(char *line);
 int		is_heredoc(char *line);

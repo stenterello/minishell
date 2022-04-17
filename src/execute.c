@@ -61,12 +61,14 @@ void	child_signals(void)
 
 void	execute(t_command *cmd)
 {
-	int	i;
-	int	ret;
-	int	child;
+	int			i;
+	int			ret;
+	int			child;
+	t_command	*tmp;
 
 	i = 0;
 	ret = 0;
+	tmp = cmd;
 	if (!cmd->cmd)
 	{
 		while (cmd->args[i])
@@ -98,41 +100,41 @@ void	execute(t_command *cmd)
 		free(cmd->cmd);
 		return ;
 	}	
-	if (!builtin(cmd))
+	while (tmp)
 	{
-		// Se non c'è indirizzo del file, cerca nel PATH
-		if (ft_strchr(cmd->cmd, '/') == NULL)
+		if (!builtin(tmp))
 		{
-			if (find_script(cmd) == -1)
-				cmd_not_found(cmd);
-		}
-		else
-		{
-			child = fork();
-			if (child == -1)
-				die("Error while forking");
-			if (child == 0)
+			// Se non c'è indirizzo del file, cerca nel PATH
+			if (ft_strchr(tmp->cmd, '/') == NULL)
 			{
-				free_dict(g_term.var);
-				// crea segnali per il processo figlio
-				// child_signals();
-				execve(cmd->cmd, cmd->args, NULL);
+				if (find_script(tmp) == -1)
+					cmd_not_found(tmp);
 			}
 			else
-				waitpid(child, &ret, 0);
-			if (WIFEXITED(ret))
-				g_term.last_exit = ret / 256;
-			else
-				g_term.last_exit = ret;
-			if (cmd->next != NULL)
 			{
-				execute((t_command *)cmd->next);
+				child = fork();
+				if (child == -1)
+					die("Error while forking");
+				if (child == 0)
+				{
+					free_dict(g_term.var);
+					// crea segnali per il processo figlio
+					// child_signals();
+					execve(tmp->cmd, tmp->args, NULL);
+				}
+				else
+					waitpid(child, &ret, 0);
+				if (WIFEXITED(ret))
+					g_term.last_exit = ret / 256;
+				else
+					g_term.last_exit = ret;
 			}
+			i = 0;
+			while (tmp->args[i])
+				free(tmp->args[i++]);
+			free(tmp->args);
+			free(tmp->cmd);
 		}
+		tmp = tmp->next;
 	}
-	restore_fd(cmd);
-	while (cmd->args[i])
-		free(cmd->args[i++]);
-	free(cmd->args);
-	free(cmd->cmd);
 }

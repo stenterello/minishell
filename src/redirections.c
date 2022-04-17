@@ -81,9 +81,9 @@ void	define_append_output(char *line, t_command *cmd)
 	cmd->fd = open(file, O_WRONLY | O_APPEND | O_CREAT, 0666);
 	if (cmd->fd < 0)
 		die("Error while opening file");
-	cmd->saved_out = dup(1);
-	close(1);
-	dup2(cmd->fd, STDOUT_FILENO);
 	free(file);
+	cmd->saved_out = dup(STDOUT_FILENO);
+	close(STDOUT_FILENO);
+	dup2(cmd->fd, STDOUT_FILENO);
 	cmd->redir_stdout = 1;
 }

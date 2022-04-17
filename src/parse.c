@@ -40,79 +40,50 @@ void	split_var_decl(char *line, t_command *cmd)
 	cmd->args[meas[2]] = NULL;
 }
 
-void	fill_cmd_fields(char **tmp, t_command *cmd)
-{
-	int	i;
-	int	args_num;
-
-	i = 0;
-	args_num = count_args(tmp);
-	malloc_and_check_char_ptr(&cmd->args, args_num + 1);
-	while (tmp[i] && ft_strncmp(tmp[i], "<\0", 2) && ft_strncmp(tmp[i], "<<\0", 3) && ft_strncmp(tmp[i], ">\0", 2) && ft_strncmp(tmp[i], ">>\0", 3))
-	{
-		if (i == 0)
-		{
-			malloc_and_check_char(&cmd->cmd, next_arg_len(tmp[i]) + 1);
-			ft_strlcpy(cmd->cmd, tmp[i], next_arg_len(tmp[i]) + 1);
-		}
-		malloc_and_check_char(&cmd->args[i], next_arg_len(tmp[i]) + 1);
-		ft_strlcpy(cmd->args[i], tmp[i], next_arg_len(tmp[i]) + 1);
-		free(tmp[i]);
-		i++;
-	}
-	cmd->args[i] = NULL;
-	while (tmp[i])
-		free(tmp[i++]);
-	free(tmp);
-}
-
-void	define_pipe(t_command *cmd)
-{
-	if (pipe(cmd->piped_fd) == -1)
-		die("Error while piping");
-	cmd->saved_out = dup(1);
-	close(1);
-	dup2(cmd->piped_fd[1], 1);
-}
-
-void	check_pipe(char *line, t_command *cmd)
+void	fill_cmd_fields(char **tmp, t_command *cmd, int start)
 {
 	int			i;
-	int			bench;
-	int			s_quot;
-	int			d_quot;
-	t_command	*piped;
+	int			j;
+	int			args_num;
+	t_command	*next;
 
-	i = 0;
-	s_quot = 0;
-	d_quot = 0;
-	while (line[i])
+	args_num = count_args(tmp);
+	malloc_and_check_char_ptr(&cmd->args, args_num + 1);
+	i = start;
+	j = 0;
+	while (tmp[i] && !is_token(tmp[i]))
 	{
-		if (line[i] == '\'' && !s_quot && !d_quot)
-			s_quot = 1;
-		else if (line[i] == '\'' && s_quot && !d_quot)
-			s_quot = 0;
-		else if (line[i] == '"' && !d_quot && !s_quot)
-			d_quot = 1;
-		else if (line[i] == '"' && d_quot && !s_quot)
-			d_quot = 0;
-		else if (line[i] == '|' && !d_quot && !s_quot)
+		if (i == start)
 		{
-			bench = i;
-			cmd->to_pipe = 1;
+			malloc_and_check_char(&cmd->cmd, next_arg_len(tmp[i]) + 2);
+			ft_strlcpy(cmd->cmd, tmp[i], next_arg_len(tmp[i]) + 1);
 		}
+		malloc_and_check_char(&cmd->args[j], next_arg_len(tmp[i]) + 1);
+		ft_strlcpy(cmd->args[j], tmp[i], next_arg_len(tmp[i]) + 1);
 		i++;
+		j++;
 	}
-	if (cmd->to_pipe)
+	cmd->args[j] = NULL;
+	if (tmp[i] && (cmd->to_pipe || cmd->to_pipe_to))
 	{
-		piped = malloc(sizeof(t_command));
-		if (!piped)
+		next = malloc(sizeof(t_command));
+		if (!next)
 			die("Malloc error");
-		init_cmd(piped);
-		cmd->next = piped;
-		define_pipe(cmd);
-		split_command(&line[bench + 1], piped);
+		init_cmd(next);
+		cmd->next = next;
+		next->prev = cmd;
+		++i;
+		fill_cmd_fields(tmp, next, i);
 	}
+	if (cmd->first)
+	{
+		i = 0;
+		while (tmp[i])
+			free(tmp[i++]);
+		free(tmp);
+	}
+	else
+		cmd->to_pipe_to = 1;
 }
 
 void	split_command(char *line, t_command *cmd)
@@ -128,6 +99,7 @@ void	split_command(char *line, t_command *cmd)
 	else
 	{
 		tmp = ft_split(line, ' ');
-		fill_cmd_fields(tmp, cmd);
+		cmd->first = 1;
+		fill_cmd_fields(tmp, cmd, 0);
 	}
 }

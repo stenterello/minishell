@@ -14,10 +14,16 @@ void	init_cmd(t_command *cmd)
 	cmd->opt = NULL;
 	cmd->args = NULL;
 	cmd->next = NULL;
+	cmd->prev = NULL;
 	cmd->redir_stdin = 0;
 	cmd->redir_stdout = 0;
 	cmd->redir_stderr = 0;
 	cmd->to_pipe = 0;
+	cmd->first = 0;
+	cmd->saved_in = 0;
+	cmd->saved_out = 0;
+	cmd->saved_err = 0;
+	cmd->fd = 0;
 }
 
 void	take_input(t_input *input)
