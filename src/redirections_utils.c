@@ -53,7 +53,7 @@ void	check_pipe(char *line, t_command *cmd)
 			d_quot = 1;
 		else if (line[i] == '"' && d_quot && !s_quot)
 			d_quot = 0;
-		else if (line[i] == '|' && !d_quot && !s_quot)
+		else if (line[i] == '|' && !d_quot && !s_quot && line[i + 1] != '|')
 			cmd->to_pipe = 1;
 		i++;
 	}
