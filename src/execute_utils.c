@@ -25,7 +25,6 @@ void	cmd_not_found(t_command *cmd)
 int	search_in_dir(DIR *stream, t_command *cmd, char *dir_name)
 {
 	struct dirent	*entry;
-	pid_t			child;
 	int				status;
 
 	entry = readdir(stream);
@@ -41,24 +40,25 @@ int	search_in_dir(DIR *stream, t_command *cmd, char *dir_name)
 					define_pipe(cmd);
 				if (cmd->to_pipe_to)
 					define_pipe_to(cmd);
-				child = fork();
-				if (child == -1)
+				g_term.child = fork();
+				if (g_term.child == -1)
 					die("Error while forking");
-				if (child == 0)
+				if (g_term.child == 0)
 				{
+					add_signals();
 					free_dict(g_term.var);
 					execve(cmd->cmd, cmd->args, NULL);
 				}
 				else
 				{
 					close(cmd->piped_fd);
-					// change_signals();
-					waitpid(child, &status, 0);
+					wait3(g_term.child, &status, 0);
 				}
 				if (WIFEXITED(status))
 					g_term.last_exit = status / 256;
 				else
 					g_term.last_exit = status;
+				g_term.child = -1;
 				restore_fd(cmd);
 				return (1);
 			}

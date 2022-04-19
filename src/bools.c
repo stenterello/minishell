@@ -41,7 +41,7 @@ void	check(char *typed, t_input *input)
 	input->to_expand = 0;
 	if (!typed)
 	{
-		ft_putendl_fd("exit", 1);
+		ft_putendl_fd("exit", STDOUT_FILENO);
 		exit(0);
 	}
 	while (typed[i])
@@ -127,6 +127,7 @@ int	builtin(t_command *cmd)
 		return (0);
 	if (cmd->to_pipe || cmd->to_pipe_to)
 		restore_fd(cmd);
+	g_term.child = 0;
 	return (1);
 }
 

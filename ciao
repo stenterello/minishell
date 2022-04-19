@@ -4,3 +4,9 @@ include
 minishell
 minishell.dSYM
 src
+Makefile
+ciao
+include
+minishell
+minishell.dSYM
+src

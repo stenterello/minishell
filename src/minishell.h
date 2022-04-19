@@ -12,11 +12,12 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 #include <errno.h>
-#include <sys/types.h>
 #include <dirent.h>
 #include <fcntl.h>
-#include <sys/wait.h>
 #include <sys/types.h>
+#include <sys/time.h>
+#include <sys/resource.h>
+#include <sys/wait.h>
 #include <termios.h>
 #include <term.h>
 
@@ -46,6 +47,7 @@ typedef struct	s_term
 	int 				last_exit;
 	struct sigaction	acts;
 	t_input				input;
+	pid_t				child;
 }				t_term;
 
 typedef struct	s_command
@@ -112,7 +114,6 @@ void	define_pipe_to(t_command *cmd);
 void	restore_fd(t_command *cmd);
 int		is_redir(char *line);
 int		is_heredoc(char *line);
-void	child_signals(void);
 void	kill_proc(int sig, siginfo_t *info, void *context);
 void	malloc_and_check_char(char **dst, int len);
 void	malloc_and_check_char_ptr(char ***dst, int len);
