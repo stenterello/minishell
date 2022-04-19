@@ -44,6 +44,7 @@ void	add_signals(void)
 {
 	int	sigs[2];
 
+
 	g_term.acts.sa_sigaction = &flush;
 	sigemptyset(&g_term.acts.sa_mask);
 	g_term.acts.sa_flags = SA_RESTART;

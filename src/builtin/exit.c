@@ -34,6 +34,7 @@ void	exit_cmd(t_command *cmd)
 	ft_putendl_fd("exit", STDOUT_FILENO);
 	free_dict(g_term.env);
 	free_dict(g_term.var);
+	free(g_term.input.line);
 	if (i == 1)
 		exit(0);
 	else

@@ -28,6 +28,7 @@ int	main(void)
 			execute(&cmd); // esegue i comandi
 		}
 		free(g_term.input.line);
+		free(g_term.termi);
 	}
 	clear_history();
 	free_dict(g_term.env);

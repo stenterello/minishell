@@ -7,13 +7,17 @@ void	free_dict(t_dict *env)
 
 	tmp = env;
 	while (tmp)
-	{
-		tmp2 = tmp;
-		free(tmp2->key);
-		free(tmp2->value);
-		tmp = tmp->next;
-		free(tmp2);
-	}
+    {
+        tmp2 = tmp;
+        if (tmp2->key)
+            free(tmp2->key);
+        else
+            break ;
+        if (tmp2->value)
+            free(tmp2->value);
+        tmp = tmp->next;
+        free(tmp2);
+    }
 }
 
 void	malloc_and_check_char(char **dst, int len)
@@ -35,6 +39,8 @@ void	malloc_and_check_dict(t_dict **dst, int len)
 	*dst = malloc(sizeof(t_dict) * len);
 	if (!*dst)
 		die("Malloc error");
+	dst[0]->key = NULL;
+    dst[0]->value = NULL;
 }
 
 void	malloc_and_check_list(t_list **dst, int len)
