@@ -26,6 +26,7 @@ int	search_in_dir(DIR *stream, t_command *cmd, char *dir_name)
 {
 	struct dirent	*entry;
 	int				status;
+	int				ret;
 
 	entry = readdir(stream);
 	status = 0;
@@ -40,24 +41,30 @@ int	search_in_dir(DIR *stream, t_command *cmd, char *dir_name)
 					define_pipe(cmd);
 				if (cmd->to_pipe_to)
 					define_pipe_to(cmd);
+				
 				g_term.child = fork();
 				if (g_term.child == -1)
 					die("Error while forking");
 				if (g_term.child == 0)
 				{
-					add_signals();
+					
 					free_dict(g_term.var);
 					execve(cmd->cmd, cmd->args, NULL);
 				}
 				else
 				{
+					g_term.termi->c_lflag &= ECHOCTL;
+					ret = tcsetattr(STDIN_FILENO, TCSAFLUSH, g_term.termi);
+					if (ret < 0)
+						die("tcsetattr error");
+					close(cmd->piped_fd);
 					waitpid(g_term.child, &status, 0);
 				}
 				if (WIFEXITED(status))
 					g_term.last_exit = status / 256;
 				else
 					g_term.last_exit = status;
-				g_term.child = -1;
+				g_term.child = 0;
 				restore_fd(cmd);
 				return (1);
 			}

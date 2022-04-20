@@ -114,7 +114,7 @@ void	execute(t_command *cmd)
 					g_term.last_exit = ret / 256;
 				else
 					g_term.last_exit = ret;
-				g_term.child = -1;
+				g_term.child = 0;
 			}
 			i = 0;
 			while (tmp->args[i])

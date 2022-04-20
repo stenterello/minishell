@@ -1,8 +1,6 @@
 #ifndef MINISHELL_H
 #define MINISHELL_H
 
-#define _XOPEN_SOURCE 700
-
 #include "../include/libft/libft.h"
 #include <stdio.h>
 #include <stdlib.h>
@@ -104,6 +102,8 @@ int		set_env_var(char **args);
 void	set_sh_var(char **args);
 void	check(char *typed, t_input *input);
 void	add_signals(void);
+void	child_add_signals(void);
+void	silent_signals(void);
 void	check_redirection(char *line, t_command *cmd);
 void	check_pipe(char *line, t_command *cmd);
 void	define_input(char *line, t_command *cmd);
