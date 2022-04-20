@@ -31,39 +31,13 @@ void	take_input(t_input *input)
 {
 	char	*typed;
 	char	*tmp;
-	char	*delimiter;
-	int		i;
-	int		j;
 
 	typed = readline("whisper_hole: ");
 	check(typed, input);
 	if (is_heredoc(typed))
 	{
-		delimiter = take_delimiter(typed);
-		clean_heredoc(typed, "<<");
-		tmp = readline("> ");
-		ft_strlcat(typed, tmp, ft_strlen(typed) + ft_strlen(tmp) + 2);
-		free(tmp);
-		while (to_continue(typed, delimiter))
-		{
-			tmp = readline("> ");
-			ft_strlcat(typed, tmp, ft_strlen(typed) + ft_strlen(tmp) + 2);
-			free(tmp);
-		}
-		clean_heredoc(typed, delimiter);
-		i = 0;
-		while (typed[i] != ' ')
-			i++;
-		i++;
-		j = i;
-		while (ft_isalpha(typed[i]))
-			i++;
-		malloc_and_check_char(&input->line, i + 1);
-		ft_strlcpy(input->line, &typed[j], i - j + 1);
-		free(delimiter);
-		write_to_stdin(&typed[j]);
-		free(typed);
-		return ;
+		if (treat_heredoc(typed, input))
+			return ;
 	}
 	while (input->is_open)
 	{

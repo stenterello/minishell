@@ -29,10 +29,7 @@ char	*take_delimiter(char *line)
 
 int	to_continue(char *typed, char *delimiter)
 {
-	int	i;
-
-	i = ft_strlen(typed) - ft_strlen(delimiter);
-	if (!ft_strncmp(&typed[i], delimiter, ft_strlen(delimiter) + 1))
+	if (ft_strlen(typed) == ft_strlen(delimiter) && !ft_strncmp(typed, delimiter, ft_strlen(delimiter) + 1))
 		return (0);
 	return (1);
 }
@@ -72,4 +69,74 @@ void	write_to_stdin(char *line)
 	i = 0;
 	while (line[i])
 		ft_putchar_fd(line[i++], 1);
+}
+
+int	treat_heredoc(char *typed, t_input *input)
+{
+	char	*delimiter;
+	char	*tmp;
+	int		i;
+	int		j;
+	
+	// settare la variabile flag
+	g_term.delimiter = 1;
+	// estrazione della combinazione di caratteri limite
+	delimiter = take_delimiter(typed);
+	// liberare l'input del delimitatore e dei token di redirezione
+	clean_heredoc(typed, "<<");
+	// salvare l'indice di inizio del testo
+	i = ft_strlen(typed);
+	// proseguire nella ricezione di input
+	tmp = readline("> ");
+	// se non viene premuto Ctrl + D
+	if (tmp)
+	{
+		// allega al comando l'input
+		ft_strlcat(typed, tmp, ft_strlen(typed) + ft_strlen(tmp) + 2);
+		if (to_continue(tmp, delimiter) && g_term.delimiter == 1)
+			free(tmp);
+		while (to_continue(tmp, delimiter) && g_term.delimiter == 1)
+		{
+			tmp = readline("> ");
+			if (tmp)
+			{
+				ft_strlcat(typed, tmp, ft_strlen(typed) + ft_strlen(tmp) + 2);
+				free(tmp);
+			}
+			else
+			{
+				ft_putchar_fd('\n', STDOUT_FILENO);
+				rl_on_new_line();
+				free(tmp);
+				break ;
+			}
+		}
+	}
+	else // è stato premuto Ctrl + D, vai a capo e libera la variabile tmp
+	{
+		ft_putchar_fd('\n', STDOUT_FILENO);
+		free(tmp);
+		g_term.delimiter = -1;
+		free(typed);
+		free(delimiter);
+		return (0);
+	}
+	if (g_term.delimiter == 1)
+	{
+		clean_heredoc(typed, delimiter);
+		i = 0;
+		while (typed[i] != ' ')
+			i++;
+		i++;
+		j = i;
+		while (ft_isalpha(typed[i]))
+			i++;
+		malloc_and_check_char(&input->line, i + 1);
+		ft_strlcpy(input->line, &typed[j], i - j + 1);
+		free(delimiter);
+		write_to_stdin(&typed[j]);
+		free(typed);
+		return (1);
+	}
+	return (0);
 }

@@ -47,6 +47,7 @@ typedef struct	s_term
 	struct sigaction	acts;
 	t_input				input;
 	pid_t				child;
+	int					delimiter;
 }				t_term;
 
 typedef struct	s_command
@@ -71,6 +72,7 @@ typedef struct	s_command
 
 t_term	g_term;
 
+void	main_loop(void);
 void	die(char *msg);
 void	try_expand(t_input *input);
 void	execute(t_command *cmd);
@@ -118,6 +120,7 @@ void	malloc_and_check_char(char **dst, int len);
 void	malloc_and_check_char_ptr(char ***dst, int len);
 void	malloc_and_check_dict(t_dict **dst, int len);
 void	malloc_and_check_list(t_list **dst, int len);
+int		treat_heredoc(char *typed, t_input *input);
 char	*take_delimiter(char *line);
 void	clean_heredoc(char *line, char *bench);
 int		to_continue(char *typed, char *delimiter);
@@ -125,6 +128,7 @@ void	write_to_stdin(char *line);
 int		count_params(char *line);
 int		count_args(char **tmp);
 int		next_arg_len(char *line);
+void	save_term(struct termios **terminal);
 void	reset_term(void);
 
 #endif

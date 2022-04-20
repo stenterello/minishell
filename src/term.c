@@ -1,43 +1,50 @@
 #include "minishell.h"
 
-// PROBLEMA: Il terminale OSX, di norma, non stampa il carattere ^C
-// 			 ma quando invece killa un processo figlio lo stampa.
-
 void	reset_term(void)
 {
 	int	ret;
 
 	ret = tcsetattr(STDIN_FILENO, 0, g_term.old_term);
 	if (ret < 0)
-		die("tcsetattr error");
+		die("Error while resetting terminal configuration");
 	free(g_term.old_term);
 }
 
-void	term_data(char *line)
+void	get_term(char *line)
 {
 	int	ret;
 
 	ret = tgetent(NULL, line);
 	if (ret == -1)
 		die("Terminal database could not be found");
-	else if (ret < 0)
+	else if (ret == 0)
 		die("No such entry for TERM variable");
+}
+
+void	save_term(struct termios **terminal)
+{
+	int	ret;
+
+	*terminal = malloc(sizeof(struct termios));
+	if (!*terminal)
+		die("Malloc error");
+	ret = tcgetattr(STDIN_FILENO, *terminal);
+	if (ret < 0)
+		die("Error while retrieving terminal configuration");
 }
 
 void	init_terminal(char *line)
 {
 	int	ret;
 
-	term_data(line);
-	g_term.termi = malloc(sizeof(struct termios));
-	if (!g_term.termi)
-		die("Malloc error");
-	ret = tcgetattr(STDIN_FILENO, g_term.termi);
+	get_term(line);
+	save_term(&g_term.termi);
+	ft_bzero(&g_term.termi->c_lflag, sizeof(tcflag_t));
+	g_term.termi->c_lflag |= (OPOST | IUTF8 | CREAD | ICRNL | IXON | CS8 /*| NL0 | CR0 | TAB0 | BS0 | VT0 | FF0 */| IEXTEN | ECHO | ICANON | ISIG | ECHOE | ECHOK | ECHOKE);
+	g_term.termi->c_lflag |= ~(PARENB | PARODD | CMSPAR | HUPCL | CSTOPB | CLOCAL | CRTSCTS | IGNBRK | BRKINT | IGNPAR | PARMRK | INPCK | ISTRIP | INLCR | IGNCR | IXOFF | IUCLC | IXANY | IMAXBEL | NOFLSH | TOSTOP | ECHOPRT | FLUSHO | EXTPROC | ECHOCTL);
+	ret = tcsetattr(STDIN_FILENO, TCSAFLUSH, g_term.termi);
 	if (ret < 0)
-		die("tcgetattr error");
-	g_term.termi->c_lflag &= ~(ECHOCTL | ICANON);
-	ret = tcsetattr(STDIN_FILENO, TCSANOW, g_term.termi);
-	if (ret < 0)
-		die("tcsetattr error");
+		die("Error while initializing terminal attributes");
 	g_term.child = 0;
+	g_term.delimiter = 0;
 }

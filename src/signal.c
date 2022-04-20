@@ -10,31 +10,30 @@ void	flush(int sig, siginfo_t *info, void *context)
 	if (g_term.child && sig == SIGINT)
 	{
 		kill(g_term.child, SIGINT);
-		ft_putchar_fd('\n', STDOUT_FILENO);
+		ft_putstr_fd("^C\n", STDOUT_FILENO);
 	}
 	else if (sig == SIGINT)
 	{
-		// g_term.termi->c_lflag &= ~ (ECHO | ICANON);
-    	// tcsetattr(STDIN_FILENO, TCSAFLUSH, g_term.termi);
+		if (g_term.delimiter)
+		{
+			ft_putstr_fd("^C", STDOUT_FILENO);
+			g_term.delimiter = -1;
+		}
 		rl_replace_line("", 0);
 		ft_putchar_fd('\n', 1);
 		rl_on_new_line();
-		rl_redisplay();
+		if (!g_term.delimiter)
+			rl_redisplay();
+		else
+		{
+			free(g_term.input.line);
+			g_term.delimiter = 0;
+			main_loop();
+		}
 	}
 	else if (sig == SIGQUIT)
 	{
-		ft_putchar_fd('\n', STDIN_FILENO);
-		if (ft_strlen(g_term.input.line) > 1)
-		{
-			ft_putchar_fd('\n', 1);
-			ft_putendl_fd("exit", 1);
-			exit(0);
-		}
-		// else
-		// {
-		// 	g_term.input.line[ft_strlen(g_term.input.line) - 1] = '\0';
-		// 	rl_replace_line(g_term.input.line, 0);
-		// }
+
 	}
 }
 
@@ -46,7 +45,6 @@ void	add_signals(void)
 	sigemptyset(&g_term.acts.sa_mask);
 	sigs[0] = sigaction(SIGINT, &g_term.acts, NULL);
 	sigs[1] = sigaction(SIGQUIT, &g_term.acts, NULL);
-
 	if (sigs[0] || sigs[1])
 		die("Signal error");
 }

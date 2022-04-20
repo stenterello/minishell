@@ -1,30 +1,66 @@
 #include "minishell.h"
 
-int	main(void)
-{
-	t_command		cmd;
-	int				ret;
+// void	print_values(void)
+// {
+// 	printf("OPOST: %d\n", OPOST);
+// 	printf("IUTF8: %d\n", IUTF8);
+// 	printf("CREAD: %d\n", CREAD);
+// 	printf("ICRNL: %d\n", ICRNL);
+// 	printf("IXON: %d\n", IXON);
+// 	printf("CS8: %d\n", CS8);
+// 	printf("NL0: %d\n", NL0);
+// 	printf("CR0: %d\n", CR0);
+// 	printf("TAB0: %d\n", TAB0);
+// 	printf("BS0: %d\n", BS0);
+// 	printf("VT0: %d\n", VT0);
+// 	printf("FF0: %d\n", FF0);
+// 	printf("IEXTEN: %d\n", IEXTEN);
+// 	printf("ECHO: %d\n", ECHO);
+// 	printf("ICANON: %d\n", ICANON);
+// 	printf("ISIG: %d\n", ISIG);
+// 	printf("ECHOE: %d\n", ECHOE);
+// 	printf("ECHOK: %d\n", ECHOK);
+// 	printf("ECHOKE: %d\n", ECHOKE);
+// 	printf("ECHOCTL: %d\n", ECHOCTL);
 
-	g_term.old_term = malloc(sizeof(struct termios));
-	if (!g_term.old_term)
-		die("Malloc error");
-	ret = tcgetattr(STDIN_FILENO, g_term.old_term);
-	if (ret < 0)
-		die("tcgetattr error");
-	malloc_and_check_dict(&g_term.env, 1);
-	malloc_and_check_dict(&g_term.var, 1);
-	take_environ();
+// 	printf("PARENB: %d\n", PARENB);
+// 	printf("PARODD: %d\n", PARODD);
+// 	printf("CMSPAR: %d\n", CMSPAR);
+// 	printf("HUPCL: %d\n", HUPCL);
+// 	printf("CSTOPB: %d\n", CSTOPB);
+// 	printf("CLOCAL: %d\n", CLOCAL);
+// 	printf("IGNBRK: %d\n", IGNBRK);
+// 	printf("BRKINT: %d\n", BRKINT);
+// 	printf("IGNPAR: %d\n", IGNPAR);
+// 	printf("PARMRK: %d\n", PARMRK);
+// 	printf("INPCK: %d\n", INPCK);
+// 	printf("ISTRIP: %d\n", ISTRIP);
+// 	printf("INLCR: %d\n", INLCR);
+// 	printf("IGNCR: %d\n", IGNCR);
+// 	printf("IXOFF: %d\n", IXOFF);
+// 	printf("IUCLC: %d\n", IUCLC);
+// 	printf("IXANY: %d\n", IXANY);
+// 	printf("IMAXBEL: %d\n", IMAXBEL);
+// 	printf("NOFLSH: %d\n", NOFLSH);
+// 	printf("TOSTOP: %d\n", TOSTOP);
+// 	printf("ECHOPRT: %d\n", ECHOPRT);
+// 	printf("FLUSHO: %d\n", FLUSHO);
+// 	printf("EXPROC: %d\n", EXTPROC);
+// }
+
+void	main_loop(void)
+{
+	t_command	cmd;
+
 	while (1)
 	{
-		init_terminal(ft_getenv("TERM"));
 		init_input(&g_term.input);
 		init_cmd(&cmd);
 		add_signals();
 		take_input(&g_term.input); // prende il testo e lo mette dentro input
-		if (ft_strlen(g_term.input.line) > 0)
+		if (ft_strlen(g_term.input.line) > 0 && g_term.delimiter == 0)
 		{
-			if (!is_heredoc(g_term.input.line))
-				add_history(g_term.input.line);
+			add_history(g_term.input.line);
 			while (g_term.input.to_expand)
 			{
 				try_expand(&g_term.input); // espande variabili
@@ -35,8 +71,19 @@ int	main(void)
 			execute(&cmd); // esegue i comandi
 		}
 		free(g_term.input.line);
-		free(g_term.termi);
+		g_term.delimiter = 0;
 	}
+}
+
+int	main(void)
+{
+	//print_values();
+	save_term(&g_term.old_term);
+	malloc_and_check_dict(&g_term.env, 1);
+	malloc_and_check_dict(&g_term.var, 1);
+	take_environ();
+	init_terminal(ft_getenv("TERM"));
+	main_loop();
 	clear_history();
 	free_dict(g_term.env);
 	free_dict(g_term.var);
@@ -46,8 +93,27 @@ int	main(void)
 
 /*
 
-// aggiungi i segnali Ctrl-D Ctrl-C Ctrl-\ 
+// DA GESTIRE IL SEGNALE CTRL + \
 
-// implementa le pipe
+// Implementare pipe multiple
+
+// I redirezionamenti semplici: ne basta uno o devono essere multipli? 
+	Sono multipli su zsh, non su bash; prova 'ls > ciao > ciao2 > ciao3'
+
+// I comandi che iniziano con '<' vengono trattati come redirezionamento
+
+// i file creati in automatico dall'algoritmo presentano permessi strani,
+	come -r-Srwxr-t
+
+// Il redirezionamento di Heredoc deve essere finito di implementare
+	[La parte che finora funziona è quella in cui il processo viene 
+	interrotto dal segnale EOF di Ctrl + D]
+
+// Implementare la variabile SHLVL e l'esecuzione di minishell come processo figlio
+	[al momento produce un segmentation fault che non evidente, nel senso che può
+	essere osservato stampando l'ultimo code di uscita: echo $?]
+
+// Verificare che le configurazioni del terminale siano le stesse su Mac: al momento
+	sono implementate sulla base di terminale Linux con Bash
 
 */
