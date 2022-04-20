@@ -31,6 +31,7 @@ void	exit_cmd(t_command *cmd)
 		ft_putendl_fd("exit: numeric argument required", STDERR_FILENO);
 		return ;
 	}
+	reset_term();
 	ft_putendl_fd("exit", STDOUT_FILENO);
 	free_dict(g_term.env);
 	free_dict(g_term.var);

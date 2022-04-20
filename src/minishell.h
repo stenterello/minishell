@@ -1,8 +1,6 @@
 #ifndef MINISHELL_H
 #define MINISHELL_H
 
-#define _XOPEN_SOURCE 700
-
 #include "../include/libft/libft.h"
 #include <stdio.h>
 #include <stdlib.h>
@@ -44,6 +42,7 @@ typedef struct	s_term
 	t_dict				*env;
 	t_dict				*var;
 	struct termios		*termi;
+	struct termios		*old_term;
 	int 				last_exit;
 	struct sigaction	acts;
 	t_input				input;
@@ -126,5 +125,6 @@ void	write_to_stdin(char *line);
 int		count_params(char *line);
 int		count_args(char **tmp);
 int		next_arg_len(char *line);
+void	reset_term(void);
 
 #endif

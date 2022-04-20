@@ -2,8 +2,15 @@
 
 int	main(void)
 {
-	t_command	cmd;
+	t_command		cmd;
+	int				ret;
 
+	g_term.old_term = malloc(sizeof(struct termios));
+	if (!g_term.old_term)
+		die("Malloc error");
+	ret = tcgetattr(STDIN_FILENO, g_term.old_term);
+	if (ret < 0)
+		die("tcgetattr error");
 	malloc_and_check_dict(&g_term.env, 1);
 	malloc_and_check_dict(&g_term.var, 1);
 	take_environ();
