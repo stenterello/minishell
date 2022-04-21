@@ -113,4 +113,8 @@ int	main(void)
 // Verificare che le configurazioni del terminale siano le stesse su Mac: al momento
 	sono implementate sulla base di terminale Linux con Bash
 
+// le variabili non possono avere caratteri accentati (mi sa nemmeno altri)
+
+// Implementare cd - per l'oldpwd
+
 */
