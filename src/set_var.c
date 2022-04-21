@@ -86,3 +86,26 @@ void	set_sh_var(char **args)
 		k++;
 	}
 }
+
+void	treat_var_decl(t_command *cmd)
+{
+	int	i;
+
+	i = 0;
+	while (cmd->args[i])
+	{
+		if (!is_var_def(cmd->args[i]))
+		{
+			rewrite_args(cmd);
+			execute_tree(cmd);
+			return ;
+		}
+		i++;
+	}
+	set_sh_var(cmd->args);
+	i = 0;
+	while (cmd->args[i])
+		free(cmd->args[i++]);
+	free(cmd->args);
+	free(cmd->cmd);
+}

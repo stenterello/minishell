@@ -56,6 +56,7 @@ typedef struct	s_command
 	char	*cmd;
 	char	*opt;
 	char	**args;
+	char	*input_line;
 	void	*next;
 	void	*prev;
 	int		redir_stdin;
@@ -76,7 +77,7 @@ t_term	g_term;
 void	main_loop(void);
 void	die(char *msg);
 void	try_expand(t_input *input);
-void	execute(t_command *cmd);
+void	execute_tree(t_command *cmd);
 char	*get_path(char *line);
 char	*ft_getenv(char *line);
 char	*pwd(void);
@@ -121,7 +122,7 @@ void	malloc_and_check_char(char **dst, int len);
 void	malloc_and_check_char_ptr(char ***dst, int len);
 void	malloc_and_check_dict(t_dict **dst, int len);
 void	malloc_and_check_list(t_list **dst, int len);
-int		treat_heredoc(char *typed, t_input *input);
+int		treat_heredoc(char *typed);
 char	*take_delimiter(char *line);
 void	clean_heredoc(char *line, char *bench);
 int		to_continue(char *typed, char *delimiter);
@@ -131,5 +132,8 @@ int		count_args(char **tmp);
 int		next_arg_len(char *line);
 void	save_term(struct termios **terminal);
 void	reset_term(void);
+int		is_directory(t_command *cmd);
+void	treat_var_decl(t_command *cmd);
+void	rewrite_args(t_command *cmd);
 
 #endif

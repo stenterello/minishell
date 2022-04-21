@@ -45,5 +45,7 @@ int	next_arg_len(char *line)
 	i = 0;
 	while (line[i] && line[i] != ' ' && line[i] != '>' && line[i] != '<' && line[i] != '|')
 		i++;
+	if (line[0] == '<' || line[0] == '>')
+		return (ft_strlen(line));
 	return (i);
 }

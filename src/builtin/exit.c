@@ -33,6 +33,10 @@ void	exit_cmd(t_command *cmd)
 	}
 	reset_term();
 	ft_putendl_fd("exit", STDOUT_FILENO);
+	while (cmd->args[i])
+		free(cmd->args[i++]);
+	free(cmd->args);
+	free(cmd->cmd);
 	free_dict(g_term.env);
 	free_dict(g_term.var);
 	free(g_term.input.line);

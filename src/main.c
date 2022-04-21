@@ -68,9 +68,10 @@ void	main_loop(void)
 			}
 			cmd.first = 1;
 			split_command(g_term.input.line, &cmd); // divide la stringa in array di stringhe
-			execute(&cmd); // esegue i comandi
+			execute_tree(&cmd); // esegue i comandi
 		}
-		free(g_term.input.line);
+		if (g_term.input.line)
+			free(g_term.input.line);
 		g_term.delimiter = 0;
 	}
 }
@@ -100,18 +101,14 @@ int	main(void)
 // I redirezionamenti semplici: ne basta uno o devono essere multipli? 
 	Sono multipli su zsh, non su bash; prova 'ls > ciao > ciao2 > ciao3'
 
-// I comandi che iniziano con '<' vengono trattati come redirezionamento
-
-// i file creati in automatico dall'algoritmo presentano permessi strani,
-	come -r-Srwxr-t
-
 // Il redirezionamento di Heredoc deve essere finito di implementare
 	[La parte che finora funziona è quella in cui il processo viene 
 	interrotto dal segnale EOF di Ctrl + D]
 
 // Implementare la variabile SHLVL e l'esecuzione di minishell come processo figlio
-	[al momento produce un segmentation fault che non evidente, nel senso che può
-	essere osservato stampando l'ultimo code di uscita: echo $?]
+	[al momento produce un segmentation fault dovuta alla ricerca della variabili
+	d'ambiente attraverso environ: non trova lo spazio di memoria. E' dovuto alle
+	configurazioni del termiale?]
 
 // Verificare che le configurazioni del terminale siano le stesse su Mac: al momento
 	sono implementate sulla base di terminale Linux con Bash

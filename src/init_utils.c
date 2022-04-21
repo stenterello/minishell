@@ -13,6 +13,7 @@ void	init_cmd(t_command *cmd)
 	cmd->cmd = NULL;
 	cmd->opt = NULL;
 	cmd->args = NULL;
+	cmd->input_line = NULL;
 	cmd->next = NULL;
 	cmd->prev = NULL;
 	cmd->redir_stdin = 0;
@@ -36,7 +37,7 @@ void	take_input(t_input *input)
 	check(typed, input);
 	if (is_heredoc(typed))
 	{
-		if (treat_heredoc(typed, input))
+		if (treat_heredoc(typed))
 			return ;
 	}
 	while (input->is_open)

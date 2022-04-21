@@ -5,7 +5,7 @@ int	delimiter_len(char *line)
 	int	i;
 
 	i = 0;
-	while (ft_isalnum(line[i]))
+	while (ft_isalnum(line[i]) || is_open(line, i))
 		i++;
 	return (i);
 }
@@ -29,7 +29,7 @@ char	*take_delimiter(char *line)
 
 int	to_continue(char *typed, char *delimiter)
 {
-	if (ft_strlen(typed) == ft_strlen(delimiter) && !ft_strncmp(typed, delimiter, ft_strlen(delimiter) + 1))
+	if (ft_strlen(typed) == ft_strlen(delimiter) && !ft_strncmp(typed, delimiter, ft_strlen(delimiter)))
 		return (0);
 	return (1);
 }
@@ -39,9 +39,11 @@ void	clean_heredoc(char *line, char *bench)
 	int	i;
 
 	i = 0;
-	while (ft_strncmp(&line[i], bench, ft_strlen(bench)) && i <= (int)(ft_strlen(line) - ft_strlen(bench)))
+	while (ft_strncmp(&line[i], bench, ft_strlen(bench)) && i <= (int)(ft_strlen(line) - (int)ft_strlen(bench)))
 		i++;
-	line[i] = '\0';
+	while (!ft_isalnum(line[i]))
+		i--;
+	line[++i] = '\0';
 }
 
 char	*to_string(char *line)
@@ -62,81 +64,77 @@ char	*to_string(char *line)
 	return (ret);
 }
 
-void	write_to_stdin(char *line)
+int	treat_heredoc(char *typed)
 {
-	int	i;
-
-	i = 0;
-	while (line[i])
-		ft_putchar_fd(line[i++], 1);
-}
-
-int	treat_heredoc(char *typed, t_input *input)
-{
-	char	*delimiter;
-	char	*tmp;
-	int		i;
-	int		j;
+	t_command	*cmd;
+	t_command	*cmd2;
+	char		*delimiter;
+	char		*tmp;
+	char		*tmp2;
+	int			fd[2];
 	
-	// settare la variabile flag
 	g_term.delimiter = 1;
-	// estrazione della combinazione di caratteri limite
-	delimiter = take_delimiter(typed);
-	// liberare l'input del delimitatore e dei token di redirezione
-	clean_heredoc(typed, "<<");
-	// salvare l'indice di inizio del testo
-	i = ft_strlen(typed);
-	// proseguire nella ricezione di input
+	cmd = malloc(sizeof(t_command));
+	if (!cmd)
+		die("Malloc error");
+	init_cmd(cmd);
+	cmd2 = malloc(sizeof(t_command));
+	if (!cmd2)
+		die("Malloc error");
+	init_cmd(cmd2);
+	malloc_and_check_char(&cmd->cmd, ft_strlen(typed) + 1);
+	ft_strlcpy(cmd->cmd, typed, ft_strlen(typed) + 1);
+	cmd->input_line = NULL;
+	cmd2->input_line = NULL;
+	delimiter = take_delimiter(cmd->cmd);
+	clean_heredoc(cmd->cmd, "<<");
+	malloc_and_check_char_ptr(&cmd->args, 2);
+	malloc_and_check_char(&cmd->args[0], ft_strlen(cmd->cmd) + 1);
+	ft_strlcpy(cmd->args[0], cmd->cmd, ft_strlen(cmd->cmd) + 1);
+	cmd->args[1] = NULL;
 	tmp = readline("> ");
-	// se non viene premuto Ctrl + D
-	if (tmp)
+	while (tmp && ft_strncmp(tmp, delimiter, ft_strlen(delimiter) + 1))
 	{
-		// allega al comando l'input
-		ft_strlcat(typed, tmp, ft_strlen(typed) + ft_strlen(tmp) + 2);
-		if (to_continue(tmp, delimiter) && g_term.delimiter == 1)
-			free(tmp);
-		while (to_continue(tmp, delimiter) && g_term.delimiter == 1)
+		if (cmd2->input_line)
 		{
-			tmp = readline("> ");
-			if (tmp)
-			{
-				ft_strlcat(typed, tmp, ft_strlen(typed) + ft_strlen(tmp) + 2);
-				free(tmp);
-			}
-			else
-			{
-				ft_putchar_fd('\n', STDOUT_FILENO);
-				rl_on_new_line();
-				free(tmp);
-				break ;
-			}
+			malloc_and_check_char(&tmp2, ft_strlen(cmd2->input_line) + 1);
+			ft_strlcpy(tmp2, cmd2->input_line, ft_strlen(cmd2->input_line) + 1);
+			free(cmd2->input_line);
+			malloc_and_check_char(&cmd2->input_line, ft_strlen(tmp2) + ft_strlen(tmp) + 3);
+			ft_strlcpy(cmd2->input_line, tmp2, ft_strlen(tmp2) + 1);
+			ft_strlcat(cmd2->input_line, "\n", ft_strlen(cmd2->input_line) + 2);
+			ft_strlcat(cmd2->input_line, tmp, ft_strlen(tmp) + ft_strlen(tmp2) + 2);
+			ft_strlcat(cmd2->input_line, "\n", ft_strlen(cmd2->input_line) + 2);
+			free(tmp2);
 		}
-	}
-	else // è stato premuto Ctrl + D, vai a capo e libera la variabile tmp
-	{
-		ft_putchar_fd('\n', STDOUT_FILENO);
+		else
+		{
+			malloc_and_check_char(&cmd2->input_line, ft_strlen(tmp) + 1);
+			ft_strlcpy(cmd2->input_line, tmp, ft_strlen(tmp) + 1);
+		}
 		free(tmp);
-		g_term.delimiter = -1;
-		free(typed);
-		free(delimiter);
-		return (0);
+		tmp = readline("> ");
 	}
-	if (g_term.delimiter == 1)
-	{
-		clean_heredoc(typed, delimiter);
-		i = 0;
-		while (typed[i] != ' ')
-			i++;
-		i++;
-		j = i;
-		while (ft_isalpha(typed[i]))
-			i++;
-		malloc_and_check_char(&input->line, i + 1);
-		ft_strlcpy(input->line, &typed[j], i - j + 1);
-		free(delimiter);
-		write_to_stdin(&typed[j]);
-		free(typed);
-		return (1);
-	}
-	return (0);
+	free(tmp);
+	free(delimiter);
+	cmd->next = cmd2;
+	cmd2->prev = cmd;
+	// cmd->to_pipe_to = 1;
+	// cmd2->to_pipe = 1;
+	if (pipe(fd) == -1)
+		die("Error while piping");
+	cmd->piped_fd = fd[0];
+	cmd2->piped_fd = fd[1];
+	cmd->saved_out = dup(0);
+	close(0);
+	cmd2->saved_in = dup(1);
+	close(1);
+	dup2(cmd->piped_fd, 0);
+	close(cmd->piped_fd);
+	dup2(cmd2->piped_fd, 1);
+	close(cmd2->piped_fd);
+	execute_tree(cmd);
+	free(cmd);
+	free(cmd2);
+	return (1);
 }

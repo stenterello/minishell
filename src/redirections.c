@@ -26,7 +26,7 @@ void	define_input(char *line, t_command *cmd)
 	len = file_len(&line[i]);
 	malloc_and_check_char(&input, len + 1);
 	ft_strlcpy(input, &line[i], len + 1);
-	cmd->fd = open(input, O_CREAT);
+	cmd->fd = open(input, O_CREAT, 0666);
 	if (cmd->fd < 0)
 		die("Error while opening file");
 	cmd->saved_in = dup(0);

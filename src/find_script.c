@@ -15,13 +15,6 @@ void	get_full_path(char *dir_name, t_command *cmd)
 	free(tmp);
 }
 
-void	cmd_not_found(t_command *cmd)
-{
-	ft_putstr_fd(cmd->cmd, STDERR_FILENO);
-	ft_putendl_fd(": command not found", STDERR_FILENO);
-	g_term.last_exit = 127;
-}
-
 int	search_in_dir(DIR *stream, t_command *cmd, char *dir_name)
 {
 	struct dirent	*entry;
@@ -67,34 +60,6 @@ int	search_in_dir(DIR *stream, t_command *cmd, char *dir_name)
 		entry = readdir(stream);
 	}
 	return (0);
-}
-
-char	*ft_getenv(char *line)
-{
-	t_dict	*tmp;
-	t_dict	*tmp2;
-
-	if (g_term.env)
-	{
-		tmp = g_term.env;
-		while (tmp)
-		{
-			if (!ft_strncmp(tmp->key, line, ft_strlen(line) + 1))
-				return (tmp->value);
-			tmp = tmp->next;
-		}
-	}
-	if (g_term.var && g_term.var->key)
-	{
-		tmp2 = g_term.var;
-		while (tmp2)
-		{
-			if (!ft_strncmp(tmp2->key, line, ft_strlen(line) + 1))
-				return (tmp2->value);
-			tmp2 = tmp2->next;
-		}
-	}
-	return (NULL);
 }
 
 int	find_script(t_command *cmd)

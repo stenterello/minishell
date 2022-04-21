@@ -1,6 +1,5 @@
 #include "minishell.h"
 
-
 int	is_var_def(char *line)
 {
 	int	i;
@@ -97,6 +96,8 @@ int	builtin(t_command *cmd)
 {
 	char	*ret;
 
+	if (!cmd->cmd)
+		return (0);
 	if (!ft_strncmp(cmd->cmd, "pwd\0", 4))
 	{
 		ret = pwd();
