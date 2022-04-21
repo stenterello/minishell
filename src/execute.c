@@ -46,6 +46,32 @@ void	kill_proc(int sig, siginfo_t *info, void *context)
 	}
 }
 
+char	*last_field(char *line)
+{
+	int	i;
+
+	i = ft_strlen(line) - 1;
+	while (line && line[i] != '/')
+		i--;
+	return (&line[++i]);
+}
+
+int	is_directory(t_command *cmd)
+{
+	struct stat	file_stat;
+
+	stat(cmd->cmd, &file_stat);
+	if ((file_stat.st_mode & __S_IFMT) == __S_IFDIR)
+	{
+		ft_putstr_fd(last_field(ft_getenv("SHELL")), STDOUT_FILENO);
+		ft_putstr_fd(": ", STDOUT_FILENO);
+		ft_putstr_fd(cmd->cmd, STDOUT_FILENO);
+		ft_putendl_fd(": Is a directory", STDOUT_FILENO);
+		return (1);
+	}
+	return (0);
+}
+
 void	execute(t_command *cmd)
 {
 	int			i;
@@ -98,6 +124,14 @@ void	execute(t_command *cmd)
 			}
 			else
 			{
+				if (is_directory(cmd))
+				{
+					while (tmp->args[i])
+						free(tmp->args[i++]);
+					free(tmp->args);
+					free(tmp->cmd);
+					return ;
+				}
 				g_term.child = fork();
 				if (g_term.child == -1)
 					die("Error while forking");
