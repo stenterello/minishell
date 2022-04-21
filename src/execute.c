@@ -33,6 +33,7 @@ void	execute_tree(t_command *cmd)
 	int			i;
 	int			ret;
 	t_command	*tmp;
+	t_command	*tmp2;
 
 	i = 0;
 	ret = 0;
@@ -48,7 +49,23 @@ void	execute_tree(t_command *cmd)
 	{
 		exit_cmd(tmp);
 		return ;
-	}	
+	}
+	else if (tmp->input_line)
+	{
+		ft_putstr_fd(tmp->input_line, tmp->piped_fd);
+		close(tmp->piped_fd);
+		waitpid(g_term.child, &ret, 0);
+		if (WIFEXITED(ret))
+			g_term.last_exit = ret / 256;
+		else
+			g_term.last_exit = ret;
+		g_term.child = 0;
+		tmp2 = cmd->prev;
+		restore_fd(tmp);
+		restore_fd(tmp2);
+		free(tmp->input_line);
+		free(tmp);
+	}
 	while (tmp)
 	{
 		if (!builtin(tmp))
@@ -71,13 +88,15 @@ void	execute_tree(t_command *cmd)
 					free_dict(g_term.var);
 					execve(tmp->cmd, tmp->args, NULL);
 				}
-				else
+				else if (!g_term.delimiter)
+				{
 					waitpid(g_term.child, &ret, 0);
-				if (WIFEXITED(ret))
-					g_term.last_exit = ret / 256;
-				else
-					g_term.last_exit = ret;
-				g_term.child = 0;
+					if (WIFEXITED(ret))
+						g_term.last_exit = ret / 256;
+					else
+						g_term.last_exit = ret;
+					g_term.child = 0;
+				}
 			}
 		}
 		tmp = tmp->next;

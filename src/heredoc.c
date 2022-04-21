@@ -71,7 +71,6 @@ int	treat_heredoc(char *typed)
 	char		*delimiter;
 	char		*tmp;
 	char		*tmp2;
-	int			fd[2];
 	
 	g_term.delimiter = 1;
 	cmd = malloc(sizeof(t_command));
@@ -119,20 +118,8 @@ int	treat_heredoc(char *typed)
 	free(delimiter);
 	cmd->next = cmd2;
 	cmd2->prev = cmd;
-	// cmd->to_pipe_to = 1;
-	// cmd2->to_pipe = 1;
-	if (pipe(fd) == -1)
-		die("Error while piping");
-	cmd->piped_fd = fd[0];
-	cmd2->piped_fd = fd[1];
-	cmd->saved_out = dup(0);
-	close(0);
-	cmd2->saved_in = dup(1);
-	close(1);
-	dup2(cmd->piped_fd, 0);
-	close(cmd->piped_fd);
-	dup2(cmd2->piped_fd, 1);
-	close(cmd2->piped_fd);
+	define_pipe(cmd);
+	define_pipe_to(cmd2);
 	execute_tree(cmd);
 	free(cmd);
 	free(cmd2);

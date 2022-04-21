@@ -115,6 +115,11 @@ int	main(void)
 
 // le variabili non possono avere caratteri accentati (mi sa nemmeno altri)
 
-// Implementare cd - per l'oldpwd
+// Controllare i canali di scrittura per quanto riguarda i messaggi d'errore: sono sullo
+	stderr? Verificare
+
+// Implementare perror() e strerror() per la gestione degli errori?
+
+// I builtin aggiornano tutti il last exit della variabile $? ?
 
 */

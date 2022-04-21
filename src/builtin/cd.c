@@ -6,11 +6,23 @@ void	cd(t_command *cmd)
 	int		ret;
 
 	ret = 0;
-	if (!cmd->args[1])
+	if (cmd->args[1] && !ft_strncmp(cmd->args[1], "-\0", 2))
+	{
+		ret = chdir(ft_getenv("OLDPWD"));
+		if (ret == -1)
+		{
+			ft_putstr_fd(last_field(ft_getenv("SHELL")), 2);
+			ft_putendl_fd(": cd: no OLDPWD in variables", 2);
+			g_term.last_exit = 1;
+			return ;
+		}
+	}
+	else if (!cmd->args[1])
 	{
 		ret = chdir(ft_getenv("HOME"));
 		if (ret == -1)
 		{
+			//ft_putendl_fd("No such file or directory", 2);
 			printf("%s\n", strerror(errno));
 			g_term.last_exit = 1;
 		}

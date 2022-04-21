@@ -135,5 +135,6 @@ void	reset_term(void);
 int		is_directory(t_command *cmd);
 void	treat_var_decl(t_command *cmd);
 void	rewrite_args(t_command *cmd);
+char	*last_field(char *line);
 
 #endif
