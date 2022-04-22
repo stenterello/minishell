@@ -24,14 +24,32 @@ void	restore_fd(t_command *cmd)
 
 void	check_redirection(char *line, t_command *cmd)
 {
-	if (is_redir(line) == -1)
-		return ;
-	else if (is_redir(line) == 0)
-		define_input(line, cmd);
-	else if (is_redir(line) == 1)
-		define_output(line, cmd);
-	else if (is_redir(line) == 3)
-		define_append_output(line, cmd);
+	char	*tmp;
+
+	tmp = line;
+	while (ft_strchr(tmp, '<') != NULL || ft_strchr(tmp, '>') != NULL)
+	{
+		if (is_redir(tmp) == -1)
+			return ;
+		else if (is_redir(tmp) == 0)
+		{
+			define_input(tmp, cmd);
+			tmp = ft_strchr(tmp, '<');
+			tmp++;
+		}
+		else if (is_redir(tmp) == 1)
+		{
+			define_output(tmp, cmd);
+			tmp = ft_strchr(tmp, '>');
+			tmp++;
+		}
+		else if (is_redir(tmp) == 3)
+		{
+			define_append_output(tmp, cmd);
+			tmp = ft_strchr(tmp, '>');
+			tmp += 2;
+		}
+	}
 }
 
 void	check_pipe(char *line, t_command *cmd)

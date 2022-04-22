@@ -41,7 +41,7 @@ void	init_terminal(char *line)
 	save_term(&g_term.termi);
 	ft_bzero(&g_term.termi->c_lflag, sizeof(tcflag_t));
 	g_term.termi->c_lflag |= (ICANON | ISIG | IEXTEN | ECHO | ECHOE | ECHOK | ECHOKE | PENDIN);
-	g_term.termi->c_lflag |= ~(ECHONL | ECHOPRT | ALTWERASE | NOFLSH | TOSTOP | FLUSHO | NOKERNINFO | EXTPROC | ECHOCTL);
+	g_term.termi->c_lflag |= ~(ECHONL | ECHOPRT | /*ALTWERASE |*/ NOFLSH | TOSTOP | FLUSHO |/* NOKERNINFO |*/ EXTPROC | ECHOCTL);
 	ret = tcsetattr(STDIN_FILENO, TCSAFLUSH, g_term.termi);
 	if (ret < 0)
 		die("Error while initializing terminal attributes");
