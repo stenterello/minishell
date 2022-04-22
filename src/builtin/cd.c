@@ -73,6 +73,8 @@ void	cd(t_command *cmd)
 	}
 	else if (cmd->args[2])
 	{
+		// Quali delle due gestioni dell'errore?
+		printf("%s: %s: %s\n", last_field(ft_getenv("SHELL")), cmd->cmd, strerror(errno));
 		ft_putstr_fd(cmd->cmd, STDERR_FILENO);
 		ft_putendl_fd(": too many arguments", STDERR_FILENO);
 		g_term.last_exit = 1;
