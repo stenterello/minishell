@@ -3,14 +3,14 @@
 void	restore_output(t_command *cmd)
 {
 	close(STDOUT_FILENO);
-	dup2(cmd->saved_out, 1);
+	dup2(cmd->saved_out, STDOUT_FILENO);
 	close(cmd->saved_out);
 }
 
 void	restore_input(t_command *cmd)
 {
 	close(STDIN_FILENO);
-	dup2(cmd->saved_in, 0);
+	dup2(cmd->saved_in, STDIN_FILENO);
 	close(cmd->saved_in);
 }
 
@@ -79,4 +79,20 @@ void	define_pipe_to(t_command *cmd)
 	cmd->saved_in = dup(STDIN_FILENO);
 	close(STDIN_FILENO);
 	dup2(cmd->piped_fd, STDIN_FILENO);
+}
+
+void	define_heredoc_pipe(t_command *cmd)
+{
+	int			piped[2];
+	t_command	*tmp;
+
+	if (pipe(piped) == -1)
+		die("Error while piping");
+	cmd->piped_fd = piped[1];
+	tmp = cmd->next;
+	tmp->piped_fd = piped[0];
+	tmp->saved_in = dup(STDOUT_FILENO);
+	close(STDIN_FILENO);
+	dup2(tmp->piped_fd, STDIN_FILENO);
+	close(tmp->piped_fd);
 }

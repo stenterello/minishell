@@ -101,9 +101,8 @@ int	main(void)
 // I redirezionamenti semplici: ne basta uno o devono essere multipli? 
 	Sono multipli su zsh, non su bash; prova 'ls > ciao > ciao2 > ciao3'
 
-// Il redirezionamento di Heredoc deve essere finito di implementare
-	[La parte che finora funziona è quella in cui il processo viene 
-	interrotto dal segnale EOF di Ctrl + D]
+// La free a riga 129 di heredoc.c non dovrebbe dare invalid
+	pointer nel caso in cui venga premuto Ctrl + D durante una readline?
 
 // Implementare la variabile SHLVL e l'esecuzione di minishell come processo figlio
 	[al momento produce un segmentation fault dovuta alla ricerca della variabili

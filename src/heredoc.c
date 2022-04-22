@@ -71,6 +71,7 @@ int	treat_heredoc(char *typed)
 	char		*delimiter;
 	char		*tmp;
 	char		*tmp2;
+	int			i;
 	
 	g_term.delimiter = 1;
 	cmd = malloc(sizeof(t_command));
@@ -81,45 +82,55 @@ int	treat_heredoc(char *typed)
 	if (!cmd2)
 		die("Malloc error");
 	init_cmd(cmd2);
-	malloc_and_check_char(&cmd->cmd, ft_strlen(typed) + 1);
-	ft_strlcpy(cmd->cmd, typed, ft_strlen(typed) + 1);
-	cmd->input_line = NULL;
+	malloc_and_check_char(&cmd2->cmd, ft_strlen(typed) + 1);
+	ft_strlcpy(cmd2->cmd, typed, ft_strlen(typed) + 1);
 	cmd2->input_line = NULL;
-	delimiter = take_delimiter(cmd->cmd);
-	clean_heredoc(cmd->cmd, "<<");
-	malloc_and_check_char_ptr(&cmd->args, 2);
-	malloc_and_check_char(&cmd->args[0], ft_strlen(cmd->cmd) + 1);
-	ft_strlcpy(cmd->args[0], cmd->cmd, ft_strlen(cmd->cmd) + 1);
-	cmd->args[1] = NULL;
+	cmd->input_line = NULL;
+	delimiter = take_delimiter(cmd2->cmd);
+	clean_heredoc(cmd2->cmd, "<<");
+	malloc_and_check_char_ptr(&cmd2->args, 2);
+	malloc_and_check_char(&cmd2->args[0], ft_strlen(cmd2->cmd) + 1);
+	ft_strlcpy(cmd2->args[0], cmd2->cmd, ft_strlen(cmd2->cmd) + 1);
+	cmd2->args[1] = NULL;
 	tmp = readline("> ");
+	i = 1;
 	while (tmp && ft_strncmp(tmp, delimiter, ft_strlen(delimiter) + 1))
 	{
-		if (cmd2->input_line)
+		if (cmd->input_line)
 		{
-			malloc_and_check_char(&tmp2, ft_strlen(cmd2->input_line) + 1);
-			ft_strlcpy(tmp2, cmd2->input_line, ft_strlen(cmd2->input_line) + 1);
-			free(cmd2->input_line);
-			malloc_and_check_char(&cmd2->input_line, ft_strlen(tmp2) + ft_strlen(tmp) + 3);
-			ft_strlcpy(cmd2->input_line, tmp2, ft_strlen(tmp2) + 1);
-			ft_strlcat(cmd2->input_line, "\n", ft_strlen(cmd2->input_line) + 2);
-			ft_strlcat(cmd2->input_line, tmp, ft_strlen(tmp) + ft_strlen(tmp2) + 2);
-			ft_strlcat(cmd2->input_line, "\n", ft_strlen(cmd2->input_line) + 2);
+			malloc_and_check_char(&tmp2, ft_strlen(cmd->input_line) + 1);
+			ft_strlcpy(tmp2, cmd->input_line, ft_strlen(cmd->input_line) + 1);
+			free(cmd->input_line);
+			malloc_and_check_char(&cmd->input_line, ft_strlen(tmp2) + ft_strlen(tmp) + 3);
+			ft_strlcpy(cmd->input_line, tmp2, ft_strlen(tmp2) + 1);
+			ft_strlcat(cmd->input_line, tmp, ft_strlen(tmp) + ft_strlen(tmp2) + 2);
+			ft_strlcat(cmd->input_line, "\n", ft_strlen(cmd->input_line) + 2);
 			free(tmp2);
 		}
 		else
 		{
-			malloc_and_check_char(&cmd2->input_line, ft_strlen(tmp) + 1);
-			ft_strlcpy(cmd2->input_line, tmp, ft_strlen(tmp) + 1);
+			malloc_and_check_char(&cmd->input_line, ft_strlen(tmp) + 1);
+			ft_strlcpy(cmd->input_line, tmp, ft_strlen(tmp) + 1);
+			ft_strlcat(cmd->input_line, "\n", ft_strlen(cmd->input_line) + 2);
 		}
 		free(tmp);
+		i++;
 		tmp = readline("> ");
+	}
+	if (!tmp)
+	{
+		ft_putstr_fd(last_field(ft_getenv("SHELL")), 2);
+		ft_putstr_fd(": attention: here-document on line ", 2);
+		ft_putnbr_fd(i, 2);
+		ft_putstr_fd(" is delimited by an EOF (\"", 2);
+		ft_putstr_fd(delimiter, 2);
+		ft_putendl_fd("\" was required)", 2);
 	}
 	free(tmp);
 	free(delimiter);
 	cmd->next = cmd2;
 	cmd2->prev = cmd;
-	define_pipe(cmd);
-	define_pipe_to(cmd2);
+	define_heredoc_pipe(cmd);
 	execute_tree(cmd);
 	free(cmd);
 	free(cmd2);

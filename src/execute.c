@@ -33,7 +33,7 @@ void	execute_tree(t_command *cmd)
 	int			i;
 	int			ret;
 	t_command	*tmp;
-	t_command	*tmp2;
+	//t_command	*tmp2;
 
 	i = 0;
 	ret = 0;
@@ -43,35 +43,24 @@ void	execute_tree(t_command *cmd)
 		treat_var_decl(tmp);
 		return ;
 	}
-	else if (!tmp->cmd && ft_strchr(tmp->args[0], '=') && tmp->args[0][0] != '=' && tmp->args[1])
+	else if (!tmp->cmd && tmp->args && ft_strchr(tmp->args[0], '=') && tmp->args[0][0] != '=' && tmp->args[1])
 		rewrite_args(tmp);
-	else if (!ft_strncmp(tmp->cmd, "exit\0", 5))
+	else if (tmp->cmd && !ft_strncmp(tmp->cmd, "exit\0", 5))
 	{
 		exit_cmd(tmp);
 		return ;
-	}
-	else if (tmp->input_line)
-	{
-		ft_putstr_fd(tmp->input_line, tmp->piped_fd);
-		close(tmp->piped_fd);
-		waitpid(g_term.child, &ret, 0);
-		if (WIFEXITED(ret))
-			g_term.last_exit = ret / 256;
-		else
-			g_term.last_exit = ret;
-		g_term.child = 0;
-		tmp2 = cmd->prev;
-		restore_fd(tmp);
-		restore_fd(tmp2);
-		free(tmp->input_line);
-		free(tmp);
 	}
 	while (tmp)
 	{
 		if (!builtin(tmp))
 		{
+			if (tmp->input_line)
+			{
+				ft_putstr_fd(tmp->input_line, tmp->piped_fd);
+				close(tmp->piped_fd);
+			}
 			// Se non c'è indirizzo del file, cerca nel PATH
-			if (ft_strchr(tmp->cmd, '/') == NULL)
+			else if (ft_strchr(tmp->cmd, '/') == NULL)
 			{
 				if (find_script(tmp) == -1)
 					cmd_not_found(tmp);
@@ -90,6 +79,7 @@ void	execute_tree(t_command *cmd)
 				}
 				else if (!g_term.delimiter)
 				{
+					close(cmd->piped_fd);
 					waitpid(g_term.child, &ret, 0);
 					if (WIFEXITED(ret))
 						g_term.last_exit = ret / 256;

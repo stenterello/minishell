@@ -19,7 +19,6 @@ int	search_in_dir(DIR *stream, t_command *cmd, char *dir_name)
 {
 	struct dirent	*entry;
 	int				status;
-	// int				ret;
 
 	entry = readdir(stream);
 	status = 0;
@@ -34,7 +33,6 @@ int	search_in_dir(DIR *stream, t_command *cmd, char *dir_name)
 					define_pipe(cmd);
 				if (cmd->to_pipe_to)
 					define_pipe_to(cmd);
-				
 				g_term.child = fork();
 				if (g_term.child == -1)
 					die("Error while forking");
@@ -45,15 +43,31 @@ int	search_in_dir(DIR *stream, t_command *cmd, char *dir_name)
 				}
 				else
 				{
-					close(cmd->piped_fd);
-					waitpid(g_term.child, &status, 0);
+					if (!g_term.delimiter)
+					{
+						close(cmd->piped_fd);
+						waitpid(g_term.child, &status, 0);
+						if (WIFEXITED(status))
+							g_term.last_exit = status / 256;
+						else
+							g_term.last_exit = status;
+						g_term.child = 0;
+						restore_fd(cmd);
+					}
+					else
+					{
+						close(STDIN_FILENO);
+						close(cmd->piped_fd);
+						waitpid(g_term.child, &status, 0);			
+						if (WIFEXITED(status))
+							g_term.last_exit = status / 256;
+						else
+							g_term.last_exit = status;
+						g_term.child = 0;
+						dup2(cmd->saved_in, STDIN_FILENO);
+						close(cmd->saved_in);
+					}
 				}
-				if (WIFEXITED(status))
-					g_term.last_exit = status / 256;
-				else
-					g_term.last_exit = status;
-				g_term.child = 0;
-				restore_fd(cmd);
 				return (1);
 			}
 		}
