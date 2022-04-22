@@ -112,7 +112,7 @@ int	main(void)
 // Verificare che le configurazioni del terminale siano le stesse su Mac: al momento
 	sono implementate sulla base di terminale Linux con Bash
 
-// le variabili non possono avere caratteri accentati (mi sa nemmeno altri)
+// Le variabili non possono avere caratteri accentati (mi sa nemmeno altri)
 
 // Controllare i canali di scrittura per quanto riguarda i messaggi d'errore: sono sullo
 	stderr? Verificare
