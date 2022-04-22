@@ -34,7 +34,6 @@ void	export(t_command *cmd)
 {
 	int		len;
 	int		i;
-	t_dict	*tmp;
 	t_dict	*new;
 
 	new = NULL;
@@ -58,9 +57,10 @@ void	export(t_command *cmd)
 	malloc_and_check_char(&new->value, len + 1);
 	ft_strlcpy(new->value, &cmd->args[1][i + 1], len + 1);
 	new->next = NULL;
-	tmp = g_term.env;
-	while (tmp->next)
-		tmp = tmp->next;
-	tmp->next = new;
+	if (!change_exist_var_in_dict(new->key, new->value, g_term.env))
+		insert_into_vars(new->key, new->value, g_term.env);
+	free(new->key);
+	free(new->value);
+	free(new);
 	g_term.last_exit = 0;
 }

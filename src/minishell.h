@@ -138,5 +138,7 @@ void	treat_var_decl(t_command *cmd);
 void	rewrite_args(t_command *cmd);
 char	*last_field(char *line);
 char	**split_fields(char *s, char c);
+int		change_exist_var_in_dict(char *key, char *value, t_dict *where);
+void	insert_into_vars(char *key, char *value, t_dict *where);
 
 #endif

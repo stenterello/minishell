@@ -1,11 +1,11 @@
 #include "minishell.h"
 
-void	insert_into_vars(char *key, char *value)
+void	insert_into_vars(char *key, char *value, t_dict *where)
 {
 	t_dict	*tmp;
 	t_dict	*new;
 
-	tmp = g_term.var;
+	tmp = where;
 	new = NULL;
 	while (tmp->next)
 		tmp = tmp->next;
@@ -79,7 +79,7 @@ void	set_sh_var(char **args)
 		if (!change_exist_var_in_dict(key, value, g_term.env))
 		{
 			if (!change_exist_var_in_dict(key, value, g_term.var))
-				insert_into_vars(key, value);
+				insert_into_vars(key, value, g_term.var);
 		}
 		free(key);
 		free(value);

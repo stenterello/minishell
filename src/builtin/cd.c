@@ -28,6 +28,8 @@ void	cd(t_command *cmd)
 		{
 			g_term.last_exit = 0;
 			malloc_and_check_char_ptr(&old_pwd->args, 3);
+			malloc_and_check_char(&old_pwd->args[0], 2);
+			ft_strlcpy(old_pwd->args[0], "A", 2);
 			malloc_and_check_char(&old_pwd->args[1], ft_strlen("OLDPWD=") + ft_strlen(act_pwd) + 1);
 			ft_strlcpy(old_pwd->args[1], "OLDPWD=", ft_strlen("OLDPWD=") + 1);
 			ft_strlcat(old_pwd->args[1], act_pwd, ft_strlen(old_pwd->args[1]) + ft_strlen(act_pwd) + 1);
@@ -48,6 +50,8 @@ void	cd(t_command *cmd)
 		{
 			g_term.last_exit = 0;
 			malloc_and_check_char_ptr(&old_pwd->args, 3);
+			malloc_and_check_char(&old_pwd->args[0], 2);
+			ft_strlcpy(old_pwd->args[0], "A", 2);
 			malloc_and_check_char(&old_pwd->args[1], ft_strlen("OLDPWD=") + ft_strlen(act_pwd) + 1);
 			ft_strlcpy(old_pwd->args[1], "OLDPWD=", ft_strlen("OLDPWD=") + 1);
 			ft_strlcat(old_pwd->args[1], act_pwd, ft_strlen(old_pwd->args[1]) + ft_strlen(act_pwd) + 1);
@@ -74,6 +78,8 @@ void	cd(t_command *cmd)
 		{
 			g_term.last_exit = 0;
 			malloc_and_check_char_ptr(&old_pwd->args, 3);
+			malloc_and_check_char(&old_pwd->args[0], 2);
+			ft_strlcpy(old_pwd->args[0], "A", 2);
 			malloc_and_check_char(&old_pwd->args[1], ft_strlen("OLDPWD=") + ft_strlen(act_pwd) + 1);
 			ft_strlcpy(old_pwd->args[1], "OLDPWD=", ft_strlen("OLDPWD=") + 1);
 			ft_strlcat(old_pwd->args[1], act_pwd, ft_strlen(old_pwd->args[1]) + ft_strlen(act_pwd) + 1);
