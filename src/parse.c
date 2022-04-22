@@ -58,8 +58,10 @@ void	fill_cmd_fields(char **tmp, t_command *cmd, int start)
 			malloc_and_check_char(&cmd->cmd, next_arg_len(tmp[i]) + 2);
 			ft_strlcpy(cmd->cmd, tmp[i], next_arg_len(tmp[i]) + 1);
 		}
-		malloc_and_check_char(&cmd->args[j], next_arg_len(tmp[i]) + 1);
-		ft_strlcpy(cmd->args[j], tmp[i], next_arg_len(tmp[i]) + 1);
+		if (i != 0 && !ft_strncmp(cmd->cmd, "sed\0", 4))
+			tmp[i] = ft_strtrim(tmp[i], "\'");
+		malloc_and_check_char(&cmd->args[j], ft_strlen(tmp[i]) + 1);
+		ft_strlcpy(cmd->args[j], tmp[i], ft_strlen(tmp[i]) + 1);
 		i++;
 		j++;
 	}
@@ -98,7 +100,7 @@ void	split_command(char *line, t_command *cmd)
 		split_var_decl(line, cmd);
 	else
 	{
-		tmp = ft_split(line, ' ');
+		tmp = split_fields(line, ' ');
 		cmd->first = 1;
 		fill_cmd_fields(tmp, cmd, 0);
 	}

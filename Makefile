@@ -17,6 +17,7 @@ SRC=main.c \
 	redirections.c \
 	redirections_utils.c \
 	heredoc.c \
+	split_fields.c \
 	signal.c \
 	error_handling.c
 SRCS=$(addprefix src/, $(SRC))

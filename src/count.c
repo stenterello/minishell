@@ -43,7 +43,7 @@ int	next_arg_len(char *line)
 	int	i;
 
 	i = 0;
-	while (line[i] && line[i] != ' ' && line[i] != '>' && line[i] != '<' && line[i] != '|')
+	while ((line[i] && line[i] != ' ' && line[i] != '>' && line[i] != '<' && line[i] != '|' && !is_open(line, i)) || (line[i] && is_open(line, i)))
 		i++;
 	if (line[0] == '<' || line[0] == '>')
 		return (ft_strlen(line));

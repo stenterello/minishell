@@ -57,18 +57,18 @@ void	main_loop(void)
 		init_input(&g_term.input);
 		init_cmd(&cmd);
 		add_signals();
-		take_input(&g_term.input); // prende il testo e lo mette dentro input
+		take_input(&g_term.input);
 		if (ft_strlen(g_term.input.line) > 0 && g_term.delimiter == 0)
 		{
 			add_history(g_term.input.line);
 			while (g_term.input.to_expand)
 			{
-				try_expand(&g_term.input); // espande variabili
+				try_expand(&g_term.input);
 				check(g_term.input.line, &g_term.input);
 			}
 			cmd.first = 1;
-			split_command(g_term.input.line, &cmd); // divide la stringa in array di stringhe
-			execute_tree(&cmd); // esegue i comandi
+			split_command(g_term.input.line, &cmd);
+			execute_tree(&cmd);
 		}
 		if (g_term.input.line)
 			free(g_term.input.line);
@@ -110,7 +110,7 @@ int	main(void)
 	configurazioni del termiale?]
 
 // Verificare che le configurazioni del terminale siano le stesse su Mac: al momento
-	sono implementate sulla base di terminale Linux con Bash
+	sono implementate sulla base di terminale Linux con Bash (attraverso il comando stty -a)
 
 // Le variabili non possono avere caratteri accentati (mi sa nemmeno altri)
 
@@ -121,4 +121,14 @@ int	main(void)
 
 // I builtin aggiornano tutti il last exit della variabile $? ?
 
+// modificate le righe 63 e 64 del file parse.c, sostituendo al funzione ft_strlen() alla 
+	precendete next_arg_len(). Valutare se funziona tutto e in caso accantonare next_arg_len()
+
+
+// Non viene gestito il caso in cui l'input inizi per < o > puntando solo a un file
+	Esempio:
+		----$  > ciao   [crea il file ciao e lo lascia vuoto]
+		----$  < ciao	[riporta l'avviso che il file ciao è inesistente]
+
+	Per implementare questo aspetto, cominciare dalla condizione a riga 48 del file count.c
 */

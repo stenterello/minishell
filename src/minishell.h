@@ -137,5 +137,6 @@ int		is_directory(t_command *cmd);
 void	treat_var_decl(t_command *cmd);
 void	rewrite_args(t_command *cmd);
 char	*last_field(char *line);
+char	**split_fields(char *s, char c);
 
 #endif

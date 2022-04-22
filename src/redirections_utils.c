@@ -72,6 +72,7 @@ void	define_pipe(t_command *cmd)
 	cmd->saved_out = dup(1);
 	close(1);
 	dup2(cmd->piped_fd, 1);
+	close(cmd->piped_fd);
 }
 
 void	define_pipe_to(t_command *cmd)
