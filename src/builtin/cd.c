@@ -35,6 +35,12 @@ void	cd(t_command *cmd)
 			ft_strlcat(old_pwd->args[1], act_pwd, ft_strlen(old_pwd->args[1]) + ft_strlen(act_pwd) + 1);
 			old_pwd->args[2] = NULL;
 			export(old_pwd);
+			i = 0;
+			while (old_pwd->args[i])
+				free(old_pwd->args[i++]);
+			free(old_pwd->args);
+			free(act_pwd);
+			free(old_pwd);
 		}
 	}
 	else if (!cmd->args[1])
@@ -57,6 +63,12 @@ void	cd(t_command *cmd)
 			ft_strlcat(old_pwd->args[1], act_pwd, ft_strlen(old_pwd->args[1]) + ft_strlen(act_pwd) + 1);
 			old_pwd->args[2] = NULL;
 			export(old_pwd);
+			i = 0;
+			while (old_pwd->args[i])
+				free(old_pwd->args[i++]);
+			free(old_pwd->args);
+			free(act_pwd);
+			free(old_pwd);
 		}
 	}
 	else if (cmd->args[2])
@@ -85,13 +97,13 @@ void	cd(t_command *cmd)
 			ft_strlcat(old_pwd->args[1], act_pwd, ft_strlen(old_pwd->args[1]) + ft_strlen(act_pwd) + 1);
 			old_pwd->args[2] = NULL;
 			export(old_pwd);
+			i = 0;
+			while (old_pwd->args[i])
+				free(old_pwd->args[i++]);
+			free(old_pwd->args);
+			free(act_pwd);
+			free(old_pwd);
 		}
 		free(dest);
 	}
-	i = 0;
-	while (old_pwd->args[i])
-		free(old_pwd->args[i++]);
-	free(old_pwd->args);
-	free(act_pwd);
-	free(old_pwd);
 }
