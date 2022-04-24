@@ -38,16 +38,16 @@ void	echo(t_command *cmd)
 		while (cmd->args[i])
 		{
 			if (is_quoted(cmd->args[i]) == 2)
-				ft_putstr_fd(ft_strtrim(cmd->args[i++], "\""), 1);
+				ft_putstr_fd(ft_strtrim(cmd->args[i++], "\""), cmd->output_fd);
 			else if (is_quoted(cmd->args[i]) == 1)
-				ft_putstr_fd(ft_strtrim(cmd->args[i++], "\'"), 1);
+				ft_putstr_fd(ft_strtrim(cmd->args[i++], "\'"), cmd->output_fd);
 			else
 				ft_putstr_fd(cmd->args[i++], 1);
 			if (cmd->args[i])
-				ft_putchar_fd(' ', 1);
+				ft_putchar_fd(' ', cmd->output_fd);
 		}
 		if (ft_strncmp("-n\0", cmd->args[1], 3))
-			ft_putchar_fd('\n', 1);
+			ft_putchar_fd('\n', cmd->output_fd);
 	}
 	g_term.last_exit = 0;
 }

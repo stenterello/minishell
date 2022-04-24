@@ -84,20 +84,20 @@ void	define_pipe(t_command *cmd)
 
 	if (pipe(piped) == -1)
 		die("Error while piping");
-	cmd->piped_fd = piped[1];
+	cmd->output_fd = piped[1];
 	tmp = cmd->next;
-	tmp->piped_fd = piped[0];
+	tmp->input_fd = piped[0];
 	cmd->saved_out = dup(1);
 	close(1);
-	dup2(cmd->piped_fd, 1);
-	close(cmd->piped_fd);
+	dup2(cmd->output_fd, 1);
+	close(cmd->output_fd);
 }
 
 void	define_pipe_to(t_command *cmd)
 {
 	cmd->saved_in = dup(STDIN_FILENO);
 	close(STDIN_FILENO);
-	dup2(cmd->piped_fd, STDIN_FILENO);
+	dup2(cmd->input_fd, STDIN_FILENO);
 }
 
 void	define_heredoc_pipe(t_command *cmd)
@@ -107,11 +107,11 @@ void	define_heredoc_pipe(t_command *cmd)
 
 	if (pipe(piped) == -1)
 		die("Error while piping");
-	cmd->piped_fd = piped[1];
+	cmd->output_fd = piped[1];
 	tmp = cmd->next;
-	tmp->piped_fd = piped[0];
+	tmp->input_fd = piped[0];
 	tmp->saved_in = dup(STDOUT_FILENO);
 	close(STDIN_FILENO);
-	dup2(tmp->piped_fd, STDIN_FILENO);
-	close(tmp->piped_fd);
+	dup2(tmp->input_fd, STDIN_FILENO);
+	close(tmp->input_fd);
 }

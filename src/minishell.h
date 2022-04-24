@@ -61,14 +61,12 @@ typedef struct	s_command
 	void	*prev;
 	int		redir_stdin;
 	int		redir_stdout;
-	int		redir_stderr;
 	int		saved_in;
 	int		saved_out;
-	int		saved_err;
-	int		fd;
+	int		input_fd;
+	int		output_fd;
 	int		to_pipe;
 	int		to_pipe_to;
-	int		piped_fd;
 	int		first;
 }				t_command;
 

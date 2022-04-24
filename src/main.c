@@ -131,4 +131,9 @@ int	main(void)
 		----$  < ciao	[riporta l'avviso che il file ciao è inesistente]
 
 	Per implementare questo aspetto, cominciare dalla condizione a riga 48 del file count.c
+
+// la ft_strtrim() in init_utils.c (riga 50), dovrebbe produrre leaks?
+
+// se si redireziona semplice (< o >) in un file già scritto, non provvede a cancellare prima il contenuto o a terminare il testo!!!
+
 */

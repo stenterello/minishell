@@ -57,7 +57,7 @@ int	search_in_dir(DIR *stream, t_command *cmd, char *dir_name)
 					else
 					{
 						close(STDIN_FILENO);
-						close(cmd->piped_fd);
+						close(cmd->output_fd);
 						waitpid(g_term.child, &status, 0);			
 						if (WIFEXITED(status))
 							g_term.last_exit = status / 256;

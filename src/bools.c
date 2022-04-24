@@ -112,6 +112,8 @@ int	builtin(t_command *cmd)
 		cd(cmd);
 	else if (!ft_strncmp(cmd->cmd, "echo\0", 5))
 		echo(cmd);
+	else if (!ft_strncmp(cmd->cmd, "exit\0", 5))
+		exit_cmd(cmd);
 	else if (!ft_strncmp(cmd->cmd, "env\0", 4))
 	{
 		if (cmd->to_pipe)
@@ -126,7 +128,7 @@ int	builtin(t_command *cmd)
 		unset(cmd);
 	else
 		return (0);
-	if (cmd->to_pipe || cmd->to_pipe_to)
+	if (cmd->to_pipe || cmd->to_pipe_to || cmd->redir_stdin || cmd->redir_stdout)
 		restore_fd(cmd);
 	g_term.child = 0;
 	return (1);
