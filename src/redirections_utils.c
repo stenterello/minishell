@@ -16,40 +16,26 @@ void	restore_input(t_command *cmd)
 
 void	restore_fd(t_command *cmd)
 {
-	if (cmd->redir_stdout || cmd->to_pipe)
+	if (cmd->redir_out || cmd->to_pipe)
 		restore_output(cmd);
-	if (cmd->redir_stdin || cmd->to_pipe_to)
+	if (cmd->redir_in || cmd->to_pipe_to)
 		restore_input(cmd);
 }
 
-void	check_redirection(char *line, t_command *cmd)
+int	check_redirection(char **tmp, t_command *cmd)
 {
-	char	*tmp;
+	int	i;
 
-	tmp = line;
-	while (ft_strchr(tmp, '<') != NULL || ft_strchr(tmp, '>') != NULL)
-	{
-		if (is_redir(tmp) == -1)
-			return ;
-		else if (is_redir(tmp) == 0)
-		{
-			define_input(tmp, cmd);
-			tmp = ft_strchr(tmp, '<');
-			tmp++;
-		}
-		else if (is_redir(tmp) == 1)
-		{
-			define_output(tmp, cmd);
-			tmp = ft_strchr(tmp, '>');
-			tmp++;
-		}
-		else if (is_redir(tmp) == 3)
-		{
-			define_append_output(tmp, cmd);
-			tmp = ft_strchr(tmp, '>');
-			tmp += 2;
-		}
-	}
+	i = 0;
+	if (!tmp[i + 1])
+		return (-1);
+	if (is_redir(tmp[i]) == 2)
+		define_append_output(tmp[++i], cmd);
+	else if (is_redir(tmp[i]) == 0)
+		define_input(tmp[++i], cmd);
+	else if (is_redir(tmp[i]) == 1)
+		define_output(tmp[++i], cmd);
+	return (0);
 }
 
 void	check_pipe(char *line, t_command *cmd)
@@ -87,9 +73,9 @@ void	define_pipe(t_command *cmd)
 	cmd->output_fd = piped[1];
 	tmp = cmd->next;
 	tmp->input_fd = piped[0];
-	cmd->saved_out = dup(1);
-	close(1);
-	dup2(cmd->output_fd, 1);
+	cmd->saved_out = dup(STDOUT_FILENO);
+	close(STDOUT_FILENO);
+	dup2(cmd->output_fd, STDOUT_FILENO);
 	close(cmd->output_fd);
 }
 
@@ -98,6 +84,7 @@ void	define_pipe_to(t_command *cmd)
 	cmd->saved_in = dup(STDIN_FILENO);
 	close(STDIN_FILENO);
 	dup2(cmd->input_fd, STDIN_FILENO);
+	close(cmd->input_fd);
 }
 
 void	define_heredoc_pipe(t_command *cmd)

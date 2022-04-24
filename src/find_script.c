@@ -18,10 +18,8 @@ void	get_full_path(char *dir_name, t_command *cmd)
 int	search_in_dir(DIR *stream, t_command *cmd, char *dir_name)
 {
 	struct dirent	*entry;
-	int				status;
 
 	entry = readdir(stream);
-	status = 0;
 	while (entry)
 	{
 		if (!ft_strncmp(entry->d_name, cmd->cmd, (ft_strlen(cmd->cmd) + 1)))
@@ -29,45 +27,7 @@ int	search_in_dir(DIR *stream, t_command *cmd, char *dir_name)
 			get_full_path(dir_name, cmd);
 			if (!access(cmd->cmd, X_OK))
 			{
-				if (cmd->to_pipe)
-					define_pipe(cmd);
-				if (cmd->to_pipe_to)
-					define_pipe_to(cmd);
-				g_term.child = fork();
-				if (g_term.child == -1)
-					die("Error while forking");
-				if (g_term.child == 0)
-				{
-					free_dict(g_term.var);
-					execve(cmd->cmd, cmd->args, NULL);
-				}
-				else
-				{
-					if (!g_term.delimiter)
-					{
-						//close(cmd->piped_fd);
-						waitpid(g_term.child, &status, 0);
-						if (WIFEXITED(status))
-							g_term.last_exit = status / 256;
-						else
-							g_term.last_exit = status;
-						g_term.child = 0;
-						restore_fd(cmd);
-					}
-					else
-					{
-						close(STDIN_FILENO);
-						close(cmd->output_fd);
-						waitpid(g_term.child, &status, 0);			
-						if (WIFEXITED(status))
-							g_term.last_exit = status / 256;
-						else
-							g_term.last_exit = status;
-						g_term.child = 0;
-						dup2(cmd->saved_in, STDIN_FILENO);
-						close(cmd->saved_in);
-					}
-				}
+				born_child(cmd);
 				return (1);
 			}
 		}
@@ -101,19 +61,13 @@ int	find_script(t_command *cmd)
 			if (is_exec)
 			{
 				closedir(stream);
-				i = 0;
-				while (path[i])
-					free(path[i++]);
-				free(path);
+				free_array_of_array(path);
 				return (0);
 			}
 			closedir(stream);
 			i++;
 		}
-		i = 0;
-		while (path[i])
-			free(path[i++]);
-		free(path);
+		free_array_of_array(path);
 	}
 	return (-1);
 }

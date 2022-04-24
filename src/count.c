@@ -33,7 +33,7 @@ int	count_args(char **tmp)
 	int	i;
 
 	i = 0;
-	while (tmp[i] && ft_strncmp(tmp[i], "<\0", 2) && ft_strncmp(tmp[i], "<<\0", 3) && ft_strncmp(tmp[i], ">\0", 2) && ft_strncmp(tmp[i], ">>\0", 3) && ft_strncmp(tmp[i], "|\0", 2))
+	while (tmp[i] && !is_token(tmp[i]))
 		i++;
 	return (i);
 }

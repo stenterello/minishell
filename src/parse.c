@@ -40,12 +40,41 @@ void	split_var_decl(char *line, t_command *cmd)
 	cmd->args[meas[2]] = NULL;
 }
 
-void	fill_cmd_fields(char **tmp, t_command *cmd, int start)
+void	free_array_of_array(char **arr)
+{
+	int	i;
+
+	i = 0;
+	while (arr[i])
+		free(arr[i++]);
+	free(arr);
+}
+
+void	syntax_error(char **tmp)
+{
+	int		i;
+	char	tok;
+
+	ft_putstr_fd(last_field(ft_getenv("SHELL")), 2);
+	ft_putstr_fd(": syntax error near unexpected token \"", 2);
+	i = 0;
+	while (tmp[i])
+	{
+		if (is_token(tmp[i]))
+			tok = tmp[i][0];
+		i++;
+	}
+	ft_putchar_fd(tok, 2);
+	ft_putendl_fd("\"", 2);
+}
+
+int	fill_cmd_fields(char **tmp, t_command *cmd, int start)
 {
 	int			i;
 	int			j;
 	int			args_num;
 	t_command	*next;
+	t_command	*prev;
 
 	args_num = count_args(tmp);
 	malloc_and_check_char_ptr(&cmd->args, args_num + 1);
@@ -65,7 +94,26 @@ void	fill_cmd_fields(char **tmp, t_command *cmd, int start)
 		i++;
 		j++;
 	}
+	if (tmp[i])
+	{
+		if (check_redirection(&tmp[i], cmd) == -1)
+		{
+			syntax_error(tmp);
+			free_array_of_array(tmp);
+			return (-1);
+		}
+	}
+	if (cmd->redir_in || cmd->redir_out)
+		i += 2;
+	if (tmp[i] && tmp[i][0] == '|')
+		cmd->to_pipe = 1;
 	cmd->args[j] = NULL;
+	if (cmd->prev)
+	{
+		prev = cmd->prev;
+		if (prev->to_pipe)
+			cmd->to_pipe_to = 1;
+	}
 	if (tmp[i] && (cmd->to_pipe || cmd->to_pipe_to))
 	{
 		next = malloc(sizeof(t_command));
@@ -78,22 +126,16 @@ void	fill_cmd_fields(char **tmp, t_command *cmd, int start)
 		fill_cmd_fields(tmp, next, i);
 	}
 	if (cmd->first)
-	{
-		i = 0;
-		while (tmp[i])
-			free(tmp[i++]);
-		free(tmp);
-	}
+		free_array_of_array(tmp);
 	else
 		cmd->to_pipe_to = 1;
+	return (0);
 }
 
-void	split_command(char *line, t_command *cmd)
+int	split_command(char *line, t_command *cmd)
 {
 	char	**tmp;
 
-	if (ft_strchr(line, '<') != NULL || ft_strchr(line, '>') != NULL)
-		check_redirection(line, cmd);
 	if (ft_strchr(line, '|') != NULL)
 		check_pipe(line, cmd);
 	if (is_var_def(line))
@@ -102,6 +144,8 @@ void	split_command(char *line, t_command *cmd)
 	{
 		tmp = split_fields(line, ' ');
 		cmd->first = 1;
-		fill_cmd_fields(tmp, cmd, 0);
+		if (fill_cmd_fields(tmp, cmd, 0) == -1)
+			return (0);
 	}
+	return (1);
 }

@@ -33,11 +33,13 @@ int	is_var_def(char *line)
 void	check(char *typed, t_input *input)
 {
 	int	i;
+	int	open_pipe;
 
 	i = 0;
 	input->s_quot = 0;
 	input->d_quot = 0;
 	input->to_expand = 0;
+	open_pipe = 0;
 	if (!typed)
 	{
 		ft_putendl_fd("exit", STDOUT_FILENO);
@@ -55,12 +57,16 @@ void	check(char *typed, t_input *input)
 			input->d_quot = 1;
 		else if (typed[i] == '\"' && input->d_quot && !input->s_quot)
 			input->d_quot = 0;
+		else if (typed[i] == '|' && !input->d_quot && !input->s_quot)
+			open_pipe = 1;
+		else if (ft_isalnum(typed[i]) && open_pipe)
+			open_pipe = 0;
 		i++;
 	}
 	i--;
-	if (typed[i] == '\\' || input->s_quot || input->d_quot)
+	if (typed[i] == '\\' || input->s_quot || input->d_quot || open_pipe)
 		input->is_open = 1;
-	if (!input->s_quot && !input->d_quot)
+	else
 		input->is_open = 0;
 }
 
@@ -128,7 +134,7 @@ int	builtin(t_command *cmd)
 		unset(cmd);
 	else
 		return (0);
-	if (cmd->to_pipe || cmd->to_pipe_to || cmd->redir_stdin || cmd->redir_stdout)
+	if (cmd->to_pipe || cmd->to_pipe_to || cmd->redir_in || cmd->redir_out)
 		restore_fd(cmd);
 	g_term.child = 0;
 	return (1);

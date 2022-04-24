@@ -48,7 +48,6 @@ void	born_child(t_command *tmp)
 	{
 		if (!g_term.delimiter)
 		{
-			//close(tmp->piped_fd);
 			waitpid(g_term.child, &status, 0);
 			if (WIFEXITED(status))
 				g_term.last_exit = status / 256;

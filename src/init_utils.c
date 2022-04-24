@@ -16,8 +16,8 @@ void	init_cmd(t_command *cmd)
 	cmd->input_line = NULL;
 	cmd->next = NULL;
 	cmd->prev = NULL;
-	cmd->redir_stdin = 0;
-	cmd->redir_stdout = 0;
+	cmd->redir_in = 0;
+	cmd->redir_out = 0;
 	cmd->to_pipe = 0;
 	cmd->to_pipe_to = 0;
 	cmd->first = 0;

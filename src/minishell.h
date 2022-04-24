@@ -59,8 +59,8 @@ typedef struct	s_command
 	char	*input_line;
 	void	*next;
 	void	*prev;
-	int		redir_stdin;
-	int		redir_stdout;
+	int		redir_in;
+	int		redir_out;
 	int		saved_in;
 	int		saved_out;
 	int		input_fd;
@@ -93,7 +93,7 @@ void	init_input(t_input *input);
 void	init_cmd(t_command *cmd);
 void	take_environ(void);
 void	take_input(t_input *input);
-void	split_command(char *line, t_command *cmd);
+int		split_command(char *line, t_command *cmd);
 void	free_dict(t_dict *env);
 int		key_len(char *line);
 int		value_len(char *line);
@@ -105,7 +105,7 @@ int		set_env_var(char **args);
 void	set_sh_var(char **args);
 void	check(char *typed, t_input *input);
 void	add_signals(void);
-void	check_redirection(char *line, t_command *cmd);
+int		check_redirection(char **tmp, t_command *cmd);
 void	check_pipe(char *line, t_command *cmd);
 void	define_input(char *line, t_command *cmd);
 void	define_output(char *line, t_command *cmd);
@@ -138,5 +138,7 @@ char	*last_field(char *line);
 char	**split_fields(char *s, char c);
 int		change_exist_var_in_dict(char *key, char *value, t_dict *where);
 void	insert_into_vars(char *key, char *value, t_dict *where);
+void	free_array_of_array(char **arr);
+void	born_child(t_command *tmp);
 
 #endif

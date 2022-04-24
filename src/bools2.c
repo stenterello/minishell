@@ -16,24 +16,12 @@ int	is_heredoc(char *line)
 
 int	is_redir(char *line)
 {
-	int	i;
-
-	i = 0;
-	while (line[i])
-	{
-		if ((line[i] == '<' || line[i] == '>') && i != 0)
-		{
-			if (!ft_strncmp(&line[i], ">>", 2))
-				return (3);
-			// else if (!ft_strncmp(&line[i], "<<", 2))
-			// 	return (2);
-			else if (!ft_strncmp(&line[i], "<", 1))
-				return (0);
-			else if (!ft_strncmp(&line[i], ">", 1))
-				return (1);
-		}
-		i++;
-	}
+	if (!ft_strncmp(line, ">>\0", 3))
+		return (2);
+	else if (!ft_strncmp(line, ">\0", 2))
+		return (1);
+	else if (!ft_strncmp(line, "<\0", 2))
+		return (0);
 	return (-1);
 }
 

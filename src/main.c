@@ -67,8 +67,8 @@ void	main_loop(void)
 				check(g_term.input.line, &g_term.input);
 			}
 			cmd.first = 1;
-			split_command(g_term.input.line, &cmd);
-			execute_tree(&cmd);
+			if (split_command(g_term.input.line, &cmd))
+				execute_tree(&cmd);
 		}
 		if (g_term.input.line)
 			free(g_term.input.line);
@@ -94,9 +94,9 @@ int	main(void)
 
 /*
 
-// DA GESTIRE IL SEGNALE CTRL + \
+// Modificare il valore SHELL nelle variabili d'ambiente da bash/zsh a minishell
 
-// Implementare pipe multiple
+// DA GESTIRE IL SEGNALE CTRL + \
 
 // I redirezionamenti semplici: ne basta uno o devono essere multipli? 
 	Sono multipli su zsh, non su bash; prova 'ls > ciao > ciao2 > ciao3'
@@ -134,6 +134,13 @@ int	main(void)
 
 // la ft_strtrim() in init_utils.c (riga 50), dovrebbe produrre leaks?
 
-// se si redireziona semplice (< o >) in un file già scritto, non provvede a cancellare prima il contenuto o a terminare il testo!!!
+// se si redireziona semplice (< o >) in un file già scritto, non provvede a cancellare 	prima il contenuto o a terminare il testo!!!
+
+// La readline deve restare aperta se alla fine ci sono token non soddisfatti (es: "ls |")
+
+// Con l'esempio "echo > |" la shell dovrebbe riportare il syntax error, invece adesso
+	prosegue con la raccolta dell'input perché verifica soltanto che è rimasta una
+	pipe aperta
+
 
 */
