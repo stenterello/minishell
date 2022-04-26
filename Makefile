@@ -19,7 +19,8 @@ SRC=main.c \
 	heredoc.c \
 	split_fields.c \
 	signal.c \
-	error_handling.c
+	error_handling.c \
+	logical.c
 SRCS=$(addprefix src/, $(SRC))
 OBJS=$(SRCS:.c=.o)
 BUILTIN=pwd.c \

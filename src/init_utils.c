@@ -25,6 +25,8 @@ void	init_cmd(t_command *cmd)
 	cmd->saved_out = 0;
 	cmd->input_fd = 0;
 	cmd->output_fd = 1;
+	cmd->logical = 0;
+	cmd->needed = 0;
 }
 
 void	take_input(t_input *input)

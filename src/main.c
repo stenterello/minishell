@@ -67,8 +67,13 @@ void	main_loop(void)
 				check(g_term.input.line, &g_term.input);
 			}
 			cmd.first = 1;
-			if (split_command(g_term.input.line, &cmd))
-				execute_tree(&cmd);
+			// if (is_logical(g_term.input.line))
+			// 	get_logical(g_term.input.line, &cmd);
+			// else
+			// {
+				if (split_command(g_term.input.line, &cmd))
+					execute_tree(&cmd);
+			// }
 		}
 		if (g_term.input.line)
 			free(g_term.input.line);

@@ -37,7 +37,7 @@ int	change_exist_var_in_dict(char *key, char *value, t_dict *where)
 		tmp = where;
 	while (tmp && tmp->key)
 	{
-		if (!ft_strncmp(tmp->key, key, ft_strlen(key)))
+		if (!ft_strncmp(tmp->key, key, ft_strlen(key) + 1))
 		{
 			free(tmp->value);
 			malloc_and_check_char(&tmp->value, ft_strlen(value) + 1);

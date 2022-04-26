@@ -34,12 +34,14 @@ void	check(char *typed, t_input *input)
 {
 	int	i;
 	int	open_pipe;
+	int	open_logic;
 
 	i = 0;
 	input->s_quot = 0;
 	input->d_quot = 0;
 	input->to_expand = 0;
 	open_pipe = 0;
+	open_logic = 0;
 	if (!typed)
 	{
 		ft_putendl_fd("exit", STDOUT_FILENO);
@@ -61,10 +63,14 @@ void	check(char *typed, t_input *input)
 			open_pipe = 1;
 		else if (ft_isalnum(typed[i]) && open_pipe)
 			open_pipe = 0;
+		else if (!open_logic && (!ft_strncmp(&typed[i], "&&", 2) || !ft_strncmp(&typed[i], "||", 2)))
+			open_logic = 1;
+		if (ft_isalnum(typed[i]) && open_logic)
+			open_logic = 0;
 		i++;
 	}
 	i--;
-	if (typed[i] == '\\' || input->s_quot || input->d_quot || open_pipe)
+	if (typed[i] == '\\' || input->s_quot || input->d_quot || open_pipe || open_logic)
 		input->is_open = 1;
 	else
 		input->is_open = 0;

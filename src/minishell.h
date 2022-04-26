@@ -68,6 +68,8 @@ typedef struct	s_command
 	int		to_pipe;
 	int		to_pipe_to;
 	int		first;
+	int		needed;
+	int		logical;
 }				t_command;
 
 t_term	g_term;
@@ -140,5 +142,7 @@ int		change_exist_var_in_dict(char *key, char *value, t_dict *where);
 void	insert_into_vars(char *key, char *value, t_dict *where);
 void	free_array_of_array(char **arr);
 void	born_child(t_command *tmp);
+int		is_logical(char *line);
+void	get_logical(char *line, t_command *cmd);
 
 #endif
