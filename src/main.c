@@ -99,6 +99,10 @@ int	main(void)
 
 /*
 
+// SPOSTARE L'ORDINE DEI CONTROLLI DI CD! Potrebbe non andare in errore
+
+// Heredoc va in double free
+
 // Modificare il valore SHELL nelle variabili d'ambiente da bash/zsh a minishell
 
 // DA GESTIRE IL SEGNALE CTRL + \

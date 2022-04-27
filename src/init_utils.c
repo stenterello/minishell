@@ -50,7 +50,7 @@ void	take_input(t_input *input)
 	}
 	tmp = ft_strtrim(typed, " ");
 	free(typed);
-	malloc_and_check_char(&input->line, ft_strlen(tmp) + 1);
+	malloc_c(&input->line, ft_strlen(tmp) + 1);
 	ft_strlcpy(input->line, tmp, ft_strlen(tmp) + 1);
 	free(tmp);
 }
@@ -65,13 +65,14 @@ void	take_elem(t_dict *elem, int *ind)
 		malloc_and_check_dict(&elem, 1);
 	while (environ[*ind][i] != '=')
 		i++;
-	malloc_and_check_char(&elem->key, i + 1);
+	malloc_c(&elem->key, i + 1);
 	ft_strlcpy(elem->key, environ[*ind], i + 1);
 	i++;
 	while (environ[*ind][i])
 		i++;
-	malloc_and_check_char(&elem->value, i - ft_strlen(elem->key));
-	ft_strlcpy(elem->value, &environ[*ind][ft_strlen(elem->key) + 1], i - ft_strlen(elem->key));
+	malloc_c(&elem->value, i - ft_strlen(elem->key));
+	ft_strlcpy(elem->value, &environ[*ind][ft_strlen(elem->key) + 1],
+		i - ft_strlen(elem->key));
 	elem->next = NULL;
 	*ind += 1;
 }

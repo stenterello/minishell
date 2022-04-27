@@ -30,32 +30,10 @@ int	value_len(char *line)
 	return (i - j);
 }
 
-void	export(t_command *cmd)
+void	sup_export(t_command *cmd, t_dict *new, int i)
 {
-	int		len;
-	int		i;
-	t_dict	*new;
-
-	new = NULL;
-	malloc_and_check_dict(&new, 1);
-	len = key_len(cmd->args[1]);
-	if (len == -1)
-	{
-		free(new);
-		return ;
-	}
-	malloc_and_check_char(&new->key, len + 1);
-	ft_strlcpy(new->key, cmd->args[1], len + 1);
-	i = len;
-	len = value_len(cmd->args[1]);
-	if (len == -1)
-	{
-		free(new->key);
-		free(new);
-		return ;
-	}
-	malloc_and_check_char(&new->value, len + 1);
-	ft_strlcpy(new->value, &cmd->args[1][i + 1], len + 1);
+	malloc_c(&new->value, i + 1);
+	ft_strlcpy(new->value, &cmd->args[1][i + 1], i + 1);
 	new->next = NULL;
 	if (!change_exist_var_in_dict(new->key, new->value, g_term.env))
 		insert_into_vars(new->key, new->value, g_term.env);
@@ -63,4 +41,29 @@ void	export(t_command *cmd)
 	free(new->value);
 	free(new);
 	g_term.last_exit = 0;
+}
+
+void	export(t_command *cmd)
+{
+	int		i;
+	t_dict	*new;
+
+	new = NULL;
+	malloc_and_check_dict(&new, 1);
+	i = key_len(cmd->args[1]);
+	if (i == -1)
+	{
+		free(new);
+		return ;
+	}
+	malloc_c(&new->key, i + 1);
+	ft_strlcpy(new->key, cmd->args[1], i + 1);
+	i = value_len(cmd->args[1]);
+	if (i == -1)
+	{
+		free(new->key);
+		free(new);
+		return ;
+	}
+	sup_export(cmd, new, i);
 }

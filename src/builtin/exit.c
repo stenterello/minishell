@@ -14,6 +14,21 @@ int	is_number(char *line)
 	return (1);
 }
 
+int	sup_exit_cmd(t_command *cmd, int i)
+{
+	if (i > 2)
+	{
+		ft_putendl_fd("exit: too many arguments", STDERR_FILENO);
+		return (0);
+	}
+	else if (i == 2 && !is_number(cmd->args[1]))
+	{
+		ft_putendl_fd("exit: numeric argument required", STDERR_FILENO);
+		return (0);
+	}
+	return (1);
+}
+
 void	exit_cmd(t_command *cmd)
 {
 	int	i;
@@ -21,18 +36,11 @@ void	exit_cmd(t_command *cmd)
 	i = 0;
 	while (cmd->args[i] != NULL)
 		i++;
-	if (i > 2)
-	{
-		ft_putendl_fd("exit: too many arguments", STDERR_FILENO);
+	if (!sup_exit_cmd(cmd, i))
 		return ;
-	}
-	else if (i == 2 && !is_number(cmd->args[1]))
-	{
-		ft_putendl_fd("exit: numeric argument required", STDERR_FILENO);
-		return ;
-	}
 	reset_term();
 	ft_putendl_fd("exit", STDOUT_FILENO);
+	i = 0;
 	while (cmd->args[i])
 		free(cmd->args[i++]);
 	free(cmd->args);

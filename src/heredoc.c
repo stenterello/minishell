@@ -22,7 +22,7 @@ char	*take_delimiter(char *line)
 	i += 4;
 	while (!ft_isalnum(line[i]))
 		i++;
-	malloc_and_check_char(&ret, delimiter_len(&line[i]) + 1);
+	malloc_c(&ret, delimiter_len(&line[i]) + 1);
 	ft_strlcpy(ret, &line[i], delimiter_len(&line[i]) + 1);
 	return (ret);
 }
@@ -52,7 +52,7 @@ char	*to_string(char *line)
 	char	*ret;
 
 	ret = NULL;
-	malloc_and_check_char(&ret, ft_strlen(line) + 3);
+	malloc_c(&ret, ft_strlen(line) + 3);
 	i = 0;
 	while (line[i] != ' ')
 		i++;
@@ -82,14 +82,14 @@ int	treat_heredoc(char *typed)
 	if (!cmd2)
 		die("Malloc error");
 	init_cmd(cmd2);
-	malloc_and_check_char(&cmd2->cmd, ft_strlen(typed) + 1);
+	malloc_c(&cmd2->cmd, ft_strlen(typed) + 1);
 	ft_strlcpy(cmd2->cmd, typed, ft_strlen(typed) + 1);
 	cmd2->input_line = NULL;
 	cmd->input_line = NULL;
 	delimiter = take_delimiter(cmd2->cmd);
 	clean_heredoc(cmd2->cmd, "<<");
-	malloc_and_check_char_ptr(&cmd2->args, 2);
-	malloc_and_check_char(&cmd2->args[0], ft_strlen(cmd2->cmd) + 1);
+	malloc_c_ptr(&cmd2->args, 2);
+	malloc_c(&cmd2->args[0], ft_strlen(cmd2->cmd) + 1);
 	ft_strlcpy(cmd2->args[0], cmd2->cmd, ft_strlen(cmd2->cmd) + 1);
 	cmd2->args[1] = NULL;
 	tmp = readline("> ");
@@ -98,10 +98,10 @@ int	treat_heredoc(char *typed)
 	{
 		if (cmd->input_line)
 		{
-			malloc_and_check_char(&tmp2, ft_strlen(cmd->input_line) + 1);
+			malloc_c(&tmp2, ft_strlen(cmd->input_line) + 1);
 			ft_strlcpy(tmp2, cmd->input_line, ft_strlen(cmd->input_line) + 1);
 			free(cmd->input_line);
-			malloc_and_check_char(&cmd->input_line, ft_strlen(tmp2) + ft_strlen(tmp) + 3);
+			malloc_c(&cmd->input_line, ft_strlen(tmp2) + ft_strlen(tmp) + 3);
 			ft_strlcpy(cmd->input_line, tmp2, ft_strlen(tmp2) + 1);
 			ft_strlcat(cmd->input_line, tmp, ft_strlen(tmp) + ft_strlen(tmp2) + 2);
 			ft_strlcat(cmd->input_line, "\n", ft_strlen(cmd->input_line) + 2);
@@ -109,7 +109,7 @@ int	treat_heredoc(char *typed)
 		}
 		else
 		{
-			malloc_and_check_char(&cmd->input_line, ft_strlen(tmp) + 1);
+			malloc_c(&cmd->input_line, ft_strlen(tmp) + 1);
 			ft_strlcpy(cmd->input_line, tmp, ft_strlen(tmp) + 1);
 			ft_strlcat(cmd->input_line, "\n", ft_strlen(cmd->input_line) + 2);
 		}

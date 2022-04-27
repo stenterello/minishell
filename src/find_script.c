@@ -5,12 +5,12 @@ void	get_full_path(char *dir_name, t_command *cmd)
 	char	*tmp;
 
 	tmp = NULL;
-	malloc_and_check_char(&tmp, ft_strlen(dir_name) + ft_strlen(cmd->cmd) + 2);
+	malloc_c(&tmp, ft_strlen(dir_name) + ft_strlen(cmd->cmd) + 2);
 	ft_strlcpy(tmp, dir_name, ft_strlen(dir_name) + 1);
 	ft_strlcat(tmp, "/", ft_strlen(dir_name) + 2);
 	ft_strlcat(tmp, cmd->cmd, ft_strlen(dir_name) + ft_strlen(cmd->cmd) + 2);
 	free(cmd->cmd);
-	malloc_and_check_char(&cmd->cmd, ft_strlen(tmp) + 1);
+	malloc_c(&cmd->cmd, ft_strlen(tmp) + 1);
 	ft_strlcpy(cmd->cmd, tmp, ft_strlen(tmp) + 1);
 	free(tmp);
 }

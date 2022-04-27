@@ -20,14 +20,14 @@ void	free_dict(t_dict *env)
     }
 }
 
-void	malloc_and_check_char(char **dst, int len)
+void	malloc_c(char **dst, int len)
 {
 	*dst = malloc(sizeof(char) * len);
 	if (!*dst)
 		die("Malloc error");
 }
 
-void	malloc_and_check_char_ptr(char ***dst, int len)
+void	malloc_c_ptr(char ***dst, int len)
 {
 	*dst = malloc(sizeof(char *) * len);
 	if (!*dst)

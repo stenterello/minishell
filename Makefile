@@ -5,6 +5,7 @@ FLAGS=-Wall -Werror -Wextra -g -L$(HOME)/.brew/opt/readline/lib -I$(HOME)/.brew/
 SRC=main.c \
 	utils.c \
 	execute.c \
+	execute2.c \
 	find_script.c \
 	init_utils.c \
 	set_var.c \
@@ -19,12 +20,13 @@ SRC=main.c \
 	heredoc.c \
 	split_fields.c \
 	signal.c \
-	error_handling.c \
-	logical.c
+	error_handling.c
+# logical.c
 SRCS=$(addprefix src/, $(SRC))
 OBJS=$(SRCS:.c=.o)
 BUILTIN=pwd.c \
 		cd.c \
+		cd2.c \
 		echo.c \
 		exit.c \
 		env.c \

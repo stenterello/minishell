@@ -33,7 +33,7 @@ void	flush(int sig, siginfo_t *info, void *context)
 	}
 	else if (sig == SIGQUIT)
 	{
-
+		
 	}
 }
 

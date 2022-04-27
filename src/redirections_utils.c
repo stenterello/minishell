@@ -2,9 +2,12 @@
 
 void	restore_output(t_command *cmd)
 {
-	close(STDOUT_FILENO);
-	dup2(cmd->saved_out, STDOUT_FILENO);
-	close(cmd->saved_out);
+	if (cmd->saved_out != 0)
+	{
+		close(STDOUT_FILENO);
+		dup2(cmd->saved_out, STDOUT_FILENO);
+		close(cmd->saved_out);
+	}
 }
 
 void	restore_input(t_command *cmd)

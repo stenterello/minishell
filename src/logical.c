@@ -61,10 +61,10 @@ void	get_logical(char *line, t_command *cmd)
 
 	i = 0;
 	j = 0;
-	malloc_and_check_char_ptr(&cmd_lines, count_cmds(line) + 1);
+	malloc_c_ptr(&cmd_lines, count_cmds(line) + 1);
 	while (i < count_cmds(line))
 	{
-		malloc_and_check_char(&cmd_lines[i], cmd_len(&line[j]) + 1);
+		malloc_c(&cmd_lines[i], cmd_len(&line[j]) + 1);
 		ft_strlcpy(cmd_lines[i], &line[j], cmd_len(&line[j]) + 1);
 		i++;
 		j += cmd_len(&line[j]);

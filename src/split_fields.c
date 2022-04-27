@@ -121,7 +121,7 @@ char	**split_fields(char *s, char c)
 		{
 			tmp = ft_strtrim(ret[i], "\"");
 			free(ret[i]);
-			malloc_and_check_char(&ret[i], ft_strlen(tmp) + 1);
+			malloc_c(&ret[i], ft_strlen(tmp) + 1);
 			ft_strlcpy(ret[i], tmp, ft_strlen(tmp) + 1);
 			free(tmp);
 		}
@@ -129,7 +129,7 @@ char	**split_fields(char *s, char c)
 		{
 			tmp = ft_strtrim(ret[i], "\'");
 			free(ret[i]);
-			malloc_and_check_char(&ret[i], ft_strlen(tmp) + 1);
+			malloc_c(&ret[i], ft_strlen(tmp) + 1);
 			ft_strlcpy(ret[i], tmp, ft_strlen(tmp) + 1);
 			free(tmp);
 		}

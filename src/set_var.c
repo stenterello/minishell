@@ -16,9 +16,9 @@ void	insert_into_vars(char *key, char *value, t_dict *where)
 	}
 	else
 		new = tmp;
-	malloc_and_check_char(&new->key, ft_strlen(key) + 1);
+	malloc_c(&new->key, ft_strlen(key) + 1);
 	ft_strlcpy(new->key, key, ft_strlen(key) + 1);
-	malloc_and_check_char(&new->value, ft_strlen(value) + 1);
+	malloc_c(&new->value, ft_strlen(value) + 1);
 	ft_strlcpy(new->value, value, ft_strlen(value) + 1);
 	new->next = NULL;
 }
@@ -40,7 +40,7 @@ int	change_exist_var_in_dict(char *key, char *value, t_dict *where)
 		if (!ft_strncmp(tmp->key, key, ft_strlen(key) + 1))
 		{
 			free(tmp->value);
-			malloc_and_check_char(&tmp->value, ft_strlen(value) + 1);
+			malloc_c(&tmp->value, ft_strlen(value) + 1);
 			ft_strlcpy(tmp->value, value, ft_strlen(value) + 1);
 			return (1);
 		}
@@ -65,11 +65,11 @@ void	set_sh_var(char **args)
 		i = key_len(args[k]);
 		if (i == 0)
 			return ;
-		malloc_and_check_char(&key, i + 1);
+		malloc_c(&key, i + 1);
 		ft_strlcpy(key, args[k], i + 1);
 		j = i;
 		i = value_len(args[k]);
-		malloc_and_check_char(&value, i + 1);
+		malloc_c(&value, i + 1);
 		while (args[k][j] == '\"' || args[k][j] == '\'')
 			j++;
 		if (quoted(args[k]))

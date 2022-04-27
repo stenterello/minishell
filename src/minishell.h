@@ -1,26 +1,26 @@
 #ifndef MINISHELL_H
-#define MINISHELL_H
+# define MINISHELL_H
 
-#include "../include/libft/libft.h"
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <unistd.h>
-#include <signal.h>
-#include <readline/readline.h>
-#include <readline/history.h>
-#include <errno.h>
-#include <dirent.h>
-#include <fcntl.h>
-#include <sys/types.h>
-#include <sys/time.h>
-#include <sys/resource.h>
-#include <sys/wait.h>
-#include <sys/stat.h>
-#include <termios.h>
-#include <term.h>
+# include "../include/libft/libft.h"
+# include <stdio.h>
+# include <stdlib.h>
+# include <string.h>
+# include <unistd.h>
+# include <signal.h>
+# include <readline/readline.h>
+# include <readline/history.h>
+# include <errno.h>
+# include <dirent.h>
+# include <fcntl.h>
+# include <sys/types.h>
+# include <sys/time.h>
+# include <sys/resource.h>
+# include <sys/wait.h>
+# include <sys/stat.h>
+# include <termios.h>
+# include <term.h>
 
-typedef struct	s_input
+typedef struct s_input
 {
 	char	*line;
 	int		s_quot;
@@ -31,27 +31,27 @@ typedef struct	s_input
 	char	*expanded;
 }				t_input;
 
-typedef struct	s_dict
+typedef struct s_dict
 {
 	char	*key;
 	char	*value;
 	void	*next;
 }				t_dict;
 
-typedef struct	s_term
+typedef struct s_term
 {
 	t_dict				*env;
 	t_dict				*var;
 	struct termios		*termi;
 	struct termios		*old_term;
-	int 				last_exit;
+	int					last_exit;
 	struct sigaction	acts;
 	t_input				input;
 	pid_t				child;
 	int					delimiter;
 }				t_term;
 
-typedef struct	s_command
+typedef struct s_command
 {
 	char	*cmd;
 	char	*opt;
@@ -119,8 +119,8 @@ void	restore_fd(t_command *cmd);
 int		is_redir(char *line);
 int		is_heredoc(char *line);
 void	add_stop(void);
-void	malloc_and_check_char(char **dst, int len);
-void	malloc_and_check_char_ptr(char ***dst, int len);
+void	malloc_c(char **dst, int len);
+void	malloc_c_ptr(char ***dst, int len);
 void	malloc_and_check_dict(t_dict **dst, int len);
 void	malloc_and_check_list(t_list **dst, int len);
 int		treat_heredoc(char *typed);
@@ -144,5 +144,14 @@ void	free_array_of_array(char **arr);
 void	born_child(t_command *tmp);
 int		is_logical(char *line);
 void	get_logical(char *line, t_command *cmd);
+void	free_commands(t_command *cmd);
+int		builtin(t_command *cmd);
+
+void	sup_sup_cd1(t_command *old, char *act);
+void	sup_sup_cd2(t_command *old, char *act);
+void	sup_sup_cd3(char *act, t_command *old);
+
+void	sup_born(t_command *tmp, int status);
+int		sup_ex(t_command *tmp);
 
 #endif
