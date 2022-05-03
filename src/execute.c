@@ -40,9 +40,55 @@ void	rewrite_args(t_command *cmd)
 	}
 }
 
+void	next_level(void)
+{
+	char	*bef;
+
+	bef = ft_itoa((ft_atoi(ft_getenv("SHLVL")) + 1));
+	change_exist_var_in_dict("SHLVL", bef, g_term.env);
+	free_array_of_array(g_term.glob_environ);
+	transform_environ(g_term.env);
+	free(bef);
+}
+
+int	env_size(t_dict *env)
+{
+	int		i;
+	t_dict	*tmp;
+
+	i = 0;
+	tmp = env;
+	while (tmp)
+	{
+		i++;
+		tmp = tmp->next;
+	}
+	return (i);
+}
+
+void	transform_environ(t_dict *env)
+{
+	t_dict	*tmp;
+	int		i;
+
+	i = 0;
+	malloc_c_ptr(&g_term.glob_environ, env_size(env) + 1);
+	tmp = env;
+	while (tmp)
+	{
+		malloc_c(&g_term.glob_environ[i], ft_strlen(tmp->key) + ft_strlen(tmp->value) + 2);
+		ft_strlcpy(g_term.glob_environ[i], tmp->key, ft_strlen(tmp->key) + 1);
+		ft_strlcat(g_term.glob_environ[i], "=", ft_strlen(g_term.glob_environ[i]) + 2);
+		ft_strlcat(g_term.glob_environ[i], tmp->value, ft_strlen(g_term.glob_environ[i]) + ft_strlen(tmp->value) + 1);
+		i++;
+		tmp = tmp->next;
+	}
+	g_term.glob_environ[i] = NULL;
+}
+
 void	born_child(t_command *tmp)
 {
-	int	status;
+	int			status;
 
 	status = 0;
 	if (tmp->to_pipe)
@@ -54,8 +100,9 @@ void	born_child(t_command *tmp)
 		die("Error while forking");
 	if (g_term.child == 0)
 	{
-		free_dict(g_term.var);
-		execve(tmp->cmd, tmp->args, NULL);
+		if (!ft_strncmp(&tmp->cmd[ft_strlen(tmp->cmd) - 9], "minishell", 9))
+			next_level();
+		execve(tmp->cmd, tmp->args, g_term.glob_environ);
 	}
 	else
 		sup_born(tmp, status);

@@ -59,7 +59,7 @@ char	*sup_take(t_input *input, int init_len, char *var_name, char *var1)
 	char	*ret;
 
 	i = 0;
-	while (var1[i] && (ft_isalnum(var1[i]) || var1[i] == '?'))
+	while (var1[i] && (ft_isalnum(var1[i]) || var1[i] == '?') && var1[i] != '\"')
 		i++;
 	var_name[i] = '\0';
 	malloc_c(&ret, ft_strlen(input->line) + 1 - i + ft_strlen(input->expanded));

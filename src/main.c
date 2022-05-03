@@ -129,12 +129,14 @@ void	main_loop(void)
 	{
 		init_input(&g_term.input);
 		init_cmd(&cmd);
+		transform_environ(g_term.env);
 		add_signals();
 		take_input(&g_term.input);
 		if (ft_strlen(g_term.input.line) > 0 && g_term.delimiter == 0)
 			sup_loop(cmd);
 		if (g_term.input.line)
 			free(g_term.input.line);
+		free_array_of_array(g_term.glob_environ);
 		g_term.delimiter = 0;
 	}
 }
@@ -150,6 +152,7 @@ int	main(void)
 	free_dict(g_term.env);
 	free_dict(g_term.var);
 	free(g_term.termi);
+	free(g_term.glob_environ);
 	return (0);
 }
 
@@ -157,19 +160,13 @@ int	main(void)
 
 // La stampa della variabile, se circondata sia da single quotes che double,
 	restituisce il valore "clean", ma non deve: controllare nel try expand
+	--> correggere take_variable
 
 // DA GESTIRE IL SEGNALE CTRL + \
 
 // La free a riga 129 di heredoc.c non dovrebbe dare invalid
 	pointer nel caso in cui venga premuto Ctrl + D 
 	durante una readline?
-
-// Implementare la variabile SHLVL e l'esecuzione di minishell
-	come processo figlio
-	al momento produce un segmentation fault dovuta alla ricerca
-	della variabili
-	d'ambiente attraverso environ: non trova lo spazio di memoria.
-	E' dovuto alle configurazioni del termiale?]
 
 // Verificare che le configurazioni del terminale siano 
 	le stesse su Mac: al momento

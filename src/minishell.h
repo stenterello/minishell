@@ -64,6 +64,7 @@ typedef struct s_term
 	t_input				input;
 	pid_t				child;
 	int					delimiter;
+	char				**glob_environ;
 }				t_term;
 
 typedef struct s_command
@@ -186,5 +187,6 @@ int		find_next_start(char *s, char c);
 int		is_logical_token(char c);
 int		is_in_par(char *line, int limit);
 int		syntax_error_no_arr(void);
+void	transform_environ(t_dict *env);
 
 #endif

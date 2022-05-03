@@ -57,6 +57,7 @@ void	exit_cmd(t_command *cmd)
 		free(cmd->args[i++]);
 	free(cmd->args);
 	free(cmd->cmd);
+	free_array_of_array(g_term.glob_environ);
 	free_dict(g_term.env);
 	free_dict(g_term.var);
 	free(g_term.input.line);
