@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   term.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gimartin <gimartin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/27 15:04:30 by gimartin          #+#    #+#             */
-/*   Updated: 2022/04/28 14:24:53 by gimartin         ###   ########.fr       */
+/*   Updated: 2022/05/03 21:58:54 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,20 +62,3 @@ void	init_terminal(char *line)
 	g_term.child = 0;
 	g_term.delimiter = 0;
 }
-
-
-// int	fd;
-// 	int	tty;
-// 	int	ret;
-
-// 	fd = open("minishelltty", O_CREAT, 0664);
-// 	if (fd < 0)
-// 		die(strerror(errno));
-// 	tty = ttyslot();
-// 	ft_putnbr_fd(tty, 1);
-// 	tty = isatty(tty);
-// 	ft_putnbr_fd(tty, 1);
-// 	tty = ioctl(tty, TIOCSCTTY, 0);
-// 	ft_putnbr_fd(tty, 1);
-// 	if (tty < 0)
-// 		die(strerror(errno));
