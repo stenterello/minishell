@@ -6,7 +6,7 @@
 /*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/03 21:54:41 by ddelladi          #+#    #+#             */
-/*   Updated: 2022/05/03 21:54:43 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/05/04 00:55:49 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ int	empty_output(char *line)
 	filename = get_filename(line);
 	fd = open(filename, O_CREAT, 0664);
 	if (fd < 0)
-		die("Error while opening file");
+		die(strerror(errno));
 	free(filename);
 	close(fd);
 	return (1);
@@ -53,7 +53,10 @@ int	empty_input(char *line)
 	fd = open(filename, O_CREAT, 0664);
 	if (fd < 0)
 	{
-		printf("minishell: %s: %s\n", filename, strerror(errno));
+		ft_putstr_fd("minishell: ", 2);
+		ft_putstr_fd(filename, 2);
+		ft_putstr_fd(": ", 2);
+		ft_putendl_fd(strerror(errno), 2);
 		g_term.last_exit = 1;
 	}
 	free(filename);

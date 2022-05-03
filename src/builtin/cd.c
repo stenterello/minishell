@@ -6,7 +6,7 @@
 /*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/03 21:55:20 by ddelladi          #+#    #+#             */
-/*   Updated: 2022/05/03 21:55:21 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/05/04 01:12:08 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,10 +43,28 @@ void	sup_cd3(t_command *cmd, char *act, t_command *old)
 	char		*dest;
 	int			ret;
 
-	dest = get_path(cmd->args[1]);
+	if (cmd->args[1][0] == '~')
+	{
+		if  (ft_getenv("HOME") != NULL)
+		{
+			malloc_c(&dest, ft_strlen(ft_getenv("HOME") + ft_strlen(cmd->args[1])));
+			ft_strlcpy(dest, ft_getenv("HOME"), ft_strlen(ft_getenv("HOME")) + 1);
+			ft_strlcat(dest, &cmd->args[1][1], ft_strlen(dest) + ft_strlen(cmd->args[1]) + 1);
+			dest = get_path(dest);
+		}
+		else
+		{
+			ft_putendl_fd("HOME not set", 2);
+			return ;
+		}
+	}
+	else
+		dest = get_path(cmd->args[1]);
 	ret = chdir(dest);
 	if (ret == -1)
 	{
+		ft_putstr_fd(ft_getenv("SHELL"), 2);
+		ft_putstr_fd(": cd: ", 2);
 		ft_putstr_fd(dest, 2);
 		ft_putstr_fd(": ", 2);
 		ft_putendl_fd(strerror(errno), 2);

@@ -6,7 +6,7 @@
 /*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/27 15:05:51 by gimartin          #+#    #+#             */
-/*   Updated: 2022/05/03 21:56:59 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/05/04 00:53:28 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ int	sup_find_script(char **path, t_command *cmd)
 			die("Path name too long");
 		stream = opendir(path[i]);
 		if (stream == NULL)
-			die("Error opening directory");
+			die(strerror(errno));
 		is_exec = search_in_dir(stream, cmd, path[i]);
 		if (is_exec)
 		{

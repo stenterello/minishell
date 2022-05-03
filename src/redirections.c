@@ -6,7 +6,7 @@
 /*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/27 15:10:22 by gimartin          #+#    #+#             */
-/*   Updated: 2022/05/03 21:58:05 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/05/04 00:57:28 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	define_input(char *line, t_command *cmd)
 {
 	cmd->input_fd = open(line, O_CREAT, 0664);
 	if (cmd->input_fd < 0)
-		die("Error while opening file");
+		die(strerror(errno));
 	cmd->saved_in = dup(STDIN_FILENO);
 	close(STDIN_FILENO);
 	dup2(cmd->input_fd, STDIN_FILENO);
@@ -28,7 +28,7 @@ void	define_output(char *line, t_command *cmd)
 	unlink(line);
 	cmd->output_fd = open(line, O_WRONLY | O_CREAT, 0664);
 	if (cmd->output_fd < 0)
-		die("Error while opening file");
+		die(strerror(errno));
 	cmd->saved_out = dup(1);
 	close(1);
 	dup2(cmd->output_fd, STDOUT_FILENO);
@@ -39,7 +39,7 @@ void	define_append_output(char *line, t_command *cmd)
 {
 	cmd->output_fd = open(line, O_WRONLY | O_APPEND | O_CREAT, 0664);
 	if (cmd->output_fd < 0)
-		die("Error while opening file");
+		die(strerror(errno));
 	cmd->saved_out = dup(STDOUT_FILENO);
 	close(STDOUT_FILENO);
 	dup2(cmd->output_fd, STDOUT_FILENO);

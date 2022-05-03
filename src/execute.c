@@ -6,7 +6,7 @@
 /*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/27 15:05:42 by gimartin          #+#    #+#             */
-/*   Updated: 2022/05/03 21:56:40 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/05/04 00:53:15 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ void	born_child(t_command *tmp)
 		define_pipe_to(tmp);
 	g_term.child = fork();
 	if (g_term.child == -1)
-		die("Error while forking");
+		die(strerror(errno));
 	if (g_term.child == 0)
 	{
 		if (!ft_strncmp(&tmp->cmd[ft_strlen(tmp->cmd) - 9], "minishell", 9))
