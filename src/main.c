@@ -155,6 +155,9 @@ int	main(void)
 
 /*
 
+// La stampa della variabile, se circondata sia da single quotes che double,
+	restituisce il valore "clean", ma non deve: controllare nel try expand
+
 // DA GESTIRE IL SEGNALE CTRL + \
 
 // La free a riga 129 di heredoc.c non dovrebbe dare invalid

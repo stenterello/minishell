@@ -42,6 +42,13 @@ void	flush(int sig, siginfo_t *info, void *context)
 	{
 		kill(g_term.child, SIGINT);
 		ft_putstr_fd("^C\n", STDOUT_FILENO);
+		g_term.last_exit = 130;
+	}
+	else if (g_term.child && sig == SIGQUIT)
+	{
+		kill(g_term.child, SIGQUIT);
+		ft_putstr_fd("^\\Exit\n", STDOUT_FILENO);
+		g_term.last_exit = 131;
 	}
 	else if (sig == SIGINT)
 		sig_int();
