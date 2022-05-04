@@ -6,7 +6,7 @@
 /*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/28 15:51:58 by gimartin          #+#    #+#             */
-/*   Updated: 2022/05/04 15:53:15 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/05/04 21:15:48 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ int	fill_cmd_fields(char **tmp, t_command *cmd, int start)
 		free_array_of_array(tmp);
 	else
 		cmd->to_pipe_to = 1;
-	if (check_asterisk(cmd) == -1)
+	if (check_wildcards(cmd) == -1)
 		return (-1);
 	return (0);
 }

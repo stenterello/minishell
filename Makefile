@@ -30,8 +30,7 @@ SRC=main.c \
 	error_handling.c \
 	logical.c \
 	logical2.c \
-	asterisk.c \
-	asterisk_utils.c
+	wildcards.c
 SRCS=$(addprefix src/, $(SRC))
 OBJS=$(SRCS:.c=.o)
 BUILTIN=pwd.c \
