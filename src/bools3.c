@@ -6,7 +6,7 @@
 /*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/27 15:04:58 by gimartin          #+#    #+#             */
-/*   Updated: 2022/05/03 21:56:21 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/05/04 16:19:27 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,18 @@ int	builtin(t_command *cmd)
 int	ft_isupper(char c)
 {
 	if (c >= 65 && c <= 90)
+		return (1);
+	return (0);
+}
+
+int	ends_with_asterisk(char *line)
+{
+	int	i;
+
+	i = 0;
+	while (line[i])
+		i++;
+	if (line[i - 1] == '*')
 		return (1);
 	return (0);
 }

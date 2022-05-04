@@ -6,7 +6,7 @@
 /*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/03 21:54:41 by ddelladi          #+#    #+#             */
-/*   Updated: 2022/05/04 15:23:23 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/05/04 16:58:13 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -181,5 +181,9 @@ int	main(void)
 	- leaks
 	- norma
 	- configurazioni (flag) del terminale
+	- testare prepotentemente le wildcard e gli operatori logici
+	- il doppio asterisco nelle wildcard funziona soltanto se singolo,
+		se doppio funziona in maniera arbitrario (tipo: cat o*c*, valuta
+		soltanto il suffisso 'o')
 
 */

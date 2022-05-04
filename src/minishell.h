@@ -6,7 +6,7 @@
 /*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/03 21:54:58 by ddelladi          #+#    #+#             */
-/*   Updated: 2022/05/04 12:18:22 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/05/04 16:19:41 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,6 +145,12 @@ int		to_continue(char *typed, char *delimiter);
 void	write_to_stdin(char *line);
 int		count_params(char *line);
 int		count_args(char **tmp);
+int		count_normal_args(char **args);
+int		count_results(void);
+int		count_results_prefix(char *prefix);
+int		count_results_suffix(char *suffix);
+int		count_results_intra(char *prefix, char *suffix);
+int		dif(char *s1, char *s2);
 int		next_arg_len(char *line);
 void	save_term(struct termios **terminal);
 void	reset_term(void);
@@ -187,5 +193,18 @@ int		is_logical_token(char c);
 int		is_in_par(char *line, int limit);
 int		syntax_error_no_arr(void);
 void	transform_environ(t_dict *env);
+int		ends_with_asterisk(char *line);
+int		check_asterisk(t_command *cmd);
+void	store_new_args(char **args, char **files, char **ret);
+int		treat_asterisk_all(t_command *cmd);
+int		treat_asterisk_prefix(t_command *cmd);
+int		treat_asterisk_suffix(t_command *cmd);
+int		treat_asterisk_intra(t_command *cmd);
+char	*take_prefix(char **args);
+char	*take_suffix(char **args);
+char	**take_files(void);
+char	**take_files_prefix(char *prefix);
+char	**take_files_suffix(char *suffix);
+char	**take_files_intra(char *prefix, char *suffix);
 
 #endif
