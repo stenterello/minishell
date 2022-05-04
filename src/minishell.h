@@ -6,7 +6,7 @@
 /*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/03 21:54:58 by ddelladi          #+#    #+#             */
-/*   Updated: 2022/05/03 21:55:00 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/05/04 12:18:22 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ typedef struct s_input
 	int		with_error;
 	char	**args;
 	char	*expanded;
+	int		asterisk;
 }				t_input;
 
 typedef struct s_dict
@@ -70,7 +71,6 @@ typedef struct s_term
 typedef struct s_command
 {
 	char	*cmd;
-	char	*opt;
 	char	**args;
 	char	*input_line;
 	void	*next;
@@ -84,8 +84,7 @@ typedef struct s_command
 	int		to_pipe;
 	int		to_pipe_to;
 	int		first;
-	int		needed;
-	int		logical;
+	int		asterisk;
 }				t_command;
 
 t_term	g_term;

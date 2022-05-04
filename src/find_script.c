@@ -6,7 +6,7 @@
 /*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/27 15:05:51 by gimartin          #+#    #+#             */
-/*   Updated: 2022/05/04 00:53:28 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/05/04 13:52:48 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,10 @@ int	sup_find_script(char **path, t_command *cmd)
 			die("Path name too long");
 		stream = opendir(path[i]);
 		if (stream == NULL)
-			die(strerror(errno));
+		{
+			ft_putendl_fd(strerror(errno), 2);
+			return (-1);
+		}
 		is_exec = search_in_dir(stream, cmd, path[i]);
 		if (is_exec)
 		{
@@ -82,7 +85,7 @@ int	find_script(t_command *cmd)
 	path = ft_split(ft_getenv("PATH\0"), ':');
 	if (path)
 	{
-		if (!sup_find_script(path, cmd))
+		if (sup_find_script(path, cmd) == 0)
 			return (0);
 		free_array_of_array(path);
 	}

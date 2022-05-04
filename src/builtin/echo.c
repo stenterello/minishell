@@ -6,7 +6,7 @@
 /*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/27 15:03:21 by gimartin          #+#    #+#             */
-/*   Updated: 2022/05/03 21:55:37 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/05/04 11:57:02 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,19 +34,14 @@ int	is_quoted(char	*line)
 
 void	sup_echo(t_command *cmd)
 {
-	int	i;
+	int		i;
 
 	i = 1;
 	while (!ft_strncmp("-n\0", cmd->args[i], 3))
 		i++;
 	while (cmd->args[i])
 	{
-		if (is_quoted(cmd->args[i]) == 2)
-			ft_putstr_fd(ft_strtrim(cmd->args[i++], "\""), STDOUT_FILENO);
-		else if (is_quoted(cmd->args[i]) == 1)
-			ft_putstr_fd(ft_strtrim(cmd->args[i++], "\'"), STDOUT_FILENO);
-		else
-			ft_putstr_fd(cmd->args[i++], STDOUT_FILENO);
+		ft_putstr_fd(cmd->args[i++], STDOUT_FILENO);
 		if (cmd->args[i])
 			ft_putchar_fd(' ', STDOUT_FILENO);
 	}

@@ -6,7 +6,7 @@
 /*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/27 15:06:53 by gimartin          #+#    #+#             */
-/*   Updated: 2022/05/03 21:57:17 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/05/04 12:15:33 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,12 @@ void	init_input(t_input *input)
 	input->to_expand = 0;
 	input->is_open = 0;
 	input->with_error = 0;
+	input->asterisk = 0;
 }
 
 void	init_cmd(t_command *cmd)
 {
 	cmd->cmd = NULL;
-	cmd->opt = NULL;
 	cmd->args = NULL;
 	cmd->input_line = NULL;
 	cmd->next = NULL;
@@ -38,8 +38,7 @@ void	init_cmd(t_command *cmd)
 	cmd->saved_out = 0;
 	cmd->input_fd = 0;
 	cmd->output_fd = 1;
-	cmd->logical = 0;
-	cmd->needed = 0;
+	cmd->asterisk = 0;
 }
 
 void	take_input(t_input *input)

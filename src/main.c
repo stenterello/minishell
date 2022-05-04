@@ -6,7 +6,7 @@
 /*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/03 21:54:41 by ddelladi          #+#    #+#             */
-/*   Updated: 2022/05/04 00:55:49 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/05/04 15:23:23 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,11 +97,20 @@ int	empty_redir(char *line)
 
 	tmp = ft_strtrim(line, " ()");
 	if (tmp[0] == '>')
+	{
+		free(tmp);
 		return (empty_output(line));
+	}
 	else if (tmp[0] == '<')
+	{
+		free(tmp);
 		return (empty_input(line));
+	}
 	else if (no_output(line))
+	{
+		free(tmp);
 		return (syntax_error_no_arr());
+	}
 	return (0);
 }
 
@@ -161,19 +170,16 @@ int	main(void)
 
 /*
 
-// La stampa della variabile, se circondata sia da single quotes che double,
-	restituisce il valore "clean", ma non deve: controllare nel try expand
-	--> correggere take_variable
-
 // DA GESTIRE IL SEGNALE CTRL + \
 
 // La free a riga 129 di heredoc.c non dovrebbe dare invalid
 	pointer nel caso in cui venga premuto Ctrl + D 
 	durante una readline?
 
-// Verificare che le configurazioni del terminale siano 
-	le stesse su Mac: al momento
-	sono implementate sulla base di terminale Linux
-	con Bash (attraverso il comando stty -a)
+// Da controllare:
+	- quali segnali, di preciso, servono
+	- leaks
+	- norma
+	- configurazioni (flag) del terminale
 
 */

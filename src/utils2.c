@@ -6,7 +6,7 @@
 /*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/28 14:11:38 by gimartin          #+#    #+#             */
-/*   Updated: 2022/05/04 01:21:52 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/05/04 12:22:05 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,21 +40,62 @@ int	dollar_pos(char *line)
 	return (i);
 }
 
+int	until_dollar(char *line)
+{
+	int	i;
+
+	i = 0;
+	while (line[i] != '$')
+		i++;
+	return (++i);
+}
+
+int	until_end_var_name(char *line, char *var)
+{
+	return (until_dollar(line) + ft_strlen(var));
+}
+
+char	*define_var_name(char *line)
+{
+	int		i;
+	int		j;
+	char	*ret;
+
+	i = 0;
+	while (line[i] != '$')
+		i++;
+	j = ++i;
+	while (ft_isalnum(line[i]) || line[i] == '?')
+		i++;
+	malloc_c(&ret, i - j + 2);
+	ft_strlcpy(ret, &line[j], i - j + 1);
+	return (ret);
+}
+
 void	sup_try_expand(t_input *input, int i, int d_quot)
 {
 	char	*tmp;
+	char	*tmp2;
+	char	*var;
 
 	tmp = NULL;
 	if (ft_isalpha(input->line[i]) || input->line[i] == '?')
 	{
 		if (d_quot)
 		{
-			take_variable(&input->line[i], input, i - 1);
-			malloc_c(&tmp, ft_strlen(input->line) + 1);
-			ft_strlcpy(tmp, input->line, ft_strlen(input->line) + 1);
-			free(input->line);
-			clean_text(input->line, tmp);
+			tmp = define_var_name(input->line);
+			var = ft_getenv(tmp);
+			malloc_c(&tmp2, ft_strlen(var) + (ft_strlen(input->line) - ft_strlen(tmp)) + 1);
+			ft_strlcpy(tmp2, input->line, until_dollar(input->line));
+			ft_strlcat(tmp2, var, ft_strlen(var) + ft_strlen(tmp2) + 1);
+			ft_strlcat(tmp2, &input->line[until_end_var_name(input->line, tmp)],
+				ft_strlen(tmp2) +
+				ft_strlen(&input->line[until_end_var_name(input->line, tmp)]) + 1);
 			free(tmp);
+			free(input->line);
+			malloc_c(&input->line, ft_strlen(tmp2) + 1);
+			ft_strlcpy(input->line, tmp2, ft_strlen(tmp2) + 1);
+			free(tmp2);
 		}
 		else
 			take_variable(&input->line[i], input, i - 1);
