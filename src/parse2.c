@@ -88,8 +88,8 @@ int	fill_cmd_fields(char **tmp, t_command *cmd, int start)
 		free_array_of_array(tmp);
 	else
 		cmd->to_pipe_to = 1;
-	if (check_wildcards(cmd) == -1)
-		return (-1);
+	// if (check_wildcards(cmd) == -1)
+	// 	return (-1);
 	return (0);
 }
 

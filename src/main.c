@@ -176,6 +176,10 @@ int	main(void)
 	pointer nel caso in cui venga premuto Ctrl + D 
 	durante una readline?
 
+// Doppio redirezionamento: ls > ciao > ciao2
+	---> deve scrivere in ciao2 e ciao vuoto
+	DOVREBBE ESSERE TUTTO RISOLTO: verificare
+
 // Da controllare:
 	- quali segnali, di preciso, servono
 	- leaks

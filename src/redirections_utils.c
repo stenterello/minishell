@@ -45,11 +45,29 @@ int	check_redirection(char **tmp, t_command *cmd)
 	if (!tmp[i + 1])
 		return (-1);
 	if (is_redir(tmp[i]) == 2)
-		define_append_output(tmp[++i], cmd);
+	{
+		while (tmp[i] && is_redir(tmp[i]) == 2)
+		{
+			define_append_output(tmp[++i], cmd);
+			i++;
+		}
+	}
 	else if (is_redir(tmp[i]) == 0)
-		define_input(tmp[++i], cmd);
+	{
+		while (tmp[i] && is_redir(tmp[i]) == 0)
+		{
+			define_input(tmp[++i], cmd);
+			i++;
+		}
+	}
 	else if (is_redir(tmp[i]) == 1)
-		define_output(tmp[++i], cmd);
+	{
+		while (tmp[i] && is_redir(tmp[i]) == 1)
+		{
+			define_output(tmp[++i], cmd);
+			i++;
+		}
+	}
 	return (0);
 }
 

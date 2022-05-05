@@ -6,7 +6,7 @@
 /*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/03 21:54:58 by ddelladi          #+#    #+#             */
-/*   Updated: 2022/05/04 21:49:35 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/05/05 15:18:12 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@
 # include <sys/ioctl.h>
 # include <termios.h>
 # include <term.h>
-# include <asm-generic/ioctl.h>
 
 typedef struct s_input
 {
@@ -157,6 +156,7 @@ char	*last_field(char *line);
 char	**split_fields(char *s, char c);
 int		change_exist_var_in_dict(char *key, char *value, t_dict *where);
 void	insert_into_vars(char *key, char *value, t_dict *where);
+char	*search_vars(char *var_name, t_dict *where);
 void	free_array_of_array(char **arr);
 void	born_child(t_command *tmp);
 int		is_logical(char *line);

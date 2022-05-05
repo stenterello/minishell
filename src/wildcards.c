@@ -112,11 +112,44 @@ void	take_string_portion(char *line, char **portion)
 	ft_strlcpy(*portion, line, i + 1);
 }
 
-int	count_results(char **portions)
+int	is_verified(char *file, char **portions)
 {
 	int	i;
 
 	i = 0;
+	while (portions[i] && file[i])
+	{
+		
+	}
+}
+
+int	count_results(char **portions)
+{
+	DIR				*stream;
+	int				ret;
+	struct dirent	*entry;
+	struct stat		file_stat;
+
+	ret = 0;
+	stream = opendir(".");
+	if (!stream)
+	{
+		ft_putendl_fd(strerror(errno), 2);
+		return (-1);
+	}
+	entry = readdir(stream);
+	while (entry)
+	{
+		stat(entry->d_name, &file_stat);
+		if ((file_stat.st_mode & S_IFMT) != S_IFDIR)
+		{
+			if (is_verified(entry->d_name, portions))
+				ret++;
+		}
+		entry = readdir(stream);
+	}
+	closedir(stream);
+	return (ret);
 	// Crea stream
 	// per ogni entry della cartella
 	// verifica che tutto rispetti le indicazioni

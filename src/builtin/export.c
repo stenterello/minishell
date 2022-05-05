@@ -19,7 +19,7 @@ int	key_len(char *line)
 	i = 0;
 	while (line[i] && line[i] != '=')
 		i++;
-	if (!line[i])
+	if (!line[i] && search_vars(line, g_term.var) == NULL)
 		return (-1);
 	return (i);
 }
@@ -44,13 +44,28 @@ int	value_len(char *line)
 
 void	sup_export(t_command *cmd, t_dict *new, int i)
 {
-	int	j;
+	int		j;
 
 	j = 0;
-	while (cmd->args[1][j] != '=')
+	while (cmd->args[1][j] && cmd->args[1][j] != '=')
 		j++;
-	malloc_c(&new->value, i + 1);
-	ft_strlcpy(new->value, &cmd->args[1][j + 1], i + 1);
+	if (!cmd->args[1][j])
+	{
+		new->value = NULL;
+		new->value = search_vars(cmd->args[1], g_term.var);
+		if (!new->value)
+		{
+			free(new->key);
+			free(new);
+			g_term.last_exit = 0;
+			return ;
+		}
+	}
+	else
+	{
+		malloc_c(&new->value, i + 1);
+		ft_strlcpy(new->value, &cmd->args[1][j + 1], i + 1);
+	}
 	new->next = NULL;
 	if (!change_exist_var_in_dict(new->key, new->value, g_term.env))
 		insert_into_vars(new->key, new->value, g_term.env);
@@ -63,24 +78,37 @@ void	sup_export(t_command *cmd, t_dict *new, int i)
 void	export(t_command *cmd)
 {
 	int		i;
+	char	*ret;
 	t_dict	*new;
 
 	new = NULL;
-	malloc_and_check_dict(&new, 1);
-	i = key_len(cmd->args[1]);
-	if (i == -1)
+	if (cmd->args[1])
 	{
-		free(new);
-		return ;
+		malloc_and_check_dict(&new, 1);
+		i = key_len(cmd->args[1]);
+		if (i == -1)
+		{
+			free(new);
+			return ;
+		}
+		malloc_c(&new->key, i + 1);
+		ft_strlcpy(new->key, cmd->args[1], i + 1);
+		i = value_len(cmd->args[1]);
+		if (i == -1)
+		{
+			ret = search_vars(cmd->args[1], g_term.var);
+			if (ret != NULL)
+			{
+				i = value_len(ret);
+				free(ret);
+			}
+			else
+			{
+				free(new->key);
+				free(new);
+				return ;
+			}
+		}
+		sup_export(cmd, new, i);
 	}
-	malloc_c(&new->key, i + 1);
-	ft_strlcpy(new->key, cmd->args[1], i + 1);
-	i = value_len(cmd->args[1]);
-	if (i == -1)
-	{
-		free(new->key);
-		free(new);
-		return ;
-	}
-	sup_export(cmd, new, i);
 }
