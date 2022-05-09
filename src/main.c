@@ -6,7 +6,7 @@
 /*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/03 21:54:41 by ddelladi          #+#    #+#             */
-/*   Updated: 2022/05/04 16:58:13 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/05/07 12:20:29 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,6 +148,8 @@ void	main_loop(void)
 			sup_loop(cmd);
 		if (g_term.input.line)
 			free(g_term.input.line);
+		if (cmd.portions)
+			free_array_of_array(cmd.portions);
 		free_array_of_array(g_term.glob_environ);
 		g_term.delimiter = 0;
 	}

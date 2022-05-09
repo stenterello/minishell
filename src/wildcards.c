@@ -1,5 +1,12 @@
 #include "minishell.h"
 
+int	ft_islower(char c)
+{
+	if (97 <= c && c <= 122)
+		return (1);
+	return (0);
+}
+
 int	is_wildcard(char c)
 {
 	if (c == '*' || c == '?' || c == '[')
@@ -43,29 +50,14 @@ int	count_portions(char *line)
 int	try_parse_brackets(char *line)
 {
 	int		i;
-	int		flag;
 
 	i = 0;
 	if (line[i] == '[')
 		i++;
 	else
 		return (-1);
-	while (ft_isalnum(line[i]))
-	{
-		if (ft_isalpha(line[i]))
-			flag = 0;
-		else if (ft_isdigit(line[i]))
-			flag = 1;
-		if (line[++i] != '-')
-			return (-1);
-		if (ft_isalpha(line[++i]) && flag)
-			return (-1);
-		else if (ft_isdigit(line[i]) && !flag)
-			return (-1);
-		else if (!ft_isalnum(line[i]))
-			return (-1);
+	while (ft_isascii(line[i]) && line[i] != ']' && line[i])
 		i++;
-	}
 	if (line[i] != ']')
 		return (-1);
 	return (i + 1);
@@ -78,7 +70,7 @@ void	insert_brackets_param(char *line, char *portion, int len)
 
 	i = 0;
 	malloc_c(&tmp, len + 1);
-	while (ft_isalnum(line[i]) || line[i] == '[' || line[i] == '-')
+	while (line[i] && ft_isascii(line[i]) && line[i] != ']')
 	{
 		tmp[i] = line[i];
 		i++;
@@ -91,14 +83,13 @@ void	insert_brackets_param(char *line, char *portion, int len)
 
 int	take_brackets_param(char *line, char **portion)
 {
-	if (try_parse_brackets(line) == -1)
-		return (-1);
-	else if (try_parse_brackets(line))
+	if (try_parse_brackets(line) != -1)
 	{
 		malloc_c(portion, try_parse_brackets(line) + 1);
 		insert_brackets_param(line, *portion, try_parse_brackets(line));
+		return (1);
 	}
-	return (1);
+	return (-1);
 }
 
 void	take_string_portion(char *line, char **portion)
@@ -112,15 +103,171 @@ void	take_string_portion(char *line, char **portion)
 	ft_strlcpy(*portion, line, i + 1);
 }
 
-int	is_verified(char *file, char **portions)
+// int	find_next_bracket_occurrence(char *portion, char *file)
+// {}
+
+int	count_range(char a, char b)
+{
+	int	i;
+
+	i = a + 1;
+	while (i < b)
+		i++;
+	return (i - a + 1);
+}
+
+int	count_letters(char *brackets)
+{
+	int	i;
+	int	ret;
+
+	i = 1;
+	ret = 0;
+	while (brackets[i] != ']')
+	{
+		if (brackets[i] == '-' && count_range(brackets[i - 1], brackets[i + 1]) != -1)
+			ret += count_range(brackets[i - 1], brackets[i + 1]);
+		else if (count_range(brackets[i - 1], brackets[i + 1]) == -1)
+			return (-1);
+		i++;
+		if (ft_strchr("!^-]", brackets[i]) == NULL)
+			ret++;
+	}
+	return (ret);
+}
+
+char	*chrs_range(char a, char b)
+{
+	char	*tmp;
+	int		i;
+	int		j;
+
+	i = a + 1;
+	j = 0;
+	tmp = malloc(sizeof(char) * (b - a + 1));
+	while (i < b)
+		tmp[j++] = (char)i++;
+	tmp[j] = '\0';
+	return (tmp);
+}
+
+char	*get_letters(char *brackets)
+{
+	int		i;
+	int		len;
+	char	*ret;
+	char	*tmp;
+
+	i = 1;
+	len = 2;
+	ret = malloc(sizeof(char) * count_letters(brackets) + 1);
+	while (brackets[i] != ']')
+	{
+		if (brackets[i] != '-')
+		{
+			if (i == 1)
+				ft_strlcpy(ret, &brackets[i], len++);
+			else
+				ft_strlcat(ret, &brackets[i], len++);
+		}
+		else
+		{
+			tmp = chrs_range(brackets[i - 1], brackets[i + 1]);
+			len += ft_strlen(tmp) - 1;
+			ft_strlcat(ret, tmp, len++);
+			free(tmp);
+		}
+		i++;
+	}
+	return (ret);
+}
+
+int	is_in(char *range, char c)
 {
 	int	i;
 
 	i = 0;
-	while (portions[i] && file[i])
+	while (range[i])
 	{
-		
+		if (c == range[i])
+			return (1);
+		i++;
 	}
+	return (0);
+}
+
+int	is_verified_brackets(char *brackets, char file_char)
+{
+	char	*rules;
+
+	if (count_letters(brackets) == -1)
+		return (-1);
+	rules = get_letters(brackets);
+	if (is_in(rules, file_char))
+	{
+		free(rules);
+		return (1);
+	}
+	free(rules);
+	return (0);
+}
+
+int	is_verified(char *file, char **portions)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	j = 0;
+	while (portions[j] && file[i])
+	{
+		if (portions[j][0] == '*')
+		{
+			if (!portions[j + 1])
+				return (1);
+			j++;
+			while (portions[j] && (portions[j][0] == '*' || portions[j][0] == '?'))
+			{
+				if (portions[j][0] == '?' && file[i + 1])
+				{
+					j++;
+					i++;
+				}
+				if (portions[j][0] == '?' && !file[i + 1] && (!portions[j + 1] || portions[j + 1][0] == '*'))
+					return (1);
+				else
+					j++;
+			}
+			// if (find_next_bracket_occurrence(portions[j], &file[i]) != -1)
+			// 	i += find_next_bracket_occurrence(portions[j], &file[i]);
+			// else
+			// 	return (0);
+		}
+		else if (portions[j][0] == '?' && file[i + 1] && portions[j + 1])
+		{
+			i++;
+			j++;
+		}
+		else if (portions[j][0] == '?' && file[i + 1] && !portions[j + 1])
+			return (0);
+		else if (portions[j][0] == '?' && portions[j + 1] && !file[i + 1])
+			return (0);
+		else if (portions[j][0] == '?')
+			return (1);
+		else if (portions[j][0] == '[')
+		{
+			if (is_verified_brackets(portions[j], file[i]) == 1)
+				i += is_verified_brackets(portions[j], file[i]);
+			else if (is_verified_brackets(portions[j], file[i]) == -1)
+				return (-1);
+			else
+				return (0);
+			j++;
+		}
+	}
+	if (portions[j] && !file[i])
+		return (0);
+	return (1);
 }
 
 int	count_results(char **portions)
@@ -128,7 +275,6 @@ int	count_results(char **portions)
 	DIR				*stream;
 	int				ret;
 	struct dirent	*entry;
-	struct stat		file_stat;
 
 	ret = 0;
 	stream = opendir(".");
@@ -140,64 +286,145 @@ int	count_results(char **portions)
 	entry = readdir(stream);
 	while (entry)
 	{
-		stat(entry->d_name, &file_stat);
-		if ((file_stat.st_mode & S_IFMT) != S_IFDIR)
-		{
-			if (is_verified(entry->d_name, portions))
-				ret++;
-		}
+		if (ft_strncmp(entry->d_name, ".\0", 2) && ft_strncmp(entry->d_name, "..\0", 3) && is_verified(entry->d_name, portions) > 0)
+			ret++;
+		else if (is_verified(entry->d_name, portions) == -1)
+			return (-1);
+		else if (is_verified(entry->d_name, portions) == 0)
+			return (0);
 		entry = readdir(stream);
 	}
 	closedir(stream);
 	return (ret);
-	// Crea stream
-	// per ogni entry della cartella
-	// verifica che tutto rispetti le indicazioni
-	// ritorna il numero di risultati
 }
 
-int	wild_search(char **portions, t_command *cmd)
+char	**get_results(char **portions, int len)
 {
-	char	**results;
+	DIR				*stream;
+	char			**ret;
+	int				i;
+	struct dirent	*entry;
 
-	malloc_c_ptr(&results, count_results(portions));
+	i = 0;
+	malloc_c_ptr(&ret, len + 1);
+	stream = opendir(".");
+	if (!stream)
+	{
+		ft_putendl_fd(strerror(errno), 2);
+		return (NULL);
+	}
+	entry = readdir(stream);
+	while (entry)
+	{
+		if (ft_strncmp(entry->d_name, ".\0", 2) && ft_strncmp(entry->d_name, "..\0", 3) && is_verified(entry->d_name, portions) > 0)
+		{
+			malloc_c(&ret[i], ft_strlen(entry->d_name) + 1);
+			ft_strlcpy(ret[i++], entry->d_name, ft_strlen(entry->d_name) + 1);
+		}
+		entry = readdir(stream);
+	}
+	ret[i] = NULL;
+	closedir(stream);
+	return (ret);
+}
+
+int	has_wildcard(char *str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i])
+	{
+		if ((str[i] == '?' || str[i] == '*' || str[i] == '[') && !is_open(str, i))
+			return (1);
+		i++;
+	}
+	return (0);
+}
+
+void	substitute_args(t_command *cmd, char **tmp)
+{
+	int		j;
+	int		i;
+	int		i2;
+	int		len;
+	char	**helper;
+
+	len = count_args(cmd->args) + count_args(tmp);
+	malloc_c_ptr(&helper, len + 1);
+	j = 0;
+	while (cmd->args[j] && !has_wildcard(cmd->args[j]))
+	{
+		malloc_c(&helper[j], ft_strlen(cmd->args[j]) + 1);
+		ft_strlcpy(helper[j], cmd->args[j], ft_strlen(cmd->args[j]) + 1);
+		j++;
+	}
+	i2 = 0;
+	i = j + 1;
+	while (tmp[i2])
+	{
+		malloc_c(&helper[j], ft_strlen(tmp[i2]) + 1);
+		ft_strlcpy(helper[j++], tmp[i2], ft_strlen(tmp[i2]) + 1);
+		i2++;
+	}
+	while (cmd->args[i])
+	{
+		malloc_c(&helper[j], ft_strlen(cmd->args[i]) + 1);
+		ft_strlcpy(helper[j++], cmd->args[i], ft_strlen(cmd->args[i]) + 1);
+		i++;
+	}
+	helper[j] = NULL;
+	free_array_of_array(cmd->args);
+	cmd->args = helper;
 }
 
 int	guess(t_command *cmd, int i)
 {
 	int		j;
 	int		k;
-	char	**portions;
+	char	**tmp;
 
 	j = 0;
 	k = 0;
-	malloc_c_ptr(&portions, count_portions(cmd->args[i]) + 1);
+	malloc_c_ptr(&cmd->portions, count_portions(cmd->args[i]) + 1);
 	while (cmd->args[i][j])
 	{
 		if (!is_open(cmd->args[i], j) && (cmd->args[i][j] == '*' || cmd->args[i][j] == '?'))
 		{
-			malloc_c(&portions[k], 2);
-			ft_strlcpy(portions[k], &cmd->args[i][j], 2);
+			malloc_c(&cmd->portions[k], 2);
+			ft_strlcpy(cmd->portions[k], &cmd->args[i][j], 2);
 			k++;
 		}
 		else if (!is_open(cmd->args[i], j) && cmd->args[i][j] == '[')
 		{
-			if (take_brackets_param(&cmd->args[i][j], &portions[k]) == -1)
+			if (take_brackets_param(&cmd->args[i][j], &cmd->portions[k]) == -1)
+			{
+				free_array_of_array(cmd->portions);
 				return (-1);
+			}
 			k++;
 			j += try_parse_brackets(&cmd->args[i][j]) - 1;
 		}
 		else
 		{
-			take_string_portion(&cmd->args[i][j], &portions[k]);
-			j += ft_strlen(portions[k++]) - 1;
+			take_string_portion(&cmd->args[i][j], &cmd->portions[k]);
+			j += ft_strlen(cmd->portions[k++]) - 1;
 		}
 		j++;
 	}
-	portions[k] = NULL;
-	if (wild_search(portions, cmd) == -1)
+	cmd->portions[k] = NULL;
+	if (count_results(cmd->portions) == -1)
+	{
+		free_array_of_array(cmd->portions);
 		return (-1);
-	free_array_of_array(portions);
+	}
+	else if (count_results(cmd->portions) == 0)
+		return (0);
+	tmp = get_results(cmd->portions, count_results(cmd->portions));
+	if (!tmp)
+		return (-1);
+	substitute_args(cmd, tmp);
+	free_array_of_array(tmp);
 	return (1);
 }
 
@@ -208,9 +435,7 @@ int	check_wildcards(t_command *cmd)
 	i = 1;
 	while (cmd->args[i])
 	{
-		if (ft_strchr(cmd->args[i], '*') != NULL
-			|| ft_strchr(cmd->args[i], '[') != NULL
-			|| ft_strchr(cmd->args[i], '?') != NULL)
+		if (has_wildcard(cmd->args[i]))
 		{
 			if (guess(cmd, i) == -1)
 				return (-1);

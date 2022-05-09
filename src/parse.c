@@ -6,7 +6,7 @@
 /*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/27 15:10:12 by gimartin          #+#    #+#             */
-/*   Updated: 2022/05/03 21:57:47 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/05/07 12:26:43 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,9 +63,13 @@ void	free_array_of_array(char **arr)
 	int	i;
 
 	i = 0;
-	while (arr[i])
-		free(arr[i++]);
-	free(arr);
+	if (arr[i])
+	{
+		while (arr[i])
+			free(arr[i++]);
+	}
+	if (arr)
+		free(arr);
 }
 
 void	syntax_error(char **tmp)

@@ -6,7 +6,7 @@
 /*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/27 15:03:27 by gimartin          #+#    #+#             */
-/*   Updated: 2022/05/03 21:55:51 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/05/07 12:27:26 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,10 +52,9 @@ void	exit_cmd(t_command *cmd)
 		return ;
 	reset_term();
 	ft_putendl_fd("exit", STDOUT_FILENO);
-	i = 0;
-	while (cmd->args[i])
-		free(cmd->args[i++]);
-	free(cmd->args);
+	free_array_of_array(cmd->args);
+	if (cmd->portions)
+		free_array_of_array(cmd->portions);
 	free(cmd->cmd);
 	free_array_of_array(g_term.glob_environ);
 	free_dict(g_term.env);
