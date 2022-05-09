@@ -286,7 +286,7 @@ int	count_results(char **portions)
 	entry = readdir(stream);
 	while (entry)
 	{
-		if (ft_strncmp(entry->d_name, ".\0", 2) && ft_strncmp(entry->d_name, "..\0", 3) && is_verified(entry->d_name, portions) > 0)
+		if (ft_strncmp(entry->d_name, ".", 1) && is_verified(entry->d_name, portions) > 0)
 			ret++;
 		else if (is_verified(entry->d_name, portions) == -1)
 			return (-1);
@@ -316,7 +316,7 @@ char	**get_results(char **portions, int len)
 	entry = readdir(stream);
 	while (entry)
 	{
-		if (ft_strncmp(entry->d_name, ".\0", 2) && ft_strncmp(entry->d_name, "..\0", 3) && is_verified(entry->d_name, portions) > 0)
+		if (ft_strncmp(entry->d_name, ".", 1) && is_verified(entry->d_name, portions) > 0)
 		{
 			malloc_c(&ret[i], ft_strlen(entry->d_name) + 1);
 			ft_strlcpy(ret[i++], entry->d_name, ft_strlen(entry->d_name) + 1);
