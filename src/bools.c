@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   bools.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
+/*   By: gimartin <gimartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/27 15:04:49 by gimartin          #+#    #+#             */
-/*   Updated: 2022/05/03 21:56:12 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/05/09 15:13:40 by gimartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,38 +49,6 @@ int	is_var_def(char *line)
 	return (sup_is_var_def(line, i, s_quot, d_quot));
 }
 
-int	sup_check(char *typed, int i, t_input *input, int *open)
-{
-	while (typed[i])
-	{
-		if (typed[i] == '\'' && !input->s_quot && !input->d_quot)
-			input->s_quot = 1;
-		else if (typed[i] == '\'' && input->s_quot && !input->d_quot)
-			input->s_quot = 0;
-		else if (typed[i] == '$' && !input->s_quot)
-			input->to_expand = 1;
-		else if (typed[i] == '\"' && !input->d_quot && !input->s_quot)
-			input->d_quot = 1;
-		else if (typed[i] == '\"' && input->d_quot && !input->s_quot)
-			input->d_quot = 0;
-		else if (typed[i] == '|' && !input->d_quot && !input->s_quot)
-			open[0] = 1;
-		else if (ft_isalnum(typed[i]) && open[0])
-			open[0] = 0;
-		else if (!open[1] && (!ft_strncmp(&typed[i], "&&", 2)
-				|| !ft_strncmp(&typed[i], "||", 2)))
-			open[1] = 1;
-		else if (typed[i] == '(' && !is_open(typed, i))
-			open[2]++;
-		else if (typed[i] == ')' && !is_open(typed, i))
-			open[3]++;
-		if (ft_isalnum(typed[i]) && open[1])
-			open[1] = 0;
-		i++;
-	}
-	return (i);
-}
-
 int	check_error(char *line)
 {
 	int	i;
@@ -88,7 +56,8 @@ int	check_error(char *line)
 	i = 0;
 	while (line[i])
 	{
-		if ((!ft_strncmp(&line[i], "&&", 2) || !ft_strncmp(&line[i], "||", 2)) && line[i + 2] && is_logical_token(line[i + 2]))
+		if ((!ft_strncmp(&line[i], "&&", 2) || !ft_strncmp(&line[i], "||", 2))
+			&& line[i + 2] && is_logical_token(line[i + 2]))
 		{
 			ft_putstr_fd("minishell: syntax error near unexpected token \"", 2);
 			ft_putchar_fd(line[i + 2], 2);
@@ -130,15 +99,8 @@ void	check(char *typed, t_input *input)
 		input->with_error = 1;
 		return ;
 	}
-	i = sup_check(typed, i, input, open);
-	i--;
-	if (typed[i] == '\\' || input->s_quot || input->d_quot
-		|| open[0] || open[1])
-		input->is_open = 1;
-	else if (open[2] != open[3])
-		input->is_open = 1;
-	else
-		input->is_open = 0;
+	i = sup_check(typed, i, input, open) - 1 ;
+	sup_check2(typed, input, open, i);
 }
 
 int	is_open(char *typed, int limit)

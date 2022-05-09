@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirections_utils.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
+/*   By: gimartin <gimartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/27 15:10:18 by gimartin          #+#    #+#             */
-/*   Updated: 2022/05/03 21:57:56 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/05/09 15:41:26 by gimartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,15 @@ void	restore_fd(t_command *cmd)
 		restore_input(cmd);
 }
 
+void	control_define1(char **tmp, t_command *cmd, int i)
+{
+	while (tmp[i] && is_redir(tmp[i]) == 2)
+	{
+		define_append_output(tmp[++i], cmd);
+		i++;
+	}
+}
+
 int	check_redirection(char **tmp, t_command *cmd)
 {
 	int	i;
@@ -45,13 +54,7 @@ int	check_redirection(char **tmp, t_command *cmd)
 	if (!tmp[i + 1])
 		return (-1);
 	if (is_redir(tmp[i]) == 2)
-	{
-		while (tmp[i] && is_redir(tmp[i]) == 2)
-		{
-			define_append_output(tmp[++i], cmd);
-			i++;
-		}
-	}
+		control_define1(tmp, cmd, i);
 	else if (is_redir(tmp[i]) == 0)
 	{
 		while (tmp[i] && is_redir(tmp[i]) == 0)
@@ -69,29 +72,4 @@ int	check_redirection(char **tmp, t_command *cmd)
 		}
 	}
 	return (0);
-}
-
-void	check_pipe(char *line, t_command *cmd)
-{
-	int			i;
-	int			s_quot;
-	int			d_quot;
-
-	i = 0;
-	s_quot = 0;
-	d_quot = 0;
-	while (line[i])
-	{
-		if (line[i] == '\'' && !s_quot && !d_quot)
-			s_quot = 1;
-		else if (line[i] == '\'' && s_quot && !d_quot)
-			s_quot = 0;
-		else if (line[i] == '"' && !d_quot && !s_quot)
-			d_quot = 1;
-		else if (line[i] == '"' && d_quot && !s_quot)
-			d_quot = 0;
-		else if (line[i] == '|' && !d_quot && !s_quot && line[i + 1] != '|' && line[i - 1] != '|')
-			cmd->to_pipe = 1;
-		i++;
-	}
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   count.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
+/*   By: gimartin <gimartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/27 15:05:02 by gimartin          #+#    #+#             */
-/*   Updated: 2022/05/04 21:51:39 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/05/09 14:22:06 by gimartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,4 +63,3 @@ int	next_arg_len(char *line)
 		return (ft_strlen(line));
 	return (i);
 }
-

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute2.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
+/*   By: gimartin <gimartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/27 15:05:46 by gimartin          #+#    #+#             */
-/*   Updated: 2022/05/03 21:56:53 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/05/09 15:21:21 by gimartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,4 +66,59 @@ int	sup_ex(t_command *tmp)
 		tmp = tmp->next;
 	}
 	return (1);
+}
+
+int	preliminary(t_command *tmp)
+{
+	if (!tmp->cmd && !g_term.delimiter)
+	{
+		treat_var_decl(tmp);
+		return (1);
+	}
+	else if (!tmp->cmd && tmp->args && ft_strchr(tmp->args[0], '=')
+		&& tmp->args[0][0] != '=' && tmp->args[1])
+		rewrite_args(tmp);
+	return (0);
+}
+
+void	free_commands(t_command *cmd)
+{
+	t_command	*tmp;
+	int			i;
+
+	i = 0;
+	tmp = cmd;
+	while (tmp)
+	{
+		i = 0;
+		if (tmp->args)
+		{
+			while (tmp->args[i])
+				free(tmp->args[i++]);
+			free(tmp->args);
+		}
+		if (tmp->cmd)
+			free(tmp->cmd);
+		if (tmp->input_line)
+			free(tmp->input_line);
+		if (!tmp->first)
+			free(tmp);
+		tmp = tmp->next;
+	}
+	tmp = cmd;
+}
+
+void	execute_tree(t_command *cmd)
+{
+	t_command	*tmp;
+	int			ret;
+
+	tmp = cmd;
+	if (preliminary(tmp))
+		return ;
+	ret = sup_ex(tmp);
+	if (!ret)
+		return ;
+	if (!g_term.delimiter)
+		free_commands(cmd);
 }

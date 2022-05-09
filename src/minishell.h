@@ -6,7 +6,7 @@
 /*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/03 21:54:58 by ddelladi          #+#    #+#             */
-/*   Updated: 2022/05/07 13:52:58 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/05/09 20:50:08 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -188,9 +188,38 @@ int		is_logical_token(char c);
 int		is_in_par(char *line, int limit);
 int		syntax_error_no_arr(void);
 void	transform_environ(t_dict *env);
-int		wildcards(t_command *cmd);
-int		check_wildcards(t_command *cmd);
 void	store_new_args(char **args, char **files, char **ret);
-
+int		key_len(char *line);
+int		value_len(char *line);
+void	sup1(char *delimiter, t_command *cmd, char *tmp, t_command *cmd2);
+int		sup_check(char *typed, int i, t_input *input, int *open);
+void	sup_check2(char *typed, t_input *input, int *open, int i);
+int		sup_unit_len(char *line, int i);
+char	*define_var_name(char *line);
+int		until_end_var_name(char *line, char *var);
+int		until_dollar(char *line);
+int		no_output(char *line);
+int		syntax_error_no_arr(void);
+int		empty_input(char *line);
+int		empty_output(char *line);
+char	*get_filename(char *line);
+int		check_wildcards(t_command *cmd);
+int		has_wildcard(char *str);
+int		is_wildcard(char c);
+int		ft_islower(char c);
+int		is_in(char *range, char c);
+int		is_verified_brackets(char *brackets, char file_char);
+int		count_portions(char *line);
+int		count_range(char a, char b);
+int		count_letters(char *brackets);
+int		count_results(char **portions);
+int		take_brackets_param(char *line, char **portion);
+void	insert_brackets_param(char *line, char *portion, int len);
+char	*chrs_range(char a, char b);
+char	*get_letters(char *brackets);
+int		try_parse_brackets(char *line);
+void	take_string_portion(char *line, char **portion);
+char	**get_results(char **portions, int len);
+int		is_verified(char *file, char **portions);
 
 #endif

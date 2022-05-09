@@ -3,43 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
+/*   By: gimartin <gimartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/27 15:03:30 by gimartin          #+#    #+#             */
-/*   Updated: 2022/05/03 21:55:55 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/05/09 13:42:53 by gimartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int	key_len(char *line)
+void	sup_sup_export(t_dict *new)
 {
-	int	i;
-
-	i = 0;
-	while (line[i] && line[i] != '=')
-		i++;
-	if (!line[i] && search_vars(line, g_term.var) == NULL)
-		return (-1);
-	return (i);
-}
-
-int	value_len(char *line)
-{
-	int	i;
-	int	j;
-
-	i = key_len(line) + 1;
-	if (line[i] == ' ')
-		return (0);
-	while (line[i] == '\"' || line[i] == '\'')
-		i++;
-	j = i;
-	while (line[i] && line[i] != '"' && line[i] != '\'')
-		i++;
-	if (i - j == 0)
-		return (-1);
-	return (i - j);
+	if (!change_exist_var_in_dict(new->key, new->value, g_term.env))
+		insert_into_vars(new->key, new->value, g_term.env);
+	free(new->key);
+	free(new->value);
+	free(new);
+	g_term.last_exit = 0;
 }
 
 void	sup_export(t_command *cmd, t_dict *new, int i)
@@ -67,18 +47,34 @@ void	sup_export(t_command *cmd, t_dict *new, int i)
 		ft_strlcpy(new->value, &cmd->args[1][j + 1], i + 1);
 	}
 	new->next = NULL;
-	if (!change_exist_var_in_dict(new->key, new->value, g_term.env))
-		insert_into_vars(new->key, new->value, g_term.env);
-	free(new->key);
-	free(new->value);
-	free(new);
-	g_term.last_exit = 0;
+	sup_sup_export(new);
+}
+
+void	export2(t_command *cmd, int i, t_dict *new)
+{
+	char	*ret;
+
+	if (i == -1)
+	{
+		ret = search_vars(cmd->args[1], g_term.var);
+		if (ret != NULL)
+		{
+			i = value_len(ret);
+			free(ret);
+		}
+		else
+		{
+			free(new->key);
+			free(new);
+			return ;
+		}
+	}
+	sup_export(cmd, new, i);
 }
 
 void	export(t_command *cmd)
 {
 	int		i;
-	char	*ret;
 	t_dict	*new;
 
 	new = NULL;
@@ -94,21 +90,6 @@ void	export(t_command *cmd)
 		malloc_c(&new->key, i + 1);
 		ft_strlcpy(new->key, cmd->args[1], i + 1);
 		i = value_len(cmd->args[1]);
-		if (i == -1)
-		{
-			ret = search_vars(cmd->args[1], g_term.var);
-			if (ret != NULL)
-			{
-				i = value_len(ret);
-				free(ret);
-			}
-			else
-			{
-				free(new->key);
-				free(new);
-				return ;
-			}
-		}
-		sup_export(cmd, new, i);
+		export2(cmd, i, new);
 	}
 }

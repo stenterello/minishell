@@ -6,7 +6,7 @@
 /*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/27 15:05:51 by gimartin          #+#    #+#             */
-/*   Updated: 2022/05/09 11:41:46 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/05/09 20:50:47 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,11 +48,9 @@ int	search_in_dir(DIR *stream, t_command *cmd, char *dir_name)
 	return (0);
 }
 
-int	sup_find_script(char **path, t_command *cmd)
+int	sup_sup_find(char **path, DIR *stream, t_command *cmd, int is_exec)
 {
 	int	i;
-	int	is_exec;
-	DIR	*stream;
 
 	i = 0;
 	while (path[i])
@@ -78,11 +76,20 @@ int	sup_find_script(char **path, t_command *cmd)
 	return (1);
 }
 
+int	sup_find_script(char **path, t_command *cmd)
+{
+	int	is_exec;
+	DIR	*stream;
+
+	stream = NULL;
+	is_exec = 0;
+	return (sup_sup_find(path, stream, cmd, is_exec));
+}
+
 int	find_script(t_command *cmd)
 {
 	char	**path;
 
-	path = NULL;
 	path = ft_split(ft_getenv("PATH\0"), ':');
 	if (path)
 	{

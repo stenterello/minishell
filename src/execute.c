@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
+/*   By: gimartin <gimartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/27 15:05:42 by gimartin          #+#    #+#             */
-/*   Updated: 2022/05/09 14:48:35 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/05/09 15:22:23 by gimartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,6 @@ void	next_level(void)
 	bef = ft_itoa((ft_atoi(ft_getenv("SHLVL")) + 1));
 	change_exist_var_in_dict("SHLVL", bef, g_term.env);
 	free_array_of_array(g_term.glob_environ);
-	g_term.glob_environ = NULL;
 	transform_environ(g_term.env);
 	free(bef);
 }
@@ -77,10 +76,13 @@ void	transform_environ(t_dict *env)
 	tmp = env;
 	while (tmp)
 	{
-		malloc_c(&g_term.glob_environ[i], ft_strlen(tmp->key) + ft_strlen(tmp->value) + 2);
+		malloc_c(&g_term.glob_environ[i], ft_strlen(tmp->key)
+			+ ft_strlen(tmp->value) + 2);
 		ft_strlcpy(g_term.glob_environ[i], tmp->key, ft_strlen(tmp->key) + 1);
-		ft_strlcat(g_term.glob_environ[i], "=", ft_strlen(g_term.glob_environ[i]) + 2);
-		ft_strlcat(g_term.glob_environ[i], tmp->value, ft_strlen(g_term.glob_environ[i]) + ft_strlen(tmp->value) + 1);
+		ft_strlcat(g_term.glob_environ[i], "=",
+			ft_strlen(g_term.glob_environ[i]) + 2);
+		ft_strlcat(g_term.glob_environ[i], tmp->value,
+			ft_strlen(g_term.glob_environ[i]) + ft_strlen(tmp->value) + 1);
 		i++;
 		tmp = tmp->next;
 	}
@@ -101,65 +103,14 @@ void	born_child(t_command *tmp)
 		die(strerror(errno));
 	if (g_term.child == 0)
 	{
-		if (!ft_strncmp(&tmp->cmd[ft_strlen(tmp->cmd) - 9], "minishell", 9))
+		if (!ft_strncmp(&tmp->cmd[ft_strlen(tmp->cmd) - 10], "minishell2", 10))
+		{
 			next_level();
-		execve(tmp->cmd, tmp->args, g_term.glob_environ);
+			execve(tmp->cmd, tmp->args, g_term.glob_environ);
+		}
+		else
+			execve(tmp->cmd, tmp->args, NULL);
 	}
 	else
 		sup_born(tmp, status);
-}
-
-int	preliminary(t_command *tmp)
-{
-	if (!tmp->cmd && !g_term.delimiter)
-	{
-		treat_var_decl(tmp);
-		return (1);
-	}
-	else if (!tmp->cmd && tmp->args && ft_strchr(tmp->args[0], '=')
-		&& tmp->args[0][0] != '=' && tmp->args[1])
-		rewrite_args(tmp);
-	return (0);
-}
-
-void	free_commands(t_command *cmd)
-{
-	t_command	*tmp;
-	int			i;
-
-	i = 0;
-	tmp = cmd;
-	while (tmp)
-	{
-		i = 0;
-		if (tmp->args)
-		{
-			while (tmp->args[i])
-				free(tmp->args[i++]);
-			free(tmp->args);
-		}
-		if (tmp->cmd)
-			free(tmp->cmd);
-		if (tmp->input_line)
-			free(tmp->input_line);
-		if (!tmp->first)
-			free(tmp);
-		tmp = tmp->next;
-	}
-	tmp = cmd;
-}
-
-void	execute_tree(t_command *cmd)
-{
-	t_command	*tmp;
-	int			ret;
-
-	tmp = cmd;
-	if (preliminary(tmp))
-		return ;
-	ret = sup_ex(tmp);
-	if (!ret)
-		return ;
-	if (!g_term.delimiter)
-		free_commands(cmd);
 }

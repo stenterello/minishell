@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc2.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
+/*   By: gimartin <gimartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/27 15:16:53 by gimartin          #+#    #+#             */
-/*   Updated: 2022/05/03 21:57:07 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/05/09 14:42:59 by gimartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,36 +89,4 @@ void	init_here(t_command *cmd, t_command *cmd2)
 	cmd2 = malloc(sizeof(t_command));
 	if (!cmd2)
 		die("Malloc error");
-}
-
-int	treat_heredoc(char *typed)
-{
-	t_command	*cmd;
-	t_command	*cmd2;
-	char		*delimiter;
-	char		*tmp;
-
-	g_term.delimiter = 1;
-	cmd = malloc(sizeof(t_command));
-	if (!cmd)
-		die("Malloc error");
-	cmd2 = malloc(sizeof(t_command));
-	if (!cmd2)
-		die("Malloc error");
-	init_cmd(cmd);
-	init_cmd(cmd2);
-	cmd->first = 1;
-	malloc_c(&cmd2->cmd, ft_strlen(typed) + 1);
-	ft_strlcpy(cmd2->cmd, typed, ft_strlen(typed) + 1);
-	cmd2->input_line = NULL;
-	cmd->input_line = NULL;
-	delimiter = take_delimiter(cmd2->cmd);
-	clean_heredoc(cmd2->cmd, "<<");
-	malloc_c_ptr(&cmd2->args, 2);
-	malloc_c(&cmd2->args[0], ft_strlen(cmd2->cmd) + 1);
-	ft_strlcpy(cmd2->args[0], cmd2->cmd, ft_strlen(cmd2->cmd) + 1);
-	cmd2->args[1] = NULL;
-	tmp = readline("> ");
-	sup1(delimiter, cmd, tmp, cmd2);
-	return (1);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd2.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
+/*   By: gimartin <gimartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/27 15:03:17 by gimartin          #+#    #+#             */
-/*   Updated: 2022/05/03 21:55:28 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/05/09 15:06:43 by gimartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ void	sup_sup_cd1(t_command *old, char *act)
 	ft_strlcat(old->args[1], act,
 		ft_strlen(old->args[1]) + ft_strlen(act) + 1);
 	old->args[2] = NULL;
+	ft_putendl_fd(act, 1);
 	export(old);
 	i = 0;
 	while (old->args[i])

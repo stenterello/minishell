@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirections_utils2.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
+/*   By: gimartin <gimartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/27 15:11:01 by gimartin          #+#    #+#             */
-/*   Updated: 2022/05/04 00:57:17 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/05/09 15:41:35 by gimartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,4 +50,30 @@ void	define_heredoc_pipe(t_command *cmd)
 	close(STDIN_FILENO);
 	dup2(tmp->input_fd, STDIN_FILENO);
 	close(tmp->input_fd);
+}
+
+void	check_pipe(char *line, t_command *cmd)
+{
+	int			i;
+	int			s_quot;
+	int			d_quot;
+
+	i = 0;
+	s_quot = 0;
+	d_quot = 0;
+	while (line[i])
+	{
+		if (line[i] == '\'' && !s_quot && !d_quot)
+			s_quot = 1;
+		else if (line[i] == '\'' && s_quot && !d_quot)
+			s_quot = 0;
+		else if (line[i] == '"' && !d_quot && !s_quot)
+			d_quot = 1;
+		else if (line[i] == '"' && d_quot && !s_quot)
+			d_quot = 0;
+		else if (line[i] == '|' && !d_quot && !s_quot
+			&& line[i + 1] != '|' && line[i - 1] != '|')
+			cmd->to_pipe = 1;
+		i++;
+	}
 }

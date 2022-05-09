@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
+/*   By: gimartin <gimartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/27 15:04:14 by gimartin          #+#    #+#             */
-/*   Updated: 2022/05/04 01:21:15 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/05/09 14:38:56 by gimartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,8 @@ char	*sup_take(t_input *input, int init_len, char *var_name, char *var1)
 	char	*ret;
 
 	i = 0;
-	while (var1[i] && (ft_isalnum(var1[i]) || var1[i] == '?' || var1[i] == '\''))
+	while (var1[i] && (ft_isalnum(var1[i])
+			|| var1[i] == '?' || var1[i] == '\''))
 		i++;
 	var_name[i] = '\0';
 	malloc_c(&ret, ft_strlen(input->line) + 1 - i + ft_strlen(input->expanded));

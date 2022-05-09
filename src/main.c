@@ -6,90 +6,11 @@
 /*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/03 21:54:41 by ddelladi          #+#    #+#             */
-/*   Updated: 2022/05/09 14:19:43 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/05/09 21:45:07 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-char	*get_filename(char *line)
-{
-	int		i;
-	int		j;
-	char	*ret;
-
-	i = 1;
-	while (!ft_isalnum(line[i]))
-		i++;
-	j = i;
-	while (ft_isalnum(line[j]))
-		j++;
-	ret = NULL;
-	malloc_c(&ret, j - i + 1);
-	ft_strlcpy(ret, &line[i], j - i + 1);
-	return (ret);
-}
-
-int	empty_output(char *line)
-{
-	char	*filename;
-	int		fd;
-
-	filename = get_filename(line);
-	fd = open(filename, O_CREAT, 0664);
-	if (fd < 0)
-		die(strerror(errno));
-	free(filename);
-	close(fd);
-	return (1);
-}
-
-int	empty_input(char *line)
-{
-	char	*filename;
-	int		fd;
-
-	filename = get_filename(line);
-	fd = open(filename, O_CREAT, 0664);
-	if (fd < 0)
-	{
-		ft_putstr_fd("minishell: ", 2);
-		ft_putstr_fd(filename, 2);
-		ft_putstr_fd(": ", 2);
-		ft_putendl_fd(strerror(errno), 2);
-		g_term.last_exit = 1;
-	}
-	free(filename);
-	close(fd);
-	return (1);
-}
-
-int	syntax_error_no_arr(void)
-{
-	ft_putstr_fd(last_field(ft_getenv("SHELL")), 2);
-	ft_putendl_fd(": syntax error near unexpected token \"newline\"", 2);
-	return (1);
-}
-
-int	no_output(char *line)
-{
-	int	i;
-	int	flag;
-
-	i = 0;
-	flag = 0;
-	while (line[i])
-	{
-		if (is_token(&line[i]) && !flag)
-			flag = 1;
-		if (ft_isalnum(line[i]) && flag)
-			flag = 0;
-		i++;
-	}
-	if (flag)
-		return (1);
-	return (0);
-}
 
 int	empty_redir(char *line)
 {
@@ -167,7 +88,7 @@ int	main(void)
 	free_dict(g_term.env);
 	free_dict(g_term.var);
 	free(g_term.termi);
-	free_array_of_array(g_term.glob_environ);
+	free(g_term.glob_environ);
 	return (0);
 }
 
@@ -178,6 +99,17 @@ int	main(void)
 // La free a riga 129 di heredoc.c non dovrebbe dare invalid
 	pointer nel caso in cui venga premuto Ctrl + D 
 	durante una readline?
+
+// Le wildcards sembrano funzionare,
+	sicuramente tranne per un caso:
+	quello in cui vi sia una combinazione in cui è compresa [].
+	Succede perché, nel parsing del nome del file,
+	l'algoritmo va a cercare la *prima* occorrenza di una lettera compresa nel range indicato, quando invece l'occorrenza non è definita,
+	può essere seconda, terza, etc
+	esempio: *[l-p]ini[r-t]*
+		non prende "old_minishell"
+		poiché trova la prima l, e supera
+		le parentesi quadre
 
 // Da controllare:
 	- quali segnali, di preciso, servono

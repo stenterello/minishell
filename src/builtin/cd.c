@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
+/*   By: gimartin <gimartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/03 21:55:20 by ddelladi          #+#    #+#             */
-/*   Updated: 2022/05/04 01:12:08 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/05/09 13:58:57 by gimartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,25 +38,37 @@ void	sup_cd2(int ret, t_command *old, char *act)
 		sup_sup_cd2(old, act);
 }
 
+int	sup_second_cd3(char **dest, t_command *cmd)
+{
+	if (ft_getenv("HOME") != NULL)
+	{
+		malloc_c(dest, ft_strlen(ft_getenv("HOME")
+				+ ft_strlen(cmd->args[1])));
+		ft_strlcpy(*dest, ft_getenv("HOME"),
+			ft_strlen(ft_getenv("HOME")) + 1);
+		ft_strlcat(*dest, &cmd->args[1][1], ft_strlen(*dest)
+			+ ft_strlen(cmd->args[1]) + 1);
+		*dest = get_path(*dest);
+	}
+	else
+	{
+		ft_putendl_fd("HOME not set", 2);
+		return (1);
+	}
+	return (0);
+}
+
 void	sup_cd3(t_command *cmd, char *act, t_command *old)
 {
 	char		*dest;
 	int			ret;
 
+	dest = NULL;
 	if (cmd->args[1][0] == '~')
 	{
-		if  (ft_getenv("HOME") != NULL)
-		{
-			malloc_c(&dest, ft_strlen(ft_getenv("HOME") + ft_strlen(cmd->args[1])));
-			ft_strlcpy(dest, ft_getenv("HOME"), ft_strlen(ft_getenv("HOME")) + 1);
-			ft_strlcat(dest, &cmd->args[1][1], ft_strlen(dest) + ft_strlen(cmd->args[1]) + 1);
-			dest = get_path(dest);
-		}
-		else
-		{
-			ft_putendl_fd("HOME not set", 2);
+		ret = sup_second_cd3(&dest, cmd);
+		if (ret)
 			return ;
-		}
 	}
 	else
 		dest = get_path(cmd->args[1]);

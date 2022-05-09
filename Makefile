@@ -3,8 +3,10 @@ CC=gcc
 FLAGS_LIN=-Wall -Werror -Wextra -g 
 FLAGS=-Wall -Werror -Wextra -g -L$(HOME)/.brew/opt/readline/lib -I$(HOME)/.brew/opt/readline/include
 SRC=main.c \
+	main2.c \
 	utils.c \
 	utils2.c \
+	utils3.c \
 	execute.c \
 	execute2.c \
 	find_script.c \
@@ -16,6 +18,7 @@ SRC=main.c \
 	bools.c \
 	bools2.c \
 	bools3.c \
+	bools4.c \
 	count.c \
 	memory.c \
 	redirections.c \
@@ -29,7 +32,12 @@ SRC=main.c \
 	signal.c \
 	error_handling.c \
 	logical.c \
-	logical2.c
+	logical2.c \
+	logical3.c \
+	wildcards.c \
+	wildcards_bools.c \
+	wildcards_count.c \
+	wildcards_utils.c 
 SRCS=$(addprefix src/, $(SRC))
 OBJS=$(SRCS:.c=.o)
 BUILTIN=pwd.c \
@@ -39,6 +47,7 @@ BUILTIN=pwd.c \
 		exit.c \
 		env.c \
 		export.c \
+		export2.c \
 		unset.c
 BUILTINS=$(addprefix src/builtin/, $(BUILTIN))
 BUILTIN_OBJS=$(BUILTINS:.c=.o)
