@@ -6,7 +6,7 @@
 /*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/03 21:54:41 by ddelladi          #+#    #+#             */
-/*   Updated: 2022/05/07 12:20:29 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/05/09 11:38:35 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -166,7 +166,7 @@ int	main(void)
 	free_dict(g_term.env);
 	free_dict(g_term.var);
 	free(g_term.termi);
-	free(g_term.glob_environ);
+	free_array_of_array(g_term.glob_environ);
 	return (0);
 }
 

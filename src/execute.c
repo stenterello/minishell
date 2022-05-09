@@ -6,7 +6,7 @@
 /*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/27 15:05:42 by gimartin          #+#    #+#             */
-/*   Updated: 2022/05/04 00:53:15 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/05/09 11:37:58 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ void	next_level(void)
 	bef = ft_itoa((ft_atoi(ft_getenv("SHLVL")) + 1));
 	change_exist_var_in_dict("SHLVL", bef, g_term.env);
 	free_array_of_array(g_term.glob_environ);
+	g_term.glob_environ = NULL;
 	transform_environ(g_term.env);
 	free(bef);
 }

@@ -6,7 +6,7 @@
 /*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/27 15:05:51 by gimartin          #+#    #+#             */
-/*   Updated: 2022/05/04 13:52:48 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/05/09 11:41:46 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,7 @@ int	find_script(t_command *cmd)
 {
 	char	**path;
 
+	path = NULL;
 	path = ft_split(ft_getenv("PATH\0"), ':');
 	if (path)
 	{
