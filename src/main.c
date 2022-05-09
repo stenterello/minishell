@@ -6,7 +6,7 @@
 /*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/03 21:54:41 by ddelladi          #+#    #+#             */
-/*   Updated: 2022/05/09 11:38:35 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/05/09 14:19:43 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,6 +111,7 @@ int	empty_redir(char *line)
 		free(tmp);
 		return (syntax_error_no_arr());
 	}
+	free(tmp);
 	return (0);
 }
 
@@ -177,10 +178,6 @@ int	main(void)
 // La free a riga 129 di heredoc.c non dovrebbe dare invalid
 	pointer nel caso in cui venga premuto Ctrl + D 
 	durante una readline?
-
-// Doppio redirezionamento: ls > ciao > ciao2
-	---> deve scrivere in ciao2 e ciao vuoto
-	DOVREBBE ESSERE TUTTO RISOLTO: verificare
 
 // Da controllare:
 	- quali segnali, di preciso, servono

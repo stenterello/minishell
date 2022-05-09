@@ -6,7 +6,7 @@
 /*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/27 15:08:51 by gimartin          #+#    #+#             */
-/*   Updated: 2022/05/03 21:57:36 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/05/09 12:16:43 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,9 +34,14 @@ void	free_dict(t_dict *env)
 
 void	malloc_c(char **dst, int len)
 {
-	*dst = malloc(sizeof(char) * len);
+	int	i;
+
+	i = 0;
+	*dst = ft_calloc(sizeof(char), len);
 	if (!*dst)
 		die("Malloc error");
+	while ((*dst)[i])
+		(*dst)[i++] = '\0';
 }
 
 void	malloc_c_ptr(char ***dst, int len)

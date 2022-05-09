@@ -214,15 +214,14 @@ int	is_verified_brackets(char *brackets, char file_char)
 
 int	find_brackets_occurrence(char *file, char *portion, int *f_ind)
 {
-
+	
 }
 
 int	question_mark(char *file, char *portion, int *f_ind)
 {
 	if (file[++(*f_ind)])
 		return (1);
-	else
-		return (0);
+	return (0);
 }
 
 int	treat_init_asterisk(char *file, char **portions, int *p_ind, int *f_ind)
@@ -232,8 +231,10 @@ int	treat_init_asterisk(char *file, char **portions, int *p_ind, int *f_ind)
 	ret = 0;
 	while (portions[*p_ind] && portions[*p_ind][0] == '*')
 		*p_ind++;
-	if (!portions[*p_ind])
+	if (!portions[*p_ind] && file[*f_ind])
 		return (1);
+	else if (!portions[*p_ind] && !file[*f_ind])
+		return (0);
 	while (portions[*p_ind] && file[*f_ind])
 	{
 		if (portions[*p_ind][0] == '[')
