@@ -212,62 +212,55 @@ int	is_verified_brackets(char *brackets, char file_char)
 	return (0);
 }
 
+int	find_brackets_occurrence(char *file, char *portion, int *f_ind)
+{
+
+}
+
+int	question_mark(char *file, char *portion, int *f_ind)
+{
+	if (file[++(*f_ind)])
+		return (1);
+	else
+		return (0);
+}
+
+int	treat_init_asterisk(char *file, char **portions, int *p_ind, int *f_ind)
+{
+	int	ret;
+
+	ret = 0;
+	while (portions[*p_ind] && portions[*p_ind][0] == '*')
+		*p_ind++;
+	if (!portions[*p_ind])
+		return (1);
+	while (portions[*p_ind] && file[*f_ind])
+	{
+		if (portions[*p_ind][0] == '[')
+			ret = find_brackets_occurrence(file, portions[*p_ind], f_ind);
+		else if (portions[*p_ind][0] == '?')
+			ret = question_mark(file, portions[*p_ind], f_ind);
+		else if (portions[*p_ind][0] == '*')
+			ret = treat_init_asterisk(file, portions, p_ind, f_ind);
+		if (!ret)
+			return (ret);
+		*p_ind++;
+	}
+	return (ret);
+}
+
 int	is_verified(char *file, char **portions)
 {
 	int	i;
 	int	j;
 
-	i = 0;
+	i = -1;
 	j = 0;
-	while (portions[j] && file[i])
+	while (portions[++i])
 	{
-		if (portions[j][0] == '*')
-		{
-			if (!portions[j + 1])
-				return (1);
-			j++;
-			while (portions[j] && (portions[j][0] == '*' || portions[j][0] == '?'))
-			{
-				if (portions[j][0] == '?' && file[i + 1])
-				{
-					j++;
-					i++;
-				}
-				if (portions[j][0] == '?' && !file[i + 1] && (!portions[j + 1] || portions[j + 1][0] == '*'))
-					return (1);
-				else
-					j++;
-			}
-			// if (find_next_bracket_occurrence(portions[j], &file[i]) != -1)
-			// 	i += find_next_bracket_occurrence(portions[j], &file[i]);
-			// else
-			// 	return (0);
-		}
-		else if (portions[j][0] == '?' && file[i + 1] && portions[j + 1])
-		{
-			i++;
-			j++;
-		}
-		else if (portions[j][0] == '?' && file[i + 1] && !portions[j + 1])
-			return (0);
-		else if (portions[j][0] == '?' && portions[j + 1] && !file[i + 1])
-			return (0);
-		else if (portions[j][0] == '?')
-			return (1);
-		else if (portions[j][0] == '[')
-		{
-			if (is_verified_brackets(portions[j], file[i]) == 1)
-				i += is_verified_brackets(portions[j], file[i]);
-			else if (is_verified_brackets(portions[j], file[i]) == -1)
-				return (-1);
-			else
-				return (0);
-			j++;
-		}
+		if (portions[i][0] == '*')
+			return (treat_init_asterisk(file, portions, &i, &j));
 	}
-	if (portions[j] && !file[i])
-		return (0);
-	return (1);
 }
 
 int	count_results(char **portions)
