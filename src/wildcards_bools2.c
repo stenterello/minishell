@@ -6,7 +6,7 @@
 /*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/10 11:24:19 by gimartin          #+#    #+#             */
-/*   Updated: 2022/05/11 14:22:46 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/05/11 14:34:40 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,11 @@ int	is_verified(char *file, char **port)
 		{
 			i++;
 			j++;
+			if (!port[i] && !file[j])
+				return (1);
 			if (!file[j])
+				return (0);
+			if (!port[i])
 				return (0);
 		}
 		ret = sup_brackets_is_verified(port, i, j, file);

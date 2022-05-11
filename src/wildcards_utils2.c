@@ -6,7 +6,7 @@
 /*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/10 11:15:41 by gimartin          #+#    #+#             */
-/*   Updated: 2022/05/11 14:18:56 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/05/11 14:28:30 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ char	*sup_get_let(char *brackets, int *i, char *ret, char *tmp)
 		ft_strlcat(ret, tmp, i[1]++);
 		free(tmp);
 	}
+	ret[i[1]] = '\0';
 	return (ret);
 }
 
