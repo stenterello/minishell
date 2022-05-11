@@ -6,7 +6,7 @@
 /*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/03 21:54:41 by ddelladi          #+#    #+#             */
-/*   Updated: 2022/05/11 14:53:19 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/05/11 15:23:14 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,28 +100,11 @@ int	main(void)
 	pointer nel caso in cui venga premuto Ctrl + D 
 	durante una readline?
 
-// Le wildcards sembrano funzionare,
-	sicuramente tranne per un caso:
-	quello in cui vi sia una combinazione in cui è compresa [].
-	Succede perché, nel parsing del nome del file,
-	l'algoritmo va a cercare la *prima* occorrenza di una lettera compresa nel range indicato, quando invece l'occorrenza non è definita,
-	può essere seconda, terza, etc
-	esempio: *[l-p]ini[r-t]*
-		non prende "old_minishell"
-		poiché trova la prima l, e supera
-		le parentesi quadre
-
-// Le redirezioni possono essere poste anche come prima voce
-	del comando: adesso non funziona
-
 // Da controllare:
 	- quali segnali, di preciso, servono
 	- leaks
 	- norma
 	- configurazioni (flag) del terminale
 	- testare prepotentemente le wildcard e gli operatori logici
-	- il doppio asterisco nelle wildcard funziona soltanto se singolo,
-		se doppio funziona in maniera arbitrario (tipo: cat o*c*, valuta
-		soltanto il suffisso 'o')
 
 */
