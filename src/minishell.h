@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
+/*   By: gimartin <gimartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/03 21:54:58 by ddelladi          #+#    #+#             */
-/*   Updated: 2022/05/09 20:50:08 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/05/10 11:33:11 by gimartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -221,5 +221,6 @@ int		try_parse_brackets(char *line);
 void	take_string_portion(char *line, char **portion);
 char	**get_results(char **portions, int len);
 int		is_verified(char *file, char **portions);
+int		helper_guess(t_command *cmd);
 
 #endif

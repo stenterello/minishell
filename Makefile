@@ -36,8 +36,10 @@ SRC=main.c \
 	logical3.c \
 	wildcards.c \
 	wildcards_bools.c \
+	wildcards_bools2.c \
 	wildcards_count.c \
-	wildcards_utils.c 
+	wildcards_utils.c \
+	wildcards_utils2.c 
 SRCS=$(addprefix src/, $(SRC))
 OBJS=$(SRCS:.c=.o)
 BUILTIN=pwd.c \

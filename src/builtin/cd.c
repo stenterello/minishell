@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gimartin <gimartin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/03 21:55:20 by ddelladi          #+#    #+#             */
-/*   Updated: 2022/05/09 13:58:57 by gimartin         ###   ########.fr       */
+/*   Updated: 2022/05/10 14:18:05 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,7 @@ void	cd(t_command *cmd)
 	if (!old)
 		die("Malloc error");
 	old->args = NULL;
-	if (cmd->args[2])
+	if (cmd->args[1] && cmd->args[2])
 	{
 		ft_putstr_fd(cmd->cmd, STDERR_FILENO);
 		ft_putendl_fd(": too many arguments", STDERR_FILENO);

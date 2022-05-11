@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   wildcards_bools.c                                  :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: gimartin <gimartin@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/05/10 11:00:24 by gimartin          #+#    #+#             */
+/*   Updated: 2022/05/10 11:24:34 by gimartin         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 int	ft_islower(char c)
@@ -51,78 +63,10 @@ int	has_wildcard(char *str)
 	i = 0;
 	while (str[i])
 	{
-		if ((str[i] == '?' || str[i] == '*' || str[i] == '[') && !is_open(str, i))
+		if ((str[i] == '?' || str[i] == '*' || str[i] == '[')
+			&& !is_open(str, i))
 			return (1);
 		i++;
 	}
 	return (0);
-}
-
-int	is_verified(char *file, char **portions)
-{
-	int	i;
-	int	j;
-
-	i = 0;
-	j = 0;
-	while (portions[i] && file[j])
-	{
-		while (portions[i] && portions[i][0] == '*')
-			i++;
-		while (portions[i] && portions[i][0] == '?')
-		{
-			i++;
-			j++;
-			if (!file[j])
-				return (0);
-		}
-		if (portions[i] && portions[i - 1][0] == '*' && portions[i][0] == '[' && file[j])
-		{
-			while (portions[i] && portions[i][0] == '[' && file[j])
-			{
-				while (file[j] && portions[i] && is_verified_brackets(portions[i], file[j]) == 0)
-					j++;
-				if (is_verified_brackets(portions[i], file[j]) == -1)
-					return (-1);
-				if (is_verified_brackets(portions[i], file[j]) == 1)
-				{
-					i++;
-					j++;
-				}
-				else if (!file[j])
-					return (0);
-			}
-		}
-		else if (portions[i] && portions[i][0] == '[' && file[j])
-		{
-			if (is_verified_brackets(portions[i], file[j]) == -1)
-				return (-1);
-			if (is_verified_brackets(portions[i], file[j]) == 1)
-			{
-				i++;
-				j++;
-			}
-			else
-				return (0);
-		}
-		if (portions[i] && portions[i - 1][0] == '*' && ft_isalnum(portions[i][0]))
-		{
-			while (file[j] && ft_strncmp(&file[j], portions[i], ft_strlen(portions[i])))
-				j++;
-			if (!file[j])
-				return (0);
-			i++;
-		}
-		else
-		{
-			if (portions[i] && ft_isalnum(portions[i][0]) && !ft_strncmp(&file[j], portions[i], ft_strlen(portions[i])))
-			{
-				j += ft_strlen(portions[i]);
-				i++;
-			}
-			else if (portions[i] && ft_isalnum(portions[i][0]))
-				return (0);
-		}
-	}
-	return (1);
 }

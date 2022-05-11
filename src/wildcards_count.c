@@ -1,4 +1,40 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   wildcards_count.c                                  :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: gimartin <gimartin@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/05/10 11:01:53 by gimartin          #+#    #+#             */
+/*   Updated: 2022/05/10 11:33:37 by gimartin         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
+
+int	sup_count(char *line, int i, int ret)
+{
+	if (line[i] == '[' && !is_open(line, i))
+	{
+		ret++;
+		while (line[i] && line[i] != ']')
+			i++;
+		if (is_open(line, i))
+			return (-1);
+	}
+	else if (!is_open(line, i) && is_wildcard(line[i]))
+	{
+		ret++;
+	}
+	else if (ft_isalnum(line[i]))
+	{
+		ret++;
+		while (line[i] && !is_wildcard(line[i]))
+			i++;
+		i--;
+	}
+	return (ret);
+}
 
 int	count_portions(char *line)
 {
@@ -9,25 +45,7 @@ int	count_portions(char *line)
 	ret = 0;
 	while (line[i])
 	{
-		if (line[i] == '[' && !is_open(line, i))
-		{
-			ret++;
-			while (line[i] && line[i] != ']')
-				i++;
-			if (is_open(line, i))
-				return (-1);
-		}
-		else if (!is_open(line, i) && is_wildcard(line[i]))
-		{
-			ret++;
-		}
-		else if (ft_isalnum(line[i]))
-		{
-			ret++;
-			while (line[i] && !is_wildcard(line[i]))
-				i++;
-			i--;
-		}
+		ret = sup_count(line, i, ret);
 		i++;
 	}
 	return (ret);
@@ -52,7 +70,8 @@ int	count_letters(char *brackets)
 	ret = 0;
 	while (brackets[i] != ']')
 	{
-		if (brackets[i] == '-' && count_range(brackets[i - 1], brackets[i + 1]) != -1)
+		if (brackets[i] == '-'
+			&& count_range(brackets[i - 1], brackets[i + 1]) != -1)
 			ret += count_range(brackets[i - 1], brackets[i + 1]);
 		else if (count_range(brackets[i - 1], brackets[i + 1]) == -1)
 			return (-1);
@@ -79,7 +98,8 @@ int	count_results(char **portions)
 	entry = readdir(stream);
 	while (entry)
 	{
-		if (ft_strncmp(entry->d_name, ".", 1) && is_verified(entry->d_name, portions) > 0)
+		if (ft_strncmp(entry->d_name, ".", 1)
+			&& is_verified(entry->d_name, portions) > 0)
 			ret++;
 		else if (is_verified(entry->d_name, portions) == -1)
 			return (-1);

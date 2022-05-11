@@ -6,7 +6,7 @@
 /*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/03 21:54:41 by ddelladi          #+#    #+#             */
-/*   Updated: 2022/05/09 21:45:07 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/05/10 17:36:50 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,9 +47,9 @@ void	sup_loop(t_command cmd)
 		check(g_term.input.line, &g_term.input);
 	}
 	cmd.first = 1;
-	if (empty_redir(g_term.input.line))
-		return ;
-	else if (is_logical(g_term.input.line))
+	// if (empty_redir(g_term.input.line))
+	// 	return ;
+	if (is_logical(g_term.input.line))
 		get_logical(g_term.input.line, &cmd);
 	else if (split_command(g_term.input.line, &cmd))
 		execute_tree(&cmd);
@@ -110,6 +110,9 @@ int	main(void)
 		non prende "old_minishell"
 		poiché trova la prima l, e supera
 		le parentesi quadre
+
+// Le redirezioni possono essere poste anche come prima voce
+	del comando: adesso non funziona
 
 // Da controllare:
 	- quali segnali, di preciso, servono

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   wildcards_utils.c                                  :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: gimartin <gimartin@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/05/10 11:02:12 by gimartin          #+#    #+#             */
+/*   Updated: 2022/05/10 11:16:01 by gimartin         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 int	try_parse_brackets(char *line)
@@ -69,65 +81,4 @@ char	*chrs_range(char a, char b)
 		tmp[j++] = (char)i++;
 	tmp[j] = '\0';
 	return (tmp);
-}
-
-char	*get_letters(char *brackets)
-{
-	int		i;
-	int		len;
-	char	*ret;
-	char	*tmp;
-
-	i = 1;
-	len = 2;
-	ret = malloc(sizeof(char) * count_letters(brackets) + 1);
-	while (brackets[i] != ']')
-	{
-		if (brackets[i] != '-')
-		{
-			if (i == 1)
-				ft_strlcpy(ret, &brackets[i], len++);
-			else
-				ft_strlcat(ret, &brackets[i], len++);
-		}
-		else
-		{
-			tmp = chrs_range(brackets[i - 1], brackets[i + 1]);
-			len += ft_strlen(tmp) - 1;
-			ft_strlcat(ret, tmp, len++);
-			free(tmp);
-		}
-		i++;
-	}
-	return (ret);
-}
-
-char	**get_results(char **portions, int len)
-{
-	DIR				*stream;
-	char			**ret;
-	int				i;
-	struct dirent	*entry;
-
-	i = 0;
-	malloc_c_ptr(&ret, len + 1);
-	stream = opendir(".");
-	if (!stream)
-	{
-		ft_putendl_fd(strerror(errno), 2);
-		return (NULL);
-	}
-	entry = readdir(stream);
-	while (entry)
-	{
-		if (ft_strncmp(entry->d_name, ".", 1) && is_verified(entry->d_name, portions) > 0)
-		{
-			malloc_c(&ret[i], ft_strlen(entry->d_name) + 1);
-			ft_strlcpy(ret[i++], entry->d_name, ft_strlen(entry->d_name) + 1);
-		}
-		entry = readdir(stream);
-	}
-	ret[i] = NULL;
-	closedir(stream);
-	return (ret);
 }
