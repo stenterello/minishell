@@ -6,7 +6,7 @@
 /*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/10 11:02:38 by gimartin          #+#    #+#             */
-/*   Updated: 2022/05/10 14:47:43 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/05/11 16:14:35 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,7 @@ int	guess(t_command *cmd, int i)
 		return (-1);
 	substitute_args(cmd, tmp);
 	free_array_of_array(tmp);
+	free_array_of_array(cmd->portions);
 	return (1);
 }
 
