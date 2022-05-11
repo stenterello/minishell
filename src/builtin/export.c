@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gimartin <gimartin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/27 15:03:30 by gimartin          #+#    #+#             */
-/*   Updated: 2022/05/09 13:42:53 by gimartin         ###   ########.fr       */
+/*   Updated: 2022/05/11 17:59:14 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,23 @@ void	export2(t_command *cmd, int i, t_dict *new)
 	sup_export(cmd, new, i);
 }
 
+void	print_exported_env(void)
+{
+	t_dict	*tmp;
+
+	tmp = g_term.env;
+	while (tmp)
+	{
+		// AGGIUNGERE CONTROLLI SULL'ESISTENZA DI tmp->key E tmp->value
+		ft_putstr_fd("declare -x ", STDOUT_FILENO);
+		ft_putstr_fd(tmp->key, STDOUT_FILENO);
+		ft_putstr_fd("=\"", STDOUT_FILENO);
+		ft_putstr_fd(tmp->value, STDOUT_FILENO);
+		ft_putstr_fd("\"\n", STDOUT_FILENO);
+		tmp = tmp->next;
+	}
+}
+
 void	export(t_command *cmd)
 {
 	int		i;
@@ -92,4 +109,6 @@ void	export(t_command *cmd)
 		i = value_len(cmd->args[1]);
 		export2(cmd, i, new);
 	}
+	else
+		print_exported_env();
 }

@@ -6,7 +6,7 @@
 /*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/28 15:51:58 by gimartin          #+#    #+#             */
-/*   Updated: 2022/05/11 17:00:42 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/05/11 17:42:21 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,31 +142,25 @@ int fill_cmd_fields(char **tmp, t_command *cmd, int start)
 	int c[3];
 	char **cleaned;
 
-	cleaned = clean_command(tmp, cmd);
-	if (!cleaned)
-		return (-1);
-	free_array_of_array(tmp);
-	tmp = cleaned;
-	if (!tmp[0])
+	if (cmd->first)
 	{
-		free(tmp);
-		restore_fd(cmd);
-		return (-1);
+		cleaned = clean_command(tmp, cmd);
+		if (!cleaned)
+			return (-1);
+		free_array_of_array(tmp);
+		tmp = cleaned;
+		if (!tmp[0])
+		{
+			free(tmp);
+			restore_fd(cmd);
+			return (-1);
+		}
 	}
 	c[2] = count_args(tmp);
 	malloc_c_ptr(&cmd->args, c[2] + 1);
 	c[0] = start;
 	c[1] = 0;
 	cpy_and_slide(tmp, c, start, cmd);
-	// if (tmp[c[0]])
-	// {
-	// 	if (check_redirection(&tmp[c[0]], cmd) == -1)
-	// 	{
-	// 		syntax_error(tmp);
-	// 		free_array_of_array(tmp);
-	// 		return (-1);
-	// 	}
-	// }
 	if (tmp[c[0]])
 	{
 		fill_prev(cmd, c, tmp);

@@ -6,7 +6,7 @@
 /*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/28 17:00:03 by gimartin          #+#    #+#             */
-/*   Updated: 2022/05/11 12:28:22 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/05/11 17:51:46 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ void	sup_count_fields(int *p, char *s, char c)
 	{
 		p[1]++;
 		p[2] = 0;
+		if (is_logical_token(s[p[0]]) && !is_open(s, p[0]))
+			p[2] = 1;
 	}
 	else if (s[p[0]] == c && !is_open(s, p[0]))
 		p[2] = 1;

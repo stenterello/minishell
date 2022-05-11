@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gimartin <gimartin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/27 15:05:42 by gimartin          #+#    #+#             */
-/*   Updated: 2022/05/09 15:22:23 by gimartin         ###   ########.fr       */
+/*   Updated: 2022/05/11 17:35:38 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,7 @@ void	born_child(t_command *tmp)
 		die(strerror(errno));
 	if (g_term.child == 0)
 	{
-		if (!ft_strncmp(&tmp->cmd[ft_strlen(tmp->cmd) - 10], "minishell2", 10))
+		if (!ft_strncmp(&tmp->cmd[ft_strlen(tmp->cmd) - 9], "minishell", 9))
 		{
 			next_level();
 			execve(tmp->cmd, tmp->args, g_term.glob_environ);
