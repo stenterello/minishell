@@ -6,7 +6,7 @@
 /*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/28 15:51:58 by gimartin          #+#    #+#             */
-/*   Updated: 2022/05/11 15:16:31 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/05/11 17:00:42 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ void cpy_and_slide(char **tmp, int *c, int start, t_command *cmd)
 		c[0]++;
 		c[1]++;
 	}
+	cmd->args[c[1]] = NULL;
 }
 
 void fill_prev(t_command *cmd, int *c, char **tmp)
