@@ -6,7 +6,7 @@
 /*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/27 15:04:30 by gimartin          #+#    #+#             */
-/*   Updated: 2022/05/04 00:52:47 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/05/11 13:16:31 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ void	reset_term(void)
 	ret = tcsetattr(STDIN_FILENO, 0, g_term.old_term);
 	if (ret < 0)
 		die(strerror(errno));
+	// close(g_term.fd);
 	free(g_term.old_term);
 }
 
@@ -59,6 +60,12 @@ void	init_terminal(char *line)
 	ret = tcsetattr(STDIN_FILENO, TCSAFLUSH, g_term.termi);
 	if (ret < 0)
 		die(strerror(errno));
+	// g_term.fd = open("dev", O_CREAT);
+	// if (g_term.fd < 0)
+	// 	die("Error opening tty");
+	// fcntl(g_term.fd, O_NONBLOCK);
+	// if (ioctl(g_term.fd, TIOCSERGETLSR) == -1)
+	// 	die(strerror(errno));
 	g_term.child = 0;
 	g_term.delimiter = 0;
 }
