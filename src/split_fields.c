@@ -6,7 +6,7 @@
 /*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/27 15:04:34 by gimartin          #+#    #+#             */
-/*   Updated: 2022/05/03 21:58:25 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/05/11 12:27:32 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ int	find_start(char *s, char c)
 	int	i;
 
 	i = 0;
-	while (s[i] == c && !is_open(s, i))
+	while (s[i] && s[i] == c && !is_open(s, i))
 		i++;
 	return (i);
 }
