@@ -6,7 +6,7 @@
 /*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/28 15:51:58 by gimartin          #+#    #+#             */
-/*   Updated: 2022/05/11 14:41:47 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/05/11 15:16:31 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,6 +113,7 @@ char **clean_command(char **tmp, t_command *cmd)
 				i++;
 			else
 			{
+				cleaned[j] = NULL;
 				free_array_of_array(cleaned);
 				return (NULL);
 			}
@@ -124,7 +125,14 @@ char **clean_command(char **tmp, t_command *cmd)
 		}
 		i++;
 	}
-	cleaned[j] = NULL;
+	if (cleaned[0])
+		cleaned[j] = NULL;
+	else
+	{
+		free(cleaned);
+		restore_fd(cmd);
+		return (NULL);
+	}
 	return (cleaned);
 }
 
@@ -138,6 +146,12 @@ int fill_cmd_fields(char **tmp, t_command *cmd, int start)
 		return (-1);
 	free_array_of_array(tmp);
 	tmp = cleaned;
+	if (!tmp[0])
+	{
+		free(tmp);
+		restore_fd(cmd);
+		return (-1);
+	}
 	c[2] = count_args(tmp);
 	malloc_c_ptr(&cmd->args, c[2] + 1);
 	c[0] = start;
