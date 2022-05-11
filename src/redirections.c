@@ -6,13 +6,13 @@
 /*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/27 15:10:22 by gimartin          #+#    #+#             */
-/*   Updated: 2022/05/04 00:57:28 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/05/11 14:43:06 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	define_input(char *line, t_command *cmd)
+int	define_input(char *line, t_command *cmd)
 {
 	if (cmd->input_fd != 0)
 	{
@@ -20,14 +20,22 @@ void	define_input(char *line, t_command *cmd)
 		dup2(cmd->saved_in, STDIN_FILENO);
 		close(cmd->saved_in);
 	}
-	cmd->input_fd = open(line, O_CREAT, 0664);
+	cmd->input_fd = open(line, O_RDONLY, 0664);
 	if (cmd->input_fd < 0)
-		die(strerror(errno));
+	{
+		ft_putstr_fd(ft_getenv("SHELL"), 2);
+		ft_putstr_fd(": ", 2);
+		ft_putstr_fd(line, 2);
+		ft_putstr_fd(": ", 2);
+		ft_putendl_fd(strerror(errno), 2);
+		return (-1);
+	}
 	cmd->saved_in = dup(STDIN_FILENO);
 	close(STDIN_FILENO);
 	dup2(cmd->input_fd, STDIN_FILENO);
 	close(cmd->input_fd);
 	cmd->redir_in = 1;
+	return (0);
 }
 
 void	define_output(char *line, t_command *cmd)

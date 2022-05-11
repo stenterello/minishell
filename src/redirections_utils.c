@@ -6,7 +6,7 @@
 /*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/27 15:10:18 by gimartin          #+#    #+#             */
-/*   Updated: 2022/05/10 17:57:20 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/05/11 14:40:38 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,8 +59,10 @@ int	check_redirection(char **tmp, t_command *cmd)
 	{
 		while (tmp[i] && is_redir(tmp[i]) == 0)
 		{
-			define_input(tmp[++i], cmd);
-			i++;
+			if (define_input(tmp[++i], cmd) != -1)
+				i++;
+			else
+				return (-1);
 		}
 	}
 	else if (is_redir(tmp[i]) == 1)

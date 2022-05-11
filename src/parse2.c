@@ -6,7 +6,7 @@
 /*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/28 15:51:58 by gimartin          #+#    #+#             */
-/*   Updated: 2022/05/11 12:21:50 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/05/11 14:41:47 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,8 +109,13 @@ char **clean_command(char **tmp, t_command *cmd)
 	{
 		if (is_redir(tmp[i]) >= 0)
 		{
-			check_redirection(&tmp[i], cmd);
-			i++;
+			if (check_redirection(&tmp[i], cmd) != -1)
+				i++;
+			else
+			{
+				free_array_of_array(cleaned);
+				return (NULL);
+			}
 		}
 		else
 		{
@@ -129,6 +134,8 @@ int fill_cmd_fields(char **tmp, t_command *cmd, int start)
 	char **cleaned;
 
 	cleaned = clean_command(tmp, cmd);
+	if (!cleaned)
+		return (-1);
 	free_array_of_array(tmp);
 	tmp = cleaned;
 	c[2] = count_args(tmp);

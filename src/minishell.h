@@ -6,7 +6,7 @@
 /*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/03 21:54:58 by ddelladi          #+#    #+#             */
-/*   Updated: 2022/05/11 13:16:26 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/05/11 14:40:51 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,7 +123,7 @@ void	check(char *typed, t_input *input);
 void	add_signals(void);
 int		check_redirection(char **tmp, t_command *cmd);
 void	check_pipe(char *line, t_command *cmd);
-void	define_input(char *line, t_command *cmd);
+int		define_input(char *line, t_command *cmd);
 void	define_output(char *line, t_command *cmd);
 void	define_append_output(char *line, t_command *cmd);
 void	define_pipe(t_command *cmd);
