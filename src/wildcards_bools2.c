@@ -6,7 +6,7 @@
 /*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/10 11:24:19 by gimartin          #+#    #+#             */
-/*   Updated: 2022/05/10 17:51:59 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/05/11 14:22:46 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,7 @@ int	is_verified(char *file, char **port)
 		if (ret == 0)
 			return (ret);
 		else
-			i++;
+			j += ft_strlen(port[i++]);
 	}
 	return (1);
 }

@@ -6,29 +6,26 @@
 /*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/10 11:15:41 by gimartin          #+#    #+#             */
-/*   Updated: 2022/05/10 14:16:08 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/05/11 14:18:56 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*sup_get_let(char *brackets, int i, char *ret, char *tmp)
+char	*sup_get_let(char *brackets, int *i, char *ret, char *tmp)
 {
-	int	len;
-
-	len = 2;
-	if (brackets[i] != '-')
+	if (brackets[i[0]] != '-')
 	{
-		if (i == 1)
-			ft_strlcpy(ret, &brackets[i], len++);
+		if (i[0] == 1)
+			ft_strlcpy(ret, &brackets[i[0]], i[1]++);
 		else
-			ft_strlcat(ret, &brackets[i], len++);
+			ft_strlcat(ret, &brackets[i[0]], i[1]++);
 	}
 	else
 	{
-		tmp = chrs_range(brackets[i - 1], brackets[i + 1]);
-		len += ft_strlen(tmp) - 1;
-		ft_strlcat(ret, tmp, len++);
+		tmp = chrs_range(brackets[i[0] - 1], brackets[i[0] + 1]);
+		i[1] += ft_strlen(tmp) - 1;
+		ft_strlcat(ret, tmp, i[1]++);
 		free(tmp);
 	}
 	return (ret);
@@ -36,17 +33,18 @@ char	*sup_get_let(char *brackets, int i, char *ret, char *tmp)
 
 char	*get_letters(char *brackets)
 {
-	int		i;
+	int		i[2];
 	char	*ret;
 	char	*tmp;
 
-	i = 1;
+	i[0] = 1;
+	i[1] = 2;
 	tmp = NULL;
 	ret = malloc(sizeof(char) * count_letters(brackets) + 1);
-	while (brackets[i] != ']')
+	while (brackets[i[0]] != ']')
 	{
 		ret = sup_get_let(brackets, i, ret, tmp);
-		i++;
+		i[0]++;
 	}
 	return (ret);
 }
