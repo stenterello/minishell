@@ -6,7 +6,7 @@
 /*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/27 15:03:37 by gimartin          #+#    #+#             */
-/*   Updated: 2022/05/03 21:56:06 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/05/13 10:13:31 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,10 +84,7 @@ void	unset(t_command *cmd)
 
 	search = NULL;
 	if (!cmd->args[1])
-	{
-		ft_putendl_fd("unset: not enough arguments", 2);
 		return ;
-	}
 	i = ft_strlen(cmd->args[1]);
 	if (i == 0)
 		return ;
