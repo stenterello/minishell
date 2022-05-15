@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export2.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gimartin <gimartin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/09 13:36:08 by gimartin          #+#    #+#             */
-/*   Updated: 2022/05/09 13:38:16 by gimartin         ###   ########.fr       */
+/*   Updated: 2022/05/15 16:19:01 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,4 +40,18 @@ int	value_len(char *line)
 	if (i - j == 0)
 		return (-1);
 	return (i - j);
+}
+
+int	check_export(t_command *cmd)
+{
+	if (cmd->args[1][0] == '=')
+	{
+		ft_putstr_fd(ft_getenv("SHELL"), 2);
+		ft_putstr_fd(": ", 2);
+		ft_putstr_fd(cmd->args[1] + 1, 2);
+		ft_putendl_fd(" not found", 2);
+		g_term.last_exit = 127;
+		return (1);
+	}
+	return (0);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
+/*   By: gimartin <gimartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/03 21:54:58 by ddelladi          #+#    #+#             */
-/*   Updated: 2022/05/11 14:40:51 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/05/13 16:15:01 by gimartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,6 @@ typedef struct s_term
 	pid_t				child;
 	int					delimiter;
 	char				**glob_environ;
-	// int					fd;
 }				t_term;
 
 typedef struct s_command
@@ -223,5 +222,12 @@ void	take_string_portion(char *line, char **portion);
 char	**get_results(char **portions, int len);
 int		is_verified(char *file, char **portions);
 int		helper_guess(t_command *cmd);
+int		check_export(t_command *cmd);
+void	fill_prev(t_command *cmd, int *c, char **tmp);
+void	fill_next(t_command *cmd, int *c, char **tmp);
+void	cpy_and_slide(char **tmp, int *c, int start, t_command *cmd);
+int		count_cleaned_cmd(char **tmp);
+int		sup_check_red(char **tmp, int i, t_command *cmd);
+int		guess(t_command *cmd, int i);
 
 #endif

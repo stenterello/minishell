@@ -6,7 +6,7 @@
 /*   By: gimartin <gimartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/27 15:11:01 by gimartin          #+#    #+#             */
-/*   Updated: 2022/05/09 15:41:35 by gimartin         ###   ########.fr       */
+/*   Updated: 2022/05/13 16:06:37 by gimartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,4 +76,16 @@ void	check_pipe(char *line, t_command *cmd)
 			cmd->to_pipe = 1;
 		i++;
 	}
+}
+
+int	sup_check_red(char **tmp, int i, t_command *cmd)
+{
+	while (tmp[i] && is_redir(tmp[i]) == 0)
+	{
+		if (define_input(tmp[++i], cmd) != -1)
+			i++;
+		else
+			return (-1);
+	}
+	return (0);
 }

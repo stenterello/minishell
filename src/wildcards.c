@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   wildcards.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
+/*   By: gimartin <gimartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/10 11:02:38 by gimartin          #+#    #+#             */
-/*   Updated: 2022/05/11 16:20:21 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/05/13 16:14:25 by gimartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,17 @@ int	sup_guess(t_command *cmd, int i, int j, int k)
 	return (0);
 }
 
+int	free_guess(char **tmp, t_command *cmd)
+{
+	tmp = get_results(cmd->portions, count_results(cmd->portions));
+	if (!tmp)
+		return (-1);
+	substitute_args(cmd, tmp);
+	free_array_of_array(tmp);
+	free_array_of_array(cmd->portions);
+	return (1);
+}
+
 int	guess(t_command *cmd, int i)
 {
 	int		j;
@@ -100,28 +111,6 @@ int	guess(t_command *cmd, int i)
 		helper_guess(cmd);
 	else if (count_results(cmd->portions) == 0)
 		return (0);
-	tmp = get_results(cmd->portions, count_results(cmd->portions));
-	if (!tmp)
-		return (-1);
-	substitute_args(cmd, tmp);
-	free_array_of_array(tmp);
-	free_array_of_array(cmd->portions);
-	return (1);
-}
-
-int	check_wildcards(t_command *cmd)
-{
-	int	i;
-
-	i = 1;
-	while (cmd->args[i])
-	{
-		if (has_wildcard(cmd->args[i]))
-		{
-			if (guess(cmd, i) == -1)
-				return (-1);
-		}
-		i++;
-	}
-	return (0);
+	tmp = NULL;
+	return (free_guess(tmp, cmd));
 }

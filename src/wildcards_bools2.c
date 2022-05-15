@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   wildcards_bools2.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
+/*   By: gimartin <gimartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/10 11:24:19 by gimartin          #+#    #+#             */
-/*   Updated: 2022/05/11 14:34:40 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/05/13 16:26:35 by gimartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,8 @@ int	sup_brackets_is_verified(char **port, int i, int j, char *file)
 	int	ret;
 
 	ret = 0;
-	if (port[i] && i > 0 && port[i - 1][0] == '*' && port[i][0] == '[' && file[j])
+	if (port[i] && i > 0 && port[i - 1][0] == '*'
+		&& port[i][0] == '[' && file[j])
 	{	
 		ret = sup_brackets_is_verified_2(port, file, i, j);
 		if (ret == 0 || ret == -1)
@@ -83,39 +84,46 @@ int	sup_brackets_is_verified(char **port, int i, int j, char *file)
 	return (5);
 }
 
+int	sup_is_verified(char **port, int *c, char *file)
+{
+	while (port[c[0]] && port[c[0]][0] == '?')
+	{
+		c[0]++;
+		c[1]++;
+		if (!port[c[0]] && !file[c[1]])
+			return (1);
+		if (!file[c[1]])
+			return (0);
+		if (!port[c[0]])
+			return (0);
+	}
+	return (2);
+}
+
 int	is_verified(char *file, char **port)
 {
-	int	i;
-	int	j;
-	int	ret;
+	int	c[4];
 
-	i = 0;
-	j = 0;
-	while (port[i] && file[j])
+	c[0] = 0;
+	c[1] = 0;
+	c[3] = 0;
+	while (port[c[0]] && file[c[1]])
 	{
-		while (port[i] && port[i][0] == '*')
-			i++;
-		if (!port[i])
+		while (port[c[0]] && port[c[0]][0] == '*')
+			c[0]++;
+		if (!port[c[0]])
 			return (1);
-		while (port[i] && port[i][0] == '?')
-		{
-			i++;
-			j++;
-			if (!port[i] && !file[j])
-				return (1);
-			if (!file[j])
-				return (0);
-			if (!port[i])
-				return (0);
-		}
-		ret = sup_brackets_is_verified(port, i, j, file);
-		if (ret != 5)
-			return (ret);
-		ret = sup_string_is_verified(port, file, i, j);
-		if (ret == 0)
-			return (ret);
+		c[3] = sup_is_verified(port, c, file);
+		if (c[3] != 2)
+			return (c[3]);
+		c[2] = sup_brackets_is_verified(port, c[0], c[1], file);
+		if (c[2] != 5)
+			return (c[2]);
+		c[2] = sup_string_is_verified(port, file, c[0], c[1]);
+		if (c[2] == 0)
+			return (c[2]);
 		else
-			j += ft_strlen(port[i++]);
+			c[1] += ft_strlen(port[c[0]++]);
 	}
 	return (1);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
+/*   By: gimartin <gimartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/27 15:03:30 by gimartin          #+#    #+#             */
-/*   Updated: 2022/05/11 17:59:14 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/05/13 15:45:33 by gimartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,8 +95,11 @@ void	export(t_command *cmd)
 	t_dict	*new;
 
 	new = NULL;
+	i = 0;
 	if (cmd->args[1])
 	{
+		if (check_export(cmd))
+			return ;
 		malloc_and_check_dict(&new, 1);
 		i = key_len(cmd->args[1]);
 		if (i == -1)

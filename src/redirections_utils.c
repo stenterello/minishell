@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirections_utils.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
+/*   By: gimartin <gimartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/27 15:10:18 by gimartin          #+#    #+#             */
-/*   Updated: 2022/05/11 14:40:38 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/05/13 16:08:52 by gimartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,13 +57,8 @@ int	check_redirection(char **tmp, t_command *cmd)
 		control_define1(tmp, cmd, i);
 	else if (is_redir(tmp[i]) == 0)
 	{
-		while (tmp[i] && is_redir(tmp[i]) == 0)
-		{
-			if (define_input(tmp[++i], cmd) != -1)
-				i++;
-			else
-				return (-1);
-		}
+		if (sup_check_red(tmp, i, cmd) == -1)
+			return (-1);
 	}
 	else if (is_redir(tmp[i]) == 1)
 	{

@@ -15,6 +15,7 @@ SRC=main.c \
 	term.c \
 	parse.c \
 	parse2.c \
+	parse3.c \
 	bools.c \
 	bools2.c \
 	bools3.c \
@@ -35,6 +36,7 @@ SRC=main.c \
 	logical2.c \
 	logical3.c \
 	wildcards.c \
+	wildcards2.c \
 	wildcards_bools.c \
 	wildcards_bools2.c \
 	wildcards_count.c \
