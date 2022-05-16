@@ -1,7 +1,8 @@
 make --dry-run --always-make --keep-going --print-directory
-make: Entering directory '/home/davide/Scaricati/minishell'
+make: Entering directory '/home/davide/Documenti/Codici/42/minishell'
 make bonus -C ./include/libft
-make[1]: Entering directory '/home/davide/Scaricati/minishell/include/libft'
+ 
+make[1]: Entering directory '/home/davide/Documenti/Codici/42/minishell/include/libft'
 gcc    -c -o ft_isalpha.o ft_isalpha.c
 gcc    -c -o ft_isdigit.o ft_isdigit.c
 gcc    -c -o ft_isalnum.o ft_isalnum.c
@@ -46,7 +47,7 @@ gcc    -c -o ft_lstclear.o ft_lstclear.c
 gcc    -c -o ft_lstiter.o ft_lstiter.c
 gcc    -c -o ft_lstmap.o ft_lstmap.c
 ar rcs libft.a ft_isalpha.o ft_isdigit.o ft_isalnum.o ft_isascii.o ft_isprint.o ft_strlen.o ft_memset.o ft_bzero.o ft_memcpy.o ft_memmove.o ft_strlcpy.o ft_strlcat.o ft_toupper.o ft_tolower.o ft_strchr.o ft_strrchr.o ft_strncmp.o ft_memchr.o ft_memcmp.o ft_strnstr.o ft_atoi.o ft_calloc.o ft_strdup.o ft_substr.o ft_strjoin.o ft_strtrim.o ft_split.o ft_itoa.o ft_strmapi.o ft_striteri.o ft_putchar_fd.o ft_putstr_fd.o ft_putnbr_fd.o ft_putendl_fd.o ft_lstnew.o ft_lstadd_front.o ft_lstsize.o ft_lstlast.o ft_lstadd_back.o ft_lstdelone.o ft_lstclear.o ft_lstiter.o ft_lstmap.o
-make[1]: Leaving directory '/home/davide/Scaricati/minishell/include/libft'
+make[1]: Leaving directory '/home/davide/Documenti/Codici/42/minishell/include/libft'
 gcc    -c -o src/main.o src/main.c
 gcc    -c -o src/main2.o src/main2.c
 gcc    -c -o src/utils.o src/utils.c
@@ -97,5 +98,5 @@ gcc    -c -o src/builtin/export.o src/builtin/export.c
 gcc    -c -o src/builtin/export2.o src/builtin/export2.c
 gcc    -c -o src/builtin/unset.o src/builtin/unset.c
 gcc -Wall -Werror -Wextra -g -L/home/davide/.brew/opt/readline/lib -I/home/davide/.brew/opt/readline/include src/main.c src/main2.c src/utils.c src/utils2.c src/utils3.c src/execute.c src/execute2.c src/find_script.c src/init_utils.c src/set_var.c src/term.c src/parse.c src/parse2.c src/parse3.c src/bools.c src/bools2.c src/bools3.c src/bools4.c src/count.c src/memory.c src/redirections.c src/redirections_utils.c src/redirections_utils2.c src/heredoc.c src/heredoc2.c src/heredoc3.c src/split_fields.c src/split_fields2.c src/signal.c src/error_handling.c src/logical.c src/logical2.c src/logical3.c src/wildcards.c src/wildcards2.c src/wildcards_bools.c src/wildcards_bools2.c src/wildcards_count.c src/wildcards_utils.c src/wildcards_utils2.c src/builtin/pwd.c src/builtin/cd.c src/builtin/cd2.c src/builtin/echo.c src/builtin/exit.c src/builtin/env.c src/builtin/export.c src/builtin/export2.c src/builtin/unset.c ./include/libft/libft.a -lreadline -lncurses -o minishell 
-make: Leaving directory '/home/davide/Scaricati/minishell'
+make: Leaving directory '/home/davide/Documenti/Codici/42/minishell'
  

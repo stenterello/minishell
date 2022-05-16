@@ -6,7 +6,7 @@
 /*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/03 21:54:41 by ddelladi          #+#    #+#             */
-/*   Updated: 2022/05/11 17:38:26 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/05/16 23:49:29 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,5 +104,6 @@ int	main(void)
 	- norma
 	- configurazioni (flag) del terminale
 	- testare prepotentemente le wildcard e gli operatori logici
+	- nelle brackets mancano i simboli ! e ^ (anche altro?)
 
 */
