@@ -98,6 +98,12 @@ int	main(void)
 
 // gestione del comando cat | ls _____ cat | cat | ls
 
+// leak se fai solo "pwd" - non so da dove viene
+
+// se scrivo e* e c'e`un file che si chiama "echo" nella cartella,
+	deve sostituirlo ed eseguirlo, quindi basterebbe fare il check delle
+	wildcard anche sul comando
+
 // La free a riga 129 di heredoc.c non dovrebbe dare invalid
 	pointer nel caso in cui venga premuto Ctrl + D 
 	durante una readline?
@@ -107,6 +113,5 @@ int	main(void)
 	- leaks
 	- norma
 	- testare prepotentemente le wildcard e gli operatori logici
-	- nelle brackets mancano i simboli ! e ^ (anche altro?)
 
 */
