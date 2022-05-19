@@ -64,7 +64,7 @@ void	update_pwd(void)
 	ret = pwd();
 	if (!change_exist_var_in_dict("PWD", ret, g_term.env))
 		die("Error while changing PWD variable.");
-	free(ret);	
+	free(ret);
 }
 
 void	sup_sup_cd3(char *act, t_command *old)

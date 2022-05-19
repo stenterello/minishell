@@ -79,11 +79,11 @@ void	print_exported_env(void)
 	tmp = g_term.env;
 	while (tmp)
 	{
-		// AGGIUNGERE CONTROLLI SULL'ESISTENZA DI tmp->key E tmp->value
 		ft_putstr_fd("declare -x ", STDOUT_FILENO);
 		ft_putstr_fd(tmp->key, STDOUT_FILENO);
 		ft_putstr_fd("=\"", STDOUT_FILENO);
-		ft_putstr_fd(tmp->value, STDOUT_FILENO);
+		if (tmp->value)
+			ft_putstr_fd(tmp->value, STDOUT_FILENO);
 		ft_putstr_fd("\"\n", STDOUT_FILENO);
 		tmp = tmp->next;
 	}

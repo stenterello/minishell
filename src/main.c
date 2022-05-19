@@ -94,6 +94,10 @@ int	main(void)
 
 // DA GESTIRE IL SEGNALE CTRL + \
 
+// deve inserire variabili senza valore tra le env (export)
+
+// gestione del comando cat | ls _____ cat | cat | ls
+
 // La free a riga 129 di heredoc.c non dovrebbe dare invalid
 	pointer nel caso in cui venga premuto Ctrl + D 
 	durante una readline?
