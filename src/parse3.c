@@ -12,32 +12,32 @@
 
 #include "minishell.h"
 
-int	sup_clean_cmd(char **tmp, int start, char ***cleaned, t_command *cmd)
+char	**sup_clean_cmd(char **tmp, int start, t_command *cmd, int *j)
 {
-	int	j;
+	char	**cleaned;
 
-	j = 0;
+	cleaned = malloc(sizeof(char *) * count_cleaned_cmd(&tmp[start]) + 1);
 	while (tmp[start] && ft_strncmp(tmp[start], "|\0", 2))
 	{
 		if (is_redir(tmp[start]) >= 0)
 		{
 			if (check_redirection(&tmp[start], cmd) != -1)
-		start++;
+				start++;
 			else
 			{
-				*cleaned[j] = NULL;
-				free_array_of_array(*cleaned);
-				return (0);
+				cleaned[*j] = NULL;
+				free_array_of_array(cleaned);
+				return (NULL);
 			}
 		}
 		else
 		{
-			malloc_c(&*cleaned[j], ft_strlen(tmp[start]) + 1);
-			ft_strlcpy(*cleaned[j++], tmp[start], ft_strlen(tmp[start]) + 1);
+			malloc_c(&cleaned[*j], ft_strlen(tmp[start]) + 1);
+			ft_strlcpy(cleaned[(*j)++], tmp[start], ft_strlen(tmp[start]) + 1);
 		}
 		start++;
 	}
-	return (j);
+	return (cleaned);
 }
 
 char	**clean_command(char **tmp, t_command *cmd, int start)
@@ -45,9 +45,9 @@ char	**clean_command(char **tmp, t_command *cmd, int start)
 	int		j;
 	char	**cleaned;
 
-	cleaned = malloc(sizeof(char *) * count_cleaned_cmd(&tmp[start]) + 1);
-	j = sup_clean_cmd(tmp, start, &cleaned, cmd);
-	if (j == 0)
+	j = 0;
+	cleaned = sup_clean_cmd(tmp, start, cmd, &j);
+	if (cleaned == NULL)
 		return (NULL);
 	if (cleaned[0])
 		cleaned[j] = NULL;

@@ -102,7 +102,6 @@ int	main(void)
 	- quali segnali, di preciso, servono
 	- leaks
 	- norma
-	- configurazioni (flag) del terminale
 	- testare prepotentemente le wildcard e gli operatori logici
 	- nelle brackets mancano i simboli ! e ^ (anche altro?)
 

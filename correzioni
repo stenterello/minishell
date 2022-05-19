@@ -1,0 +1,1 @@
+non deve esserci oldpwd a inizio programma; variabile pwd deve essere aggiornata a ogni cambio di directory

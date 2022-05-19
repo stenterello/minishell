@@ -57,6 +57,16 @@ void	sup_sup_cd2(t_command *old, char *act)
 	free(old);
 }
 
+void	update_pwd(void)
+{
+	char	*ret;
+
+	ret = pwd();
+	if (!change_exist_var_in_dict("PWD", ret, g_term.env))
+		die("Error while changing PWD variable.");
+	free(ret);	
+}
+
 void	sup_sup_cd3(char *act, t_command *old)
 {
 	int	i;
@@ -71,6 +81,7 @@ void	sup_sup_cd3(char *act, t_command *old)
 		ft_strlen(old->args[1]) + ft_strlen(act) + 1);
 	old->args[2] = NULL;
 	export(old);
+	update_pwd();
 	i = 0;
 	while (old->args[i])
 		free(old->args[i++]);
