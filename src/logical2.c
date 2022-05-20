@@ -77,7 +77,7 @@ int	count_units(char *line)
 	while (line[i])
 	{
 		if ((!ft_strncmp(&line[i], "&&", 2) || !ft_strncmp(&line[i], "||", 2))
-			&& !is_open(line, i) && !is_in_par(line, i))
+			&& !is_open(line, i))
 		{
 			i += 2;
 			ret++;
@@ -93,13 +93,15 @@ int	sup_unit_len(char *line, int i)
 	while (line[i])
 	{
 		if ((!ft_strncmp(&line[i], "&&", 2) || !ft_strncmp(&line[i], "||", 2))
-			&& !is_open(line, i) && !is_in_par(line, i))
+			&& !is_open(line, i))
 		{
 			while (!ft_isalnum(line[i]) && line[i] != '\''
 				&& line[i] != '\"' && line[i] != ')')
 				i--;
 			return (i + 1);
 		}
+		if (line[i] == ')')
+			return (i);
 		i++;
 	}
 	return (i);

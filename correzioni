@@ -13,7 +13,7 @@
 cat interattivo - FATTO, VERIFICARE
 command not found quando viene dato path assoluto - FATTO, VERIFICARE
 virgolette e variabili - FATTO, VERIFICARE
-operatori logici
+operatori logici - iniziato ad aggiustare ma deve essere rivisto molto molto molto bene: il primo caso sotto funziona, il secondo già no.
 echo $0 loop - FATTO, VERIFICARE
 
 

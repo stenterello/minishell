@@ -25,6 +25,17 @@ char	*single_trim(char const *s1)
 	return (newstr);
 }
 
+int	not_and(char **rules, int i)
+{
+	while (rules[i])
+	{
+		if (!ft_strncmp(rules[i], "&&", 2))
+			return (0);
+		i++;
+	}
+	return (1);
+}
+
 void	start_thinking(char **u_lines, char **rules, t_command *cmd, int count)
 {
 	int			i;
@@ -47,8 +58,10 @@ void	start_thinking(char **u_lines, char **rules, t_command *cmd, int count)
 		{
 			if (!ft_strncmp(rules[i], "&&", 2) && g_term.last_exit != 0)
 				return ;
-			else if (!ft_strncmp(rules[i], "||", 2) && g_term.last_exit == 0)
+			else if (!ft_strncmp(rules[i], "||", 2) && g_term.last_exit == 0 && (!rules[i + 1] || not_and(rules, i)))
 				return ;
+			else if (!ft_strncmp(rules[i], "||", 2) && g_term.last_exit == 0)
+				i++;
 		}
 		i++;
 	}
@@ -65,13 +78,13 @@ char	**get_rules(char *line)
 	malloc_c_ptr(&ret, count_units(line));
 	while (line[i])
 	{
-		if (!ft_strncmp(&line[i], "&&", 2) && !is_in_par(line, i))
+		if (!ft_strncmp(&line[i], "&&", 2))
 		{
 			malloc_c(&ret[j], 3);
 			ft_strlcpy(ret[j], "&&\0", 3);
 			j++;
 		}
-		else if (!ft_strncmp(&line[i], "||", 2) && !is_in_par(line, i))
+		else if (!ft_strncmp(&line[i], "||", 2))
 		{
 			malloc_c(&ret[j], 3);
 			ft_strlcpy(ret[j], "||\0", 3);
