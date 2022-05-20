@@ -16,7 +16,7 @@ int	check_wildcards(t_command *cmd)
 {
 	int	i;
 
-	i = 1;
+	i = 0;
 	while (cmd->args[i])
 	{
 		if (has_wildcard(cmd->args[i]))
@@ -25,6 +25,12 @@ int	check_wildcards(t_command *cmd)
 				return (-1);
 		}
 		i++;
+	}
+	if (ft_strncmp(cmd->args[0], cmd->cmd, ft_strlen(cmd->args[0]) + 1))
+	{
+		free(cmd->cmd);
+		malloc_c(&cmd->cmd, ft_strlen(cmd->args[0]) + 1);
+		ft_strlcpy(cmd->cmd, cmd->args[0], ft_strlen(cmd->args[0]) + 1);
 	}
 	return (0);
 }

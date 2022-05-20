@@ -14,7 +14,15 @@
 
 void	sup_born(t_command *tmp, int status)
 {
-	if (!g_term.delimiter)
+	if (g_term.is_suspended && !g_term.delimiter
+		&& !ft_strncmp("cat\0", &tmp->cmd[ft_strlen(tmp->cmd) - 3], 4))
+	{
+		kill(g_term.child, 15);
+		restore_fd(tmp);
+		g_term.suspended_cat++;
+		return ;
+	}
+	else if (!g_term.delimiter)
 	{
 		waitpid(g_term.child, &status, 0);
 		if (WIFEXITED(status))
@@ -23,6 +31,7 @@ void	sup_born(t_command *tmp, int status)
 			g_term.last_exit = status;
 		g_term.child = 0;
 		restore_fd(tmp);
+		g_term.is_suspended = 0;
 	}
 	else
 	{
@@ -37,6 +46,7 @@ void	sup_born(t_command *tmp, int status)
 		g_term.child = 0;
 		dup2(tmp->saved_in, STDIN_FILENO);
 		close(tmp->saved_in);
+		g_term.is_suspended = 0;
 	}
 }
 

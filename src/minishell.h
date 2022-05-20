@@ -64,6 +64,8 @@ typedef struct s_term
 	pid_t				child;
 	int					delimiter;
 	char				**glob_environ;
+	int					suspended_cat;
+	int					is_suspended;
 }				t_term;
 
 typedef struct s_command

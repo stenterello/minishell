@@ -38,6 +38,9 @@ int	empty_redir(char *line)
 
 void	sup_loop(t_command cmd)
 {
+	int	i;
+
+	i = 0;
 	add_history(g_term.input.line);
 	if (g_term.input.with_error)
 		return ;
@@ -51,6 +54,14 @@ void	sup_loop(t_command cmd)
 		get_logical(g_term.input.line, &cmd);
 	else if (split_command(g_term.input.line, &cmd))
 		execute_tree(&cmd);
+	while (i < g_term.suspended_cat)
+	{
+		g_term.input.line = readline("");
+		free(g_term.input.line);
+		g_term.input.line = NULL;
+		ft_putchar_fd('\n', STDOUT_FILENO);
+		i++;
+	}
 }
 
 void	main_loop(void)
@@ -72,6 +83,8 @@ void	main_loop(void)
 			free_array_of_array(cmd.portions);
 		free_array_of_array(g_term.glob_environ);
 		g_term.delimiter = 0;
+		g_term.suspended_cat = 0;
+		g_term.is_suspended = 1;
 	}
 }
 

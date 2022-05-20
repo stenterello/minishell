@@ -62,12 +62,6 @@ void	export2(t_command *cmd, int i, t_dict *new)
 			i = value_len(ret);
 			free(ret);
 		}
-		else
-		{
-			free(new->key);
-			free(new);
-			return ;
-		}
 	}
 	sup_export(cmd, new, i);
 }

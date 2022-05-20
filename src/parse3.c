@@ -98,6 +98,7 @@ int	fill_cmd_fields(char **tmp, t_command *cmd, int start)
 	cpy_and_slide(tmp, c, start, cmd);
 	c[0] += start;
 	sup_fill_cmd(original, cmd, c);
+	free_array_of_array(tmp);
 	return (0);
 }
 

@@ -61,4 +61,6 @@ void	init_terminal(char *line)
 		die(strerror(errno));
 	g_term.child = 0;
 	g_term.delimiter = 0;
+	g_term.suspended_cat = 0;
+	g_term.is_suspended = 1;
 }

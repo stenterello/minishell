@@ -47,7 +47,8 @@ void	free_single_command(t_command *cmd)
 
 void	free_here(char *tmp, char *delimiter, t_command *cmd, t_command *cmd2)
 {
-	free(tmp);
+	if (tmp)
+		free(tmp);
 	free(delimiter);
 	cmd->next = cmd2;
 	cmd2->prev = cmd;

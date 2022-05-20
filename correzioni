@@ -1,1 +1,16 @@
 non deve esserci oldpwd a inizio programma; variabile pwd deve essere aggiornata a ogni cambio di directory
+
+
+/*
+
+// DA GESTIRE IL SEGNALE CTRL + \
+
+// gestione del comando cat | ls _____ cat | cat | ls
+
+// Da controllare:
+	- quali segnali, di preciso, servono
+	- leaks
+	- norma
+	- testare prepotentemente le wildcard e gli operatori logici
+
+*/
