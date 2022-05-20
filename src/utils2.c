@@ -40,14 +40,43 @@ int	dollar_pos(char *line)
 	return (i);
 }
 
+// int	until_dollar(char *line)
+// {
+// 	int	i;
+
+// 	i = 0;
+// 	while (line[i] != '$')
+// 		i++;
+// 	return (++i);
+// }
+
 int	until_dollar(char *line)
 {
-	int	i;
+	int		i;
+	int		s_quot;
+	int		d_quot;
 
 	i = 0;
-	while (line[i] != '$')
+	s_quot = 0;
+	d_quot = 0;
+	while (line[i])
+	{
+		if (line[i] == '\'' && !s_quot && !d_quot)
+			s_quot = 1;
+		else if (line[i] == '\'' && s_quot && !d_quot)
+			s_quot = 0;
+		if (line[i] == '"' && !s_quot && !d_quot)
+			d_quot = 1;
+		else if (line[i] == '"' && !s_quot && d_quot)
+			d_quot = 0;
+		if (line[i] == '$' && !s_quot)
+		{
+			i++;
+			return (i);
+		}
 		i++;
-	return (++i);
+	}
+	return (0);
 }
 
 int	until_end_var_name(char *line, char *var)

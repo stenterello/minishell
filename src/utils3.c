@@ -44,7 +44,7 @@ void	sup_try_expand(t_input *in, int i, int d_quot)
 	char	*var;
 
 	var = NULL;
-	if (ft_isalpha(in->line[i]) || in->line[i] == '?')
+	if (ft_isalnum(in->line[i]) || in->line[i] == '?')
 		sup_sup_try(d_quot, in, i, var);
 }
 

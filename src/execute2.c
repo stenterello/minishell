@@ -15,7 +15,7 @@
 void	sup_born(t_command *tmp, int status)
 {
 	if (g_term.is_suspended && !g_term.delimiter
-		&& !ft_strncmp("cat\0", &tmp->cmd[ft_strlen(tmp->cmd) - 3], 4))
+		&& !ft_strncmp("cat\0", &tmp->cmd[ft_strlen(tmp->cmd) - 3], 4) && tmp->next != NULL)
 	{
 		kill(g_term.child, 15);
 		restore_fd(tmp);

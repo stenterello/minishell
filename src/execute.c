@@ -89,11 +89,28 @@ void	transform_environ(t_dict *env)
 	g_term.glob_environ[i] = NULL;
 }
 
+int	cmd_exists(char *line)
+{
+	if (access(line, X_OK))
+	{
+		ft_putstr_fd(ft_getenv("SHELL"), 2);
+		ft_putstr_fd(": ", 2);
+		ft_putstr_fd(strerror(errno), 2);
+		ft_putstr_fd(": ", 2);
+		ft_putendl_fd(line, 2);
+		g_term.last_exit = 127;
+		return (0);
+	}
+	return (1);
+}
+
 void	born_child(t_command *tmp)
 {
 	int			status;
 
 	status = 0;
+	if (!cmd_exists(tmp->cmd))
+		return ;
 	if (tmp->to_pipe)
 		define_pipe(tmp);
 	if (tmp->to_pipe_to)

@@ -9,3 +9,14 @@
 	- testare prepotentemente le wildcard e gli operatori logici
 
 */
+
+cat interattivo - FATTO, VERIFICARE
+command not found quando viene dato path assoluto - FATTO, VERIFICARE
+virgolette e variabili - FATTO, VERIFICARE
+operatori logici
+echo $0 loop - FATTO, VERIFICARE
+
+
+echo 1 && (echo 2 || cacca && echo 3 ||(echo 4)) || echo 5
+echo 1 && (echo 2 && cacca && echo 3 ||(echo 4)) || echo 5
+echo $USER && echo '$USER' && echo "$USER" && echo '"$USER"' && echo "'$USER'"
