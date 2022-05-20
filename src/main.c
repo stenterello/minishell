@@ -54,12 +54,15 @@ void	sup_loop(t_command cmd)
 		get_logical(g_term.input.line, &cmd);
 	else if (split_command(g_term.input.line, &cmd))
 		execute_tree(&cmd);
+	free(g_term.input.line);
+	g_term.input.line = NULL;
 	while (i < g_term.suspended_cat)
 	{
 		g_term.input.line = readline("");
+		if (!ft_strlen(g_term.input.line))
+			ft_putchar_fd('\n', STDOUT_FILENO);
 		free(g_term.input.line);
 		g_term.input.line = NULL;
-		ft_putchar_fd('\n', STDOUT_FILENO);
 		i++;
 	}
 }
