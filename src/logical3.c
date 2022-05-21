@@ -15,25 +15,7 @@
 int	unit_len(char *line)
 {
 	int	i;
-	// int	par;
 
-	// i = 0;
-	// par = 0;
-	// if (line[i] == '(')
-	// {
-	// 	par++;
-	// 	i++;
-	// 	while (line[i])
-	// 	{
-	// 		if (line[i] == ')')
-	// 			par--;
-	// 		else if (line[i] == '(')
-	// 			par++;
-	// 		if (!par)
-	// 			return (i + 1);
-	// 		i++;
-	// 	}
-	// }
 	i = 0;
 	i = sup_unit_len(line, i);
 	return (i);
@@ -42,23 +24,52 @@ int	unit_len(char *line)
 int	next_unit(char *line)
 {
 	int	i;
+	int	ret;
 
 	i = 0;
+	ret = 0;
+	while (line[i] && line[i] == ' ')
+		i++;
 	while (line[i])
 	{
-		if ((!ft_strncmp(&line[i], "&&", 2)
-			|| !ft_strncmp(&line[i], "||", 2))
+		if (ft_isalnum(line[i]) || line[i] == ' ')
+		{
+			while ((ft_strncmp(&line[i], "&&", 2) && ft_strncmp(&line[i], "||", 2) && line[i] != ')' && line[i] != '(')
+				&& !is_open(line, i))
+			{
+				i++;
+				ret++;
+			}
+			return (ret);
+		}
+		else if ((!ft_strncmp(&line[i], "&&", 2) || !ft_strncmp(&line[i], "||", 2) || line[i] == ')' || line[i] == '(')
 			&& !is_open(line, i))
-			break ;
-		else if (line[i] == ')')
-			break ;
+			return (2) ;
 		i++;
 	}
-	if (line[i])
-		i += 2;
-	else
-		return (0);
-	while (!ft_isalnum(line[i]))
-		i++;
-	return (i);
+	return (ret);
 }
+
+// int	next_unit(char *line)
+// {
+// 	int	i;
+
+// 	i = 0;
+// 	while (line[i])
+// 	{
+// 		if ((!ft_strncmp(&line[i], "&&", 2)
+// 			|| !ft_strncmp(&line[i], "||", 2))
+// 			&& !is_open(line, i))
+// 			break ;
+// 		else if ((line[i] == '(' || line[i] == ')') && !is_open(line, i))
+// 			return (1);
+// 		i++;
+// 	}
+// 	if (line[i])
+// 		i += 2;
+// 	else
+// 		return (0);
+// 	while (!ft_isalnum(line[i]))
+// 		i++;
+// 	return (i);
+// }

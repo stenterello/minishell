@@ -89,7 +89,7 @@ typedef struct s_command
 
 t_term	g_term;
 
-void	main_loop(void);
+void	main_loop(int argc, char **argv);
 void	die(char *msg);
 void	try_expand(t_input *input);
 void	execute_tree(t_command *cmd);

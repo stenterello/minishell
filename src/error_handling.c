@@ -21,8 +21,9 @@ void	print_error(t_command *cmd)
 
 void	cmd_not_found(t_command *cmd)
 {
-	ft_putstr_fd(cmd->cmd, STDERR_FILENO);
-	ft_putendl_fd(": command not found", STDERR_FILENO);
+	ft_putstr_fd(ft_getenv("SHELL"), STDERR_FILENO);
+	ft_putstr_fd(": command not found: ", STDERR_FILENO);
+	ft_putendl_fd(cmd->cmd, STDERR_FILENO);
 	g_term.last_exit = 127;
 }
 

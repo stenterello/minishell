@@ -67,67 +67,95 @@ void	sup_loop(t_command cmd)
 	}
 }
 
-void	main_loop(void)
+void	main_loop(int argc, char **argv)
 {
 	t_command	cmd;
+	int			i;
+	int			fd;
+	char		*line;
 
-	while (1)
+	i = 0;
+	if (argc > 2 && !ft_strncmp("-c\0", argv[1], 3))
 	{
-		init_input(&g_term.input);
-		init_cmd(&cmd);
+		while (argv[i])
+			i++;
+		argv[i] = NULL;
 		transform_environ(g_term.env);
-		add_signals();
-		take_input(&g_term.input);
-		if (ft_strlen(g_term.input.line) > 0 && g_term.delimiter == 0)
-			sup_loop(cmd);
-		if (g_term.input.line)
-			free(g_term.input.line);
-		if (cmd.portions)
-			free_array_of_array(cmd.portions);
-		free_array_of_array(g_term.glob_environ);
-		g_term.delimiter = 0;
-		g_term.suspended_cat = 0;
-		g_term.is_suspended = 1;
+		malloc_c(&g_term.input.line, ft_strlen(argv[2]) + 1);
+		ft_strlcpy(g_term.input.line, argv[2], ft_strlen(argv[2]) + 1);
+		init_cmd(&cmd);
+		sup_loop(cmd);
+		free(g_term.input.line);
+		reset_term();
+		return ;
+	}
+	else if (argc > 1)
+	{
+		while (argv[i])
+			i++;
+		argv[i] = NULL;
+		transform_environ(g_term.env);
+		fd = open(argv[1], O_RDONLY);
+		if (fd < 0)
+		{
+			ft_putstr_fd(ft_getenv("SHELL"), 2);
+			ft_putstr_fd(": ", 2);
+			ft_putstr_fd(argv[1], 2);
+			ft_putstr_fd(": ", 2);
+			die(strerror(errno));
+		}
+		line = get_next_line(fd);
+		while (line)
+		{
+			if (ft_strncmp("#!/bin/bash", line, 11) && ft_strlen(line) > 1)
+			{
+				malloc_c(&g_term.input.line, ft_strlen(line) + 1);
+				ft_strlcpy(g_term.input.line, line, ft_strlen(line));
+				init_cmd(&cmd);
+				sup_loop(cmd);
+				free(g_term.input.line);
+			}
+			free(line);
+			line = get_next_line(fd);
+		}
+		close(fd);
+		reset_term();
+		return ;
+	}
+	else
+	{
+		while (1)
+		{
+			init_input(&g_term.input);
+			init_cmd(&cmd);
+			transform_environ(g_term.env);
+			add_signals();
+			take_input(&g_term.input);
+			if (ft_strlen(g_term.input.line) > 0 && g_term.delimiter == 0)
+				sup_loop(cmd);
+			if (g_term.input.line)
+				free(g_term.input.line);
+			if (cmd.portions)
+				free_array_of_array(cmd.portions);
+			free_array_of_array(g_term.glob_environ);
+			g_term.delimiter = 0;
+			g_term.suspended_cat = 0;
+			g_term.is_suspended = 1;
+		}
 	}
 }
 
-int	main(void)
+int	main(int argc, char **argv)
 {
 	save_term(&g_term.old_term);
 	malloc_and_check_dict(&g_term.var, 1);
 	take_environ();
 	init_terminal(ft_getenv("TERM"));
-	main_loop();
+	main_loop(argc, argv);
 	clear_history();
 	free_dict(g_term.env);
 	free_dict(g_term.var);
 	free(g_term.termi);
-	free(g_term.glob_environ);
+	free_array_of_array(g_term.glob_environ);
 	return (0);
 }
-
-/*
-
-// DA GESTIRE IL SEGNALE CTRL + \
-
-// deve inserire variabili senza valore tra le env (export)
-
-// gestione del comando cat | ls _____ cat | cat | ls
-
-// leak se fai solo "pwd" - non so da dove viene
-
-// se scrivo e* e c'e`un file che si chiama "echo" nella cartella,
-	deve sostituirlo ed eseguirlo, quindi basterebbe fare il check delle
-	wildcard anche sul comando
-
-// La free a riga 129 di heredoc.c non dovrebbe dare invalid
-	pointer nel caso in cui venga premuto Ctrl + D 
-	durante una readline?
-
-// Da controllare:
-	- quali segnali, di preciso, servono
-	- leaks
-	- norma
-	- testare prepotentemente le wildcard e gli operatori logici
-
-*/

@@ -30,7 +30,7 @@ void	sig_int(void)
 	{
 		free(g_term.input.line);
 		g_term.delimiter = 0;
-		main_loop();
+		main_loop(0, NULL);
 	}
 }
 

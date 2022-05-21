@@ -62,6 +62,8 @@ void	exit_cmd(t_command *cmd)
 	free(g_term.input.line);
 	if (i == 1)
 		exit(0);
+	else if (ft_atoi(cmd->args[i - 1]) < 0)
+		exit(256 - ft_atoi(cmd->args[i - 1]));
 	else
 		exit(ft_atoi(cmd->args[i - 1]));
 }

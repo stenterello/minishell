@@ -73,7 +73,7 @@ int	count_units(char *line)
 	int	ret;
 
 	i = 0;
-	ret = 1;
+	ret = 0;
 	while (line[i])
 	{
 		if ((!ft_strncmp(&line[i], "&&", 2) || !ft_strncmp(&line[i], "||", 2))
@@ -82,7 +82,18 @@ int	count_units(char *line)
 			i += 2;
 			ret++;
 		}
+		else if ((line[i] == '(' || line[i] == ')') && !is_open(line, i))
+		{
+			ret++;
+			i++;
+		}
 		else
+		{
+			ret++;
+			while (line[i] && (ft_strncmp(&line[i], "&&", 2) && ft_strncmp(&line[i], "||", 2) && line[i] != '(' && line[i] != ')' && !is_open(line, i)))
+				i++;
+		}
+		while (line[i] && line[i] == ' ')
 			i++;
 	}
 	return (ret);
@@ -90,19 +101,33 @@ int	count_units(char *line)
 
 int	sup_unit_len(char *line, int i)
 {
+	int	ret;
+
+	ret = 0;
+	while (line[i] && line[i] == ' ')
+		i++;
 	while (line[i])
 	{
-		if ((!ft_strncmp(&line[i], "&&", 2) || !ft_strncmp(&line[i], "||", 2))
-			&& !is_open(line, i))
+		if (ft_isalnum(line[i]) || line[i] == ' ')
 		{
-			while (!ft_isalnum(line[i]) && line[i] != '\''
-				&& line[i] != '\"' && line[i] != ')')
+			while ((ft_strncmp("&&", &line[i], 2) && ft_strncmp("||", &line[i], 2)) && line[i] != '(' && line[i] != ')' && !is_open(line, i))
+			{
+				i++;
+				ret++;
+			}
+			while (line[i - 1] == ' ')
+			{
 				i--;
-			return (i + 1);
+				ret--;
+			}
+			return (ret);
 		}
-		if (line[i] == ')')
-			return (i);
+		else if ((line[i] == ')' || line[i] == '(')
+			&& !is_open(line, i))
+			return (1);
+		else if ((!ft_strncmp("&&", &line[i], 2) || !ft_strncmp("||", &line[i], 2)) && !is_open(line, i))
+			return (2);
 		i++;
 	}
-	return (i);
+	return (ret);
 }
