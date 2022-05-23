@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   logical.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gimartin <gimartin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/28 14:29:19 by gimartin          #+#    #+#             */
-/*   Updated: 2022/05/09 14:36:28 by gimartin         ###   ########.fr       */
+/*   Updated: 2022/05/23 14:50:45 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,42 +96,75 @@ int	next_unit2(char *line)
 	}
 }
 
+int	n_lvls(char **l)
+{
+	int	i;
+	int	ret;
+
+	i = 0;
+	ret = 0;
+	while (l[i])
+	{
+		if (!ft_strncmp("(", l[i], 1))
+			ret++;
+		i++;
+	}
+	return (ret);
+}
+
+int	next_logic_unit(char **l, int *lvl)
+{
+	int	i;
+	int	n_lvl;
+
+	i = 1;
+	n_lvl = *lvl;
+	while (l[i])
+	{
+		if (!ft_strncmp(l[i], "(", 1))
+			n_lvl++;
+		else if (!ft_strncmp(l[i], ")", 1))
+			break ;
+		if (!ft_strncmp(l[i], "&&", 2) || !ft_strncmp(l[i], "||", 2))
+			return (i);
+		i++;
+	}
+	return (i);
+}
+
 void	start_thinking(char **u_lines, t_command *cmd)
 {
+	int	*exits;
 	int	level;
-	int	bench;
 	int	i;
 
+	exits = malloc(sizeof(int) * n_lvls(u_lines) + 1);
+	i = 0;
+	while (i < n_lvls(u_lines))
+		exits[i++] = 0;
+	exits[i] = -2;
 	level = 0;
 	i = 0;
 	while (u_lines[i])
 	{
 		if (ft_isalnum(u_lines[i][0]))
 		{
-			bench = level;
 			if (split_command(u_lines[i], cmd))
 				execute_tree(cmd);
+			exits[level] = g_term.last_exit;
 		}
 		if (u_lines[i][0] == '(')
 			level++;
 		else if (u_lines[i][0] == ')')
 			level--;
-		else if (!ft_strncmp("&&", u_lines[i], 2) && g_term.last_exit != 0 && bench == level)
-			printf("ok\n");
-		else if (!ft_strncmp("||", u_lines[i], 2) && g_term.last_exit == 0 && bench == level)
-		{
+		else if (!ft_strncmp("&&", u_lines[i], 2) && exits[level] != 0)
+			i += next_logic_unit(&u_lines[i], &level);
+		else if (!ft_strncmp("||", u_lines[i], 2) && exits[level] == 0)
+			i += next_logic_unit(&u_lines[i], &level);
+		if (u_lines[i])
 			i++;
-			while (u_lines[i][0] == '(' || u_lines[i][0] == ')' || ft_isalnum(u_lines[i][0]))
-			{
-				if (u_lines[i][0] == '(')
-					level++;
-				else if (u_lines[i][0] == ')')
-					level--;
-				i++;
-			}
-		}
-		i++;
 	}
+	free(exits);
 }
 
 void	get_logical(char *line, t_command *cmd)

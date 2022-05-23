@@ -7,23 +7,28 @@ gcc    -c -o ft_isalpha.o ft_isalpha.c
 gcc    -c -o ft_isdigit.o ft_isdigit.c
 gcc    -c -o ft_isalnum.o ft_isalnum.c
 gcc    -c -o ft_isascii.o ft_isascii.c
+ 
 gcc    -c -o ft_isprint.o ft_isprint.c
+ 
 gcc    -c -o ft_strlen.o ft_strlen.c
 gcc    -c -o ft_memset.o ft_memset.c
 gcc    -c -o ft_bzero.o ft_bzero.c
 gcc    -c -o ft_memcpy.o ft_memcpy.c
 gcc    -c -o ft_memmove.o ft_memmove.c
 gcc    -c -o ft_strlcpy.o ft_strlcpy.c
+ 
 gcc    -c -o ft_strlcat.o ft_strlcat.c
 gcc    -c -o ft_toupper.o ft_toupper.c
 gcc    -c -o ft_tolower.o ft_tolower.c
 gcc    -c -o ft_strchr.o ft_strchr.c
 gcc    -c -o ft_strrchr.o ft_strrchr.c
+ 
 gcc    -c -o ft_strncmp.o ft_strncmp.c
 gcc    -c -o ft_memchr.o ft_memchr.c
 gcc    -c -o ft_memcmp.o ft_memcmp.c
 gcc    -c -o ft_strnstr.o ft_strnstr.c
 gcc    -c -o ft_atoi.o ft_atoi.c
+ 
 gcc    -c -o ft_calloc.o ft_calloc.c
 gcc    -c -o ft_strdup.o ft_strdup.c
 gcc    -c -o ft_substr.o ft_substr.c
@@ -37,16 +42,19 @@ gcc    -c -o ft_putchar_fd.o ft_putchar_fd.c
 gcc    -c -o ft_putstr_fd.o ft_putstr_fd.c
 gcc    -c -o ft_putnbr_fd.o ft_putnbr_fd.c
 gcc    -c -o ft_putendl_fd.o ft_putendl_fd.c
+gcc    -c -o get_next_line.o get_next_line.c
+gcc    -c -o get_next_line_utils.o get_next_line_utils.c
 gcc    -c -o ft_lstnew.o ft_lstnew.c
 gcc    -c -o ft_lstadd_front.o ft_lstadd_front.c
 gcc    -c -o ft_lstsize.o ft_lstsize.c
+ 
 gcc    -c -o ft_lstlast.o ft_lstlast.c
 gcc    -c -o ft_lstadd_back.o ft_lstadd_back.c
 gcc    -c -o ft_lstdelone.o ft_lstdelone.c
 gcc    -c -o ft_lstclear.o ft_lstclear.c
 gcc    -c -o ft_lstiter.o ft_lstiter.c
 gcc    -c -o ft_lstmap.o ft_lstmap.c
-ar rcs libft.a ft_isalpha.o ft_isdigit.o ft_isalnum.o ft_isascii.o ft_isprint.o ft_strlen.o ft_memset.o ft_bzero.o ft_memcpy.o ft_memmove.o ft_strlcpy.o ft_strlcat.o ft_toupper.o ft_tolower.o ft_strchr.o ft_strrchr.o ft_strncmp.o ft_memchr.o ft_memcmp.o ft_strnstr.o ft_atoi.o ft_calloc.o ft_strdup.o ft_substr.o ft_strjoin.o ft_strtrim.o ft_split.o ft_itoa.o ft_strmapi.o ft_striteri.o ft_putchar_fd.o ft_putstr_fd.o ft_putnbr_fd.o ft_putendl_fd.o ft_lstnew.o ft_lstadd_front.o ft_lstsize.o ft_lstlast.o ft_lstadd_back.o ft_lstdelone.o ft_lstclear.o ft_lstiter.o ft_lstmap.o
+ar rcs libft.a ft_isalpha.o ft_isdigit.o ft_isalnum.o ft_isascii.o ft_isprint.o ft_strlen.o ft_memset.o ft_bzero.o ft_memcpy.o ft_memmove.o ft_strlcpy.o ft_strlcat.o ft_toupper.o ft_tolower.o ft_strchr.o ft_strrchr.o ft_strncmp.o ft_memchr.o ft_memcmp.o ft_strnstr.o ft_atoi.o ft_calloc.o ft_strdup.o ft_substr.o ft_strjoin.o ft_strtrim.o ft_split.o ft_itoa.o ft_strmapi.o ft_striteri.o ft_putchar_fd.o ft_putstr_fd.o ft_putnbr_fd.o ft_putendl_fd.o get_next_line.o get_next_line_utils.o ft_lstnew.o ft_lstadd_front.o ft_lstsize.o ft_lstlast.o ft_lstadd_back.o ft_lstdelone.o ft_lstclear.o ft_lstiter.o ft_lstmap.o
 make[1]: Leaving directory '/home/davide/Documenti/Codici/42/minishell/include/libft'
 gcc    -c -o src/main.o src/main.c
 gcc    -c -o src/main2.o src/main2.c
@@ -59,6 +67,7 @@ gcc    -c -o src/find_script.o src/find_script.c
 gcc    -c -o src/init_utils.o src/init_utils.c
 gcc    -c -o src/set_var.o src/set_var.c
 gcc    -c -o src/term.o src/term.c
+ 
 gcc    -c -o src/parse.o src/parse.c
 gcc    -c -o src/parse2.o src/parse2.c
 gcc    -c -o src/parse3.o src/parse3.c
