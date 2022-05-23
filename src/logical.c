@@ -6,7 +6,7 @@
 /*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/28 14:29:19 by gimartin          #+#    #+#             */
-/*   Updated: 2022/05/23 14:50:45 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/05/23 15:20:56 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,7 +142,6 @@ void	start_thinking(char **u_lines, t_command *cmd)
 	i = 0;
 	while (i < n_lvls(u_lines))
 		exits[i++] = 0;
-	exits[i] = -2;
 	level = 0;
 	i = 0;
 	while (u_lines[i])
