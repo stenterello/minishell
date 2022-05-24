@@ -3,44 +3,31 @@
 /*                                                        :::      ::::::::   */
 /*   logical.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
+/*   By: gimartin <gimartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/28 14:29:19 by gimartin          #+#    #+#             */
-/*   Updated: 2022/05/23 15:20:56 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/05/24 18:38:47 by gimartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-char	*single_trim(char const *s1)
-{
-	char	*newstr;
-
-	if (!s1)
-		return (NULL);
-	newstr = malloc(sizeof(char) * (ft_strlen(s1) - 1));
-	if (!newstr)
-		return (NULL);
-	ft_strlcpy(newstr, &s1[1], ft_strlen(s1) - 1);
-	return (newstr);
-}
 
 int	unit_len2(char *line)
 {
 	int	i;
 	int	ret;
 
-	i = 0;
+	i = skip_spaces(line, 0);
 	ret = 0;
-	while (line[i] == ' ')
-		i++;
 	if ((line[i] == '(' || line[i] == ')') && !is_open(line, i))
 		return (1);
-	else if ((!ft_strncmp("&&", &line[i], 2) || !ft_strncmp("||", &line[i], 2)) && !is_open(line, i))
+	else if ((!ft_strncmp("&&", &line[i], 2)
+			|| !ft_strncmp("||", &line[i], 2)) && !is_open(line, i))
 		return (2);
 	else
 	{
-		while ((ft_strncmp("&&", &line[i], 2) && ft_strncmp("||", &line[i], 2) && line[i] != '(' && line[i] != ')' && !is_open(line, i)))
+		while ((ft_strncmp("&&", &line[i], 2) && ft_strncmp("||", &line[i], 2)
+				&& line[i] != '(' && line[i] != ')'))
 		{
 			i++;
 			ret++;
@@ -59,57 +46,28 @@ int	next_unit2(char *line)
 	int	i;
 	int	ret;
 
-	i = 0;
+	i = skip_spaces(line, 0);
 	ret = 0;
-	while (line[i] && line[i] == ' ')
-		i++;
 	if (line[i] == '(' || line[i] == ')')
 	{
-		i++;
-		ret++;
-		while (line[i] == ' ')
-		{
-			i++;
-			ret++;
-		}
+		increment_couple(&i, &ret);
+		ret += skip_spaces(line, 0);
 		return (ret);
 	}
-	else if ((!ft_strncmp(&line[i], "&&", 2) || !ft_strncmp(&line[i], "||", 2)) && !is_open(line, i))
+	else if ((!ft_strncmp(&line[i], "&&", 2)
+			|| !ft_strncmp(&line[i], "||", 2)) && !is_open(line, i))
 	{
 		ret = 2;
-		i += ret;
-		while (line[i] && line[i] == ' ')
-		{
-			i++;
-			ret++;
-		}
+		ret += skip_spaces(&line[ret], 0);
 		return (ret);
 	}
 	else
 	{
-		while ((ft_strncmp("&&", &line[i], 2) && ft_strncmp("||", &line[i], 2) && line[i] != '(' && line[i] != ')' && !is_open(line, i)))
-		{
-			i++;
-			ret++;
-		}
+		while ((ft_strncmp("&&", &line[i], 2) && ft_strncmp("||", &line[i], 2)
+				&& line[i] != '(' && line[i] != ')'))
+			increment_couple(&i, &ret);
 		return (ret);
 	}
-}
-
-int	n_lvls(char **l)
-{
-	int	i;
-	int	ret;
-
-	i = 0;
-	ret = 0;
-	while (l[i])
-	{
-		if (!ft_strncmp("(", l[i], 1))
-			ret++;
-		i++;
-	}
-	return (ret);
 }
 
 int	next_logic_unit(char **l, int *lvl)
@@ -135,33 +93,28 @@ int	next_logic_unit(char **l, int *lvl)
 void	start_thinking(char **u_lines, t_command *cmd)
 {
 	int	*exits;
-	int	level;
-	int	i;
+	int	c[2];
 
-	exits = malloc(sizeof(int) * n_lvls(u_lines) + 1);
-	i = 0;
-	while (i < n_lvls(u_lines))
-		exits[i++] = 0;
-	level = 0;
-	i = 0;
-	while (u_lines[i])
+	exits = NULL;
+	create_exits(&exits, u_lines);
+	c[0] = 0;
+	c[1] = 0;
+	while (u_lines[c[0]])
 	{
-		if (ft_isalnum(u_lines[i][0]))
+		if (ft_isalnum(u_lines[c[0]][0]) && split_command(u_lines[c[0]], cmd))
 		{
-			if (split_command(u_lines[i], cmd))
-				execute_tree(cmd);
-			exits[level] = g_term.last_exit;
+			execute_tree(cmd);
+			exits[c[1]] = g_term.last_exit;
 		}
-		if (u_lines[i][0] == '(')
-			level++;
-		else if (u_lines[i][0] == ')')
-			level--;
-		else if (!ft_strncmp("&&", u_lines[i], 2) && exits[level] != 0)
-			i += next_logic_unit(&u_lines[i], &level);
-		else if (!ft_strncmp("||", u_lines[i], 2) && exits[level] == 0)
-			i += next_logic_unit(&u_lines[i], &level);
-		if (u_lines[i])
-			i++;
+		if (u_lines[c[0]][0] == '(')
+			c[1]++;
+		else if (u_lines[c[0]][0] == ')')
+			c[1]--;
+		else if ((!ft_strncmp("&&", u_lines[c[0]], 2) && exits[c[1]] != 0)
+			|| (!ft_strncmp("||", u_lines[c[0]], 2) && exits[c[1]] == 0))
+			c[0] += next_logic_unit(&u_lines[c[0]], &c[1]);
+		if (u_lines[c[0]])
+			c[0]++;
 	}
 	free(exits);
 }
@@ -174,8 +127,8 @@ void	get_logical(char *line, t_command *cmd)
 
 	i = 0;
 	j = 0;
-	malloc_c_ptr(&u_lines, count_units(line) + 1);
-	while (i < count_units(line))
+	malloc_c_ptr(&u_lines, count_units(line, 0) + 1);
+	while (i < count_units(line, 0))
 	{
 		malloc_c(&u_lines[i], unit_len2(&line[j]) + 1);
 		ft_strlcpy(u_lines[i], &line[j], unit_len2(&line[j]) + 1);

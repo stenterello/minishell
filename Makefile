@@ -1,8 +1,10 @@
 NAME=minishell
 CC=gcc
-FLAGS=-Wall -Werror -Wextra -g -L$(HOME)/.brew/opt/readline/lib -I$(HOME)/.brew/opt/readline/include
+FLAGS=-Wall -Werror -Wextra -L$(HOME)/.brew/opt/readline/lib -I$(HOME)/.brew/opt/readline/include
 SRC=main.c \
 	main2.c \
+	special_run.c \
+	special_childs.c \
 	utils.c \
 	utils2.c \
 	utils3.c \
@@ -10,6 +12,8 @@ SRC=main.c \
 	execute2.c \
 	find_script.c \
 	init_utils.c \
+	init_utils2.c \
+	init_utils3.c \
 	set_var.c \
 	term.c \
 	parse.c \
@@ -34,6 +38,7 @@ SRC=main.c \
 	logical.c \
 	logical2.c \
 	logical3.c \
+	logical4.c \
 	wildcards.c \
 	wildcards2.c \
 	wildcards_bools.c \

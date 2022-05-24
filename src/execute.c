@@ -6,7 +6,7 @@
 /*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/27 15:05:42 by gimartin          #+#    #+#             */
-/*   Updated: 2022/05/11 17:35:38 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/05/24 12:44:58 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,21 +87,6 @@ void	transform_environ(t_dict *env)
 		tmp = tmp->next;
 	}
 	g_term.glob_environ[i] = NULL;
-}
-
-int	cmd_exists(char *line)
-{
-	if (access(line, X_OK))
-	{
-		ft_putstr_fd(ft_getenv("SHELL"), 2);
-		ft_putstr_fd(": ", 2);
-		ft_putstr_fd(strerror(errno), 2);
-		ft_putstr_fd(": ", 2);
-		ft_putendl_fd(line, 2);
-		g_term.last_exit = 127;
-		return (0);
-	}
-	return (1);
 }
 
 void	born_child(t_command *tmp)

@@ -6,7 +6,7 @@
 /*   By: gimartin <gimartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/03 21:54:58 by ddelladi          #+#    #+#             */
-/*   Updated: 2022/05/13 16:15:01 by gimartin         ###   ########.fr       */
+/*   Updated: 2022/05/24 19:05:30 by gimartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,8 @@ typedef struct s_command
 
 t_term	g_term;
 
-void	main_loop(int argc, char **argv);
+void	main_loop(void);
+void	sup_loop(t_command cmd);
 void	die(char *msg);
 void	try_expand(t_input *input);
 void	execute_tree(t_command *cmd);
@@ -175,7 +176,7 @@ void	define_heredoc_pipe(t_command *cmd);
 void	take_variable(char *var1, t_input *input, int init_len);
 int		next_unit(char *line);
 int		unit_len(char *line);
-int		count_units(char *line);
+int		count_units(char *line, int i);
 int		is_logical(char *line);
 int		*define_cmds_logic(char *line);
 int		fill_cmd_fields(char **tmp, t_command *cmd, int start);
@@ -231,5 +232,25 @@ void	cpy_and_slide(char **tmp, int *c, int start, t_command *cmd);
 int		count_cleaned_cmd(char **tmp);
 int		sup_check_red(char **tmp, int i, t_command *cmd);
 int		guess(t_command *cmd, int i);
+void	c_run(char **argv);
+void	fd_error(char *line);
+void	read_and_execute(char *line, t_command *cmd);
+void	script_run(char **argv);
+void	suspended_cat(void);
+void	treat_suspended_cat(t_command *tmp);
+void	treat_heredoc_child(int *status, t_command *tmp);
+int		cmd_exists(char *line);
+char	*single_trim(char const *s1);
+int		skip_spaces(char *line, int i);
+int		n_lvls(char **l);
+void	create_exits(int **exits, char **u_lines);
+void	increment_couple(int *f, int *s);
+void	decrement_couple(int *f, int *s);
+int		sup_unit_len(char *line, int i);
+void	sup_count_units(char *line, int *i, int *ret);
+void	unexpected(char *typed);
+void	sup_take_input(char *typed, char *tmp, t_input *input);
+void	take_bonus(char *line, int *i, char c, int *ret);
+void	take_elem(t_dict *elem, int *ind);
 
 #endif

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
+/*   By: gimartin <gimartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/27 15:06:53 by gimartin          #+#    #+#             */
-/*   Updated: 2022/05/07 13:53:05 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/05/24 19:02:05 by gimartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,11 +40,24 @@ void	init_cmd(t_command *cmd)
 	cmd->portions = NULL;
 }
 
+void	sup_take_input(char *typed, char *tmp, t_input *input)
+{
+	tmp = readline("> ");
+	if (!tmp)
+		unexpected(typed);
+	ft_strlcat(typed, tmp, ft_strlen(typed) + ft_strlen(tmp) + 2);
+	free(tmp);
+	check(typed, input);
+}
+
 void	take_input(t_input *input)
 {
 	char	*typed;
 	char	*tmp;
+	int		i;
 
+	i = 0;
+	tmp = NULL;
 	typed = readline("whisper_hole: ");
 	check(typed, input);
 	if (is_heredoc(typed))
@@ -53,12 +66,7 @@ void	take_input(t_input *input)
 			return ;
 	}
 	while (input->is_open)
-	{
-		tmp = readline("> ");
-		ft_strlcat(typed, tmp, ft_strlen(typed) + ft_strlen(tmp) + 2);
-		free(tmp);
-		check(typed, input);
-	}
+		sup_take_input(typed, tmp, input);
 	tmp = ft_strtrim(typed, " ");
 	free(typed);
 	malloc_c(&input->line, ft_strlen(tmp) + 1);
@@ -88,29 +96,4 @@ void	take_elem(t_dict *elem, int *ind)
 		i - ft_strlen(elem->key));
 	elem->next = NULL;
 	*ind += 1;
-}
-
-void	take_environ(void)
-{
-	int			i;
-	t_dict		*new;
-	t_dict		*prev;
-	extern char	**environ;
-	char		**tmp;
-
-	i = 0;
-	new = NULL;
-	if (!g_term.env)
-		malloc_and_check_dict(&g_term.env, 1);
-	take_elem(g_term.env, &i);
-	prev = g_term.env;
-	tmp = environ;
-	while (tmp[i])
-	{
-		malloc_and_check_dict(&new, 1);
-		prev->next = new;
-		prev = new;
-		take_elem(new, &i);
-	}
-	change_exist_var_in_dict("SHELL", "minishell", g_term.env);
 }

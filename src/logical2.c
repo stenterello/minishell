@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   logical2.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
+/*   By: gimartin <gimartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/27 15:07:01 by gimartin          #+#    #+#             */
-/*   Updated: 2022/05/09 20:50:31 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/05/24 18:55:26 by gimartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,67 +67,29 @@ int	is_in_par(char *line, int limit)
 	return (0);
 }
 
-int	count_units(char *line)
+void	take_bonus(char *line, int *i, char c, int *ret)
 {
-	int	i;
-	int	ret;
+	int	j;
+	int	flag;
 
-	i = 0;
-	ret = 0;
-	while (line[i])
+	j = 1;
+	flag = 0;
+	while (line[j] != c)
 	{
-		if ((!ft_strncmp(&line[i], "&&", 2) || !ft_strncmp(&line[i], "||", 2))
-			&& !is_open(line, i))
-		{
-			i += 2;
-			ret++;
-		}
-		else if ((line[i] == '(' || line[i] == ')') && !is_open(line, i))
-		{
-			ret++;
-			i++;
-		}
-		else
-		{
-			ret++;
-			while (line[i] && (ft_strncmp(&line[i], "&&", 2) && ft_strncmp(&line[i], "||", 2) && line[i] != '(' && line[i] != ')' && !is_open(line, i)))
-				i++;
-		}
-		while (line[i] && line[i] == ' ')
-			i++;
+		j++;
+		(*i)++;
 	}
-	return (ret);
+	(*ret)++;
 }
 
-int	sup_unit_len(char *line, int i)
+int	count_units(char *line, int i)
 {
 	int	ret;
 
 	ret = 0;
-	while (line[i] && line[i] == ' ')
-		i++;
 	while (line[i])
 	{
-		if (ft_isalnum(line[i]) || line[i] == ' ')
-		{
-			while ((ft_strncmp("&&", &line[i], 2) && ft_strncmp("||", &line[i], 2)) && line[i] != '(' && line[i] != ')' && !is_open(line, i))
-			{
-				i++;
-				ret++;
-			}
-			while (line[i - 1] == ' ')
-			{
-				i--;
-				ret--;
-			}
-			return (ret);
-		}
-		else if ((line[i] == ')' || line[i] == '(')
-			&& !is_open(line, i))
-			return (1);
-		else if ((!ft_strncmp("&&", &line[i], 2) || !ft_strncmp("||", &line[i], 2)) && !is_open(line, i))
-			return (2);
-		i++;
+		sup_count_units(line, &i, &ret);
 	}
 	return (ret);
 }

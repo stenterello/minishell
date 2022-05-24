@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signal.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
+/*   By: gimartin <gimartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/27 15:04:37 by gimartin          #+#    #+#             */
-/*   Updated: 2022/05/03 21:58:17 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/05/24 18:29:50 by gimartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	sig_int(void)
 	{
 		free(g_term.input.line);
 		g_term.delimiter = 0;
-		main_loop(0, NULL);
+		main_loop();
 	}
 }
 
@@ -47,13 +47,16 @@ void	flush(int sig, siginfo_t *info, void *context)
 	else if (g_term.child && sig == SIGQUIT)
 	{
 		kill(g_term.child, SIGQUIT);
-		ft_putstr_fd("^\\Exit\n", STDOUT_FILENO);
+		ft_putstr_fd("Quit: 3\n", STDOUT_FILENO);
 		g_term.last_exit = 131;
 	}
 	else if (sig == SIGINT)
 		sig_int();
 	else if (sig == SIGQUIT)
 	{
+		rl_replace_line("", 0);
+		rl_on_new_line();
+		rl_redisplay();
 	}
 }
 

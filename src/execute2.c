@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute2.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gimartin <gimartin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/27 15:05:46 by gimartin          #+#    #+#             */
-/*   Updated: 2022/05/09 15:21:21 by gimartin         ###   ########.fr       */
+/*   Updated: 2022/05/24 12:43:51 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,9 @@
 void	sup_born(t_command *tmp, int status)
 {
 	if (g_term.is_suspended && !g_term.delimiter
-		&& !ft_strncmp("cat\0", &tmp->cmd[ft_strlen(tmp->cmd) - 3], 4) && tmp->next != NULL)
-	{
-		kill(g_term.child, 15);
-		restore_fd(tmp);
-		g_term.suspended_cat++;
-		return ;
-	}
+		&& !ft_strncmp("cat\0", &tmp->cmd[ft_strlen(tmp->cmd) - 3], 4)
+		&& tmp->next != NULL)
+		return (treat_suspended_cat(tmp));
 	else if (!g_term.delimiter)
 	{
 		waitpid(g_term.child, &status, 0);
@@ -34,20 +30,7 @@ void	sup_born(t_command *tmp, int status)
 		g_term.is_suspended = 0;
 	}
 	else
-	{
-		close(STDIN_FILENO);
-		if (!g_term.delimiter)
-			close(tmp->output_fd);
-		waitpid(g_term.child, &status, 0);
-		if (WIFEXITED(status))
-			g_term.last_exit = status / 256;
-		else
-			g_term.last_exit = status;
-		g_term.child = 0;
-		dup2(tmp->saved_in, STDIN_FILENO);
-		close(tmp->saved_in);
-		g_term.is_suspended = 0;
-	}
+		treat_heredoc_child(&status, tmp);
 }
 
 int	sup_ex(t_command *tmp)

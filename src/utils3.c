@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils3.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gimartin <gimartin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/09 15:46:45 by gimartin          #+#    #+#             */
-/*   Updated: 2022/05/09 15:47:05 by gimartin         ###   ########.fr       */
+/*   Updated: 2022/05/24 13:10:59 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,4 +89,10 @@ char	*get_path(char *line)
 	malloc_c(&ret, ft_strlen(line) - i + 1);
 	ft_strlcpy(ret, &line[i], ft_strlen(line) - i + 1);
 	return (ret);
+}
+
+void	decrement_couple(int *f, int *s)
+{
+	(*f)--;
+	(*s)--;
 }
