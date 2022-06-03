@@ -252,5 +252,9 @@ void	unexpected(char *typed);
 void	sup_take_input(char *typed, char *tmp, t_input *input);
 void	take_bonus(char *line, int *i, char c, int *ret);
 void	take_elem(t_dict *elem, int *ind);
+int		var_to_append(char *line);
+t_dict	*try_search(char *key, t_dict *where);
+t_dict	*find_ptr(char *key);
+void	append_var(char *key, char *value);
 
 #endif

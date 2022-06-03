@@ -22,9 +22,27 @@ void	sup_sup_export(t_dict *new)
 	g_term.last_exit = 0;
 }
 
+t_dict	*try_search_env(char *key)
+{
+	t_dict	*tmp;
+
+	tmp = g_term.env;
+	if (!tmp)
+		return (NULL);
+	while (tmp && tmp->key)
+	{
+		if (!ft_strncmp(tmp->key, key, ft_strlen(key) + 1))
+			return (tmp);
+		tmp = tmp->next;
+	}
+	return (NULL);
+}
+
 void	sup_export(t_command *cmd, t_dict *new, int i)
 {
 	int		j;
+	t_dict	*append_ptr;
+	char	*new_string;
 
 	j = 0;
 	while (cmd->args[1][j] && cmd->args[1][j] != '=' && ft_strncmp(&cmd->args[1][j], "+=", 2))
@@ -47,6 +65,19 @@ void	sup_export(t_command *cmd, t_dict *new, int i)
 	{
 		malloc_c(&new->value, i + 1);
 		ft_strlcpy(new->value, &cmd->args[1][j + 1], i + 1);
+		append_ptr = try_search_env(new->key);
+		if (append_ptr)
+		{
+			malloc_c(&new_string, ft_strlen(append_ptr->value) + ft_strlen(new->value) + 1);
+			ft_strlcpy(new_string, append_ptr->value, ft_strlen(append_ptr->value) + 1);
+			ft_strlcat(new_string, new->value, ft_strlen(new_string) + ft_strlen(new->value) + 1);
+			free(append_ptr->value);
+			append_ptr->value = new_string;
+			free(new->key);
+			free(new->value);
+			free(new);
+			return ;
+		}
 	}
 	new->next = NULL;
 	sup_sup_export(new);
