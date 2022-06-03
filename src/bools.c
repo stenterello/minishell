@@ -28,6 +28,8 @@ int	sup_is_var_def(char *line, int i, int s_quot, int d_quot)
 			return (0);
 		else if (line[i] == '=' && !d_quot && !s_quot)
 			return (1);
+		else if (!ft_strncmp(&line[i], "+=", 2) && !d_quot && !s_quot)
+			return (1);
 		else if (!ft_isascii(line[i]))
 			return (0);
 		i++;

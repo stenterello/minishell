@@ -27,7 +27,9 @@ void	sup_export(t_command *cmd, t_dict *new, int i)
 	int		j;
 
 	j = 0;
-	while (cmd->args[1][j] && cmd->args[1][j] != '=')
+	while (cmd->args[1][j] && cmd->args[1][j] != '=' && ft_strncmp(&cmd->args[1][j], "+=", 2))
+		j++;
+	if (!ft_strncmp(&cmd->args[1][j], "+=", 2))
 		j++;
 	if (!cmd->args[1][j])
 	{

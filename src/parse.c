@@ -44,9 +44,12 @@ void	split_var_decl(char *line, t_command *cmd)
 	meas[2] = 0;
 	malloc_c_ptr(&cmd->args, count_params(line) + 1);
 	cmd->args[0] = NULL;
-	while (line[meas[0]] != '=')
+	while (line[meas[0]] != '=' && ft_strncmp(&line[meas[0]], "+=", 2))
 		meas[0]++;
-	meas[0]++;
+	if (line[meas[0]] == '=')
+		meas[0]++;
+	else
+		meas[0] += 2;
 	sup_split_var(line, meas, cmd);
 	if (!cmd->args[meas[2]])
 	{

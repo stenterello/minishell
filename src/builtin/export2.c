@@ -17,7 +17,7 @@ int	key_len(char *line)
 	int	i;
 
 	i = 0;
-	while (line[i] && line[i] != '=')
+	while (line[i] && line[i] != '=' && ft_strncmp(&line[i], "+=", 2))
 		i++;
 	if (!line[i] && search_vars(line, g_term.var) == NULL)
 		return (-1);

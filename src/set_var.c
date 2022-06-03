@@ -63,6 +63,76 @@ int	change_exist_var_in_dict(char *key, char *value, t_dict *where)
 	return (0);
 }
 
+int	var_to_append(char *line)
+{
+	int	i;
+
+	i = 0;
+	while (line[i])
+	{
+		if (line[i] == '=')
+			return (0);
+		else if (!ft_strncmp(&line[i], "+=", 2))
+			return (1);
+		i++;
+	}
+	return (0);
+}
+
+t_dict	*try_search(char *key, t_dict *where)
+{
+	t_dict	*tmp;
+
+	if (!where)
+		return (NULL);
+	tmp = where;
+	while (tmp && tmp->key)
+	{
+		if (!ft_strncmp(tmp->key, key, ft_strlen(key) + 1))
+			return (tmp);
+		tmp = tmp->next;
+	}
+	return (NULL);
+}
+
+t_dict	*find_ptr(char *key)
+{
+	t_dict	*ptr;
+
+	ptr = try_search(key, g_term.env);
+	if (!ptr)
+		ptr = try_search(key, g_term.var);
+	if (!ptr)
+		return (NULL);
+	return (ptr);
+}
+
+void	append_var(char *key, char *value)
+{
+	t_dict	*append_ptr;
+	char	*new;
+	int		len;
+
+	append_ptr = find_ptr(key);
+	if (!append_ptr)
+	{
+		if (!change_exist_var_in_dict(key, value, g_term.env))
+		{
+			if (!change_exist_var_in_dict(key, value, g_term.var))
+				insert_into_vars(key, value, g_term.var);
+		}
+	}
+	else
+	{
+		len = ft_strlen(append_ptr->value) + ft_strlen(value) + 1;
+		malloc_c(&new, len);
+		ft_strlcpy(new, append_ptr->value, ft_strlen(append_ptr->value) + 1);
+		ft_strlcat(new, value, len);
+		free(append_ptr->value);
+		append_ptr->value = new;
+	}
+}
+
 void	sup_set_sh_var(int j, char *args, char *value, char *key)
 {
 	int	i;
@@ -76,11 +146,16 @@ void	sup_set_sh_var(int j, char *args, char *value, char *key)
 		ft_strlcpy(value, &args[j + 2], i + 1);
 	else
 		ft_strlcpy(value, &args[j + 1], i + 1);
-	if (!change_exist_var_in_dict(key, value, g_term.env))
+	if (!var_to_append(args))
 	{
-		if (!change_exist_var_in_dict(key, value, g_term.var))
-			insert_into_vars(key, value, g_term.var);
+		if (!change_exist_var_in_dict(key, value, g_term.env))
+		{
+			if (!change_exist_var_in_dict(key, value, g_term.var))
+				insert_into_vars(key, value, g_term.var);
+		}
 	}
+	else
+		append_var(key, value);
 	free(key);
 	free(value);
 }

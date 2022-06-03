@@ -1,6 +1,6 @@
 NAME=minishell
 CC=gcc
-FLAGS=-Wall -Werror -Wextra -L$(HOME)/.brew/opt/readline/lib -I$(HOME)/.brew/opt/readline/include
+FLAGS=-Wall -Werror -Wextra -L$(HOME)/.brew/opt/readline/lib -I$(HOME)/.brew/opt/readline/include -g
 SRC=main.c \
 	main2.c \
 	special_run.c \
