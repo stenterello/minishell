@@ -15,6 +15,7 @@ SRC=main.c \
 	init_utils2.c \
 	init_utils3.c \
 	set_var.c \
+	set_var2.c \
 	term.c \
 	parse.c \
 	parse2.c \
@@ -56,6 +57,7 @@ BUILTIN=pwd.c \
 		env.c \
 		export.c \
 		export2.c \
+		export3.c \
 		unset.c
 BUILTINS=$(addprefix src/builtin/, $(BUILTIN))
 BUILTIN_OBJS=$(BUILTINS:.c=.o)
