@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute2.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
+/*   By: ddelladi <ddelladi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/27 15:05:46 by gimartin          #+#    #+#             */
-/*   Updated: 2022/05/24 12:43:51 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/06/03 19:06:42 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	sup_born(t_command *tmp, int status)
 {
 	if (g_term.is_suspended && !g_term.delimiter
 		&& !ft_strncmp("cat\0", &tmp->cmd[ft_strlen(tmp->cmd) - 3], 4)
-		&& tmp->next != NULL)
+		&& tmp->next != NULL && !tmp->args[1])
 		return (treat_suspended_cat(tmp));
 	else if (!g_term.delimiter)
 	{
@@ -61,8 +61,25 @@ int	sup_ex(t_command *tmp)
 	return (1);
 }
 
+int	infinite_exit(t_command *tmp)
+{
+	t_command	*next;
+
+	next = tmp;
+	while (next)
+	{
+		if (ft_strncmp(tmp->cmd, "exit\0", 5))
+			return (0);
+		next = next->next;
+	}
+	return (1);
+}
+
 int	preliminary(t_command *tmp)
 {
+	t_command	*bench;
+
+	bench = tmp->next;
 	if (!tmp->cmd && !g_term.delimiter)
 	{
 		treat_var_decl(tmp);
@@ -71,6 +88,11 @@ int	preliminary(t_command *tmp)
 	else if (!tmp->cmd && tmp->args && ft_strchr(tmp->args[0], '=')
 		&& tmp->args[0][0] != '=' && tmp->args[1])
 		rewrite_args(tmp);
+	else if (infinite_exit(tmp) && bench && !ft_strncmp(bench->cmd, "exit\0", 5))
+	{
+		free_commands(tmp);
+		return (1);
+	}
 	return (0);
 }
 

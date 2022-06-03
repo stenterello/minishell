@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gimartin <gimartin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ddelladi <ddelladi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/27 15:03:27 by gimartin          #+#    #+#             */
-/*   Updated: 2022/05/09 14:34:52 by gimartin         ###   ########.fr       */
+/*   Updated: 2022/06/03 18:55:07 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,8 @@ int	sup_exit_cmd(t_command *cmd, int i)
 		ft_putendl_fd("exit: numeric argument required", STDERR_FILENO);
 		return (0);
 	}
+	else if (cmd->to_pipe)
+		return (0);
 	return (1);
 }
 

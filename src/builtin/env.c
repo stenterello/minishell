@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
+/*   By: ddelladi <ddelladi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/27 15:03:23 by gimartin          #+#    #+#             */
-/*   Updated: 2022/05/03 21:55:45 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/06/03 18:36:50 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,9 +51,12 @@ void	env(t_command *cmd)
 	tmp = g_term.env;
 	while (tmp)
 	{
-		ft_putstr_fd(tmp->key, 1);
-		ft_putchar_fd('=', 1);
-		ft_putendl_fd(tmp->value, 1);
+		if (tmp->key && tmp->value)
+		{
+			ft_putstr_fd(tmp->key, 1);
+			ft_putchar_fd('=', 1);
+			ft_putendl_fd(tmp->value, 1);
+		}
 		tmp = tmp->next;
 	}
 	g_term.last_exit = 0;

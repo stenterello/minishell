@@ -6,7 +6,7 @@
 /*   By: ddelladi <ddelladi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/03 14:55:14 by ddelladi          #+#    #+#             */
-/*   Updated: 2022/06/03 14:56:15 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/06/03 18:40:43 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,10 +37,14 @@ void	print_exported_env(void)
 	{
 		ft_putstr_fd("declare -x ", STDOUT_FILENO);
 		ft_putstr_fd(tmp->key, STDOUT_FILENO);
-		ft_putstr_fd("=\"", STDOUT_FILENO);
 		if (tmp->value)
+		{
+			ft_putstr_fd("=\"", STDOUT_FILENO);
 			ft_putstr_fd(tmp->value, STDOUT_FILENO);
-		ft_putstr_fd("\"\n", STDOUT_FILENO);
+			ft_putstr_fd("\"\n", STDOUT_FILENO);
+		}
+		else
+			ft_putchar_fd('\n', STDOUT_FILENO);
 		tmp = tmp->next;
 	}
 }

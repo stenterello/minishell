@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export2.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
+/*   By: ddelladi <ddelladi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/09 13:36:08 by gimartin          #+#    #+#             */
-/*   Updated: 2022/05/15 16:19:01 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/06/03 18:14:52 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,8 @@ int	key_len(char *line)
 	i = 0;
 	while (line[i] && line[i] != '=' && ft_strncmp(&line[i], "+=", 2))
 		i++;
-	if (!line[i] && search_vars(line, g_term.var) == NULL)
-		return (-1);
+	// if (!line[i] && search_vars(line, g_term.var) == NULL)
+	// 	return (-1);
 	return (i);
 }
 

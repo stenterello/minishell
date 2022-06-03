@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils3.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
+/*   By: ddelladi <ddelladi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/09 15:46:45 by gimartin          #+#    #+#             */
-/*   Updated: 2022/05/24 13:10:59 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/06/03 17:58:49 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,10 +41,16 @@ void	sup_sup_try(int d_quot, t_input *in, int i, char *var)
 
 void	sup_try_expand(t_input *in, int i, int d_quot)
 {
-	char	*var;
+	char		*var;
 
 	var = NULL;
-	if (ft_isalnum(in->line[i]) || in->line[i] == '?')
+	if (in->line[i] =='$')
+	{
+		free(g_term.input.line);
+		malloc_c(&g_term.input.line, 24);
+		ft_strlcpy(g_term.input.line, "echo can\'t use getpid()", 24);
+	}
+	else if (ft_isalnum(in->line[i]) || in->line[i] == '?')
 		sup_sup_try(d_quot, in, i, var);
 }
 

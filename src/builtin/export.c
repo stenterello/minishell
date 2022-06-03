@@ -6,7 +6,7 @@
 /*   By: ddelladi <ddelladi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/27 15:03:30 by gimartin          #+#    #+#             */
-/*   Updated: 2022/06/03 15:10:17 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/06/03 18:53:09 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,13 +42,15 @@ int	expand_if_sup_exp(t_dict *new, t_command *cmd)
 {
 	new->value = NULL;
 	new->value = search_vars(cmd->args[1], g_term.var);
+	// if (!new->value)
+	// {
+	// 	free(new->key);
+	// 	free(new);
+	// 	g_term.last_exit = 0;
+	// 	return (0);
+	// }
 	if (!new->value)
-	{
-		free(new->key);
-		free(new);
-		g_term.last_exit = 0;
 		return (0);
-	}
 	return (1);
 }
 
@@ -78,6 +80,27 @@ int	extend_sup_exp(t_dict *new, int i, t_command *cmd, int j)
 	return (0);
 }
 
+void	insert_empty_var(t_dict *new)
+{
+	t_dict	*tmp;
+
+	tmp = g_term.env;
+	while (tmp)
+	{
+		if (!ft_strncmp(new->key, g_term.env->key, ft_strlen(new->key) + 1))
+			return ;
+		if (!tmp->next)
+		{
+			tmp->next = new;
+			tmp = tmp->next;
+			tmp->value = NULL;
+			tmp->next = NULL;
+			return ;
+		}
+		tmp = tmp->next;
+	}
+}
+
 void	sup_export(t_command *cmd, t_dict *new, int i)
 {
 	int		j;
@@ -91,12 +114,21 @@ void	sup_export(t_command *cmd, t_dict *new, int i)
 	if (!cmd->args[1][j])
 	{
 		if (!expand_if_sup_exp(new, cmd))
+		{
+			insert_empty_var(new);
+			return ;
+		}
+	}
+	else if (!ft_strncmp(&cmd->args[1][j - 2], "+=", 2))
+	{
+		if (extend_sup_exp(new, i, cmd, j))
 			return ;
 	}
 	else
 	{
-		if (extend_sup_exp(new, i, cmd, j))
-			return ;
+		j++;
+		malloc_c(&new->value, ft_strlen(&cmd->args[1][j]));
+		ft_strlcpy(new->value, &cmd->args[1][j], ft_strlen(&cmd->args[1][j]) + 1);
 	}
 	new->next = NULL;
 	sup_sup_export(new);

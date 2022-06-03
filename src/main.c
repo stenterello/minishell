@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gimartin <gimartin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ddelladi <ddelladi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/03 21:54:41 by ddelladi          #+#    #+#             */
-/*   Updated: 2022/05/24 16:53:55 by gimartin         ###   ########.fr       */
+/*   Updated: 2022/06/03 19:07:03 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,3 +105,13 @@ int	main(int argc, char **argv)
 	free_array_of_array(g_term.glob_environ);
 	return (0);
 }
+
+
+/* 
+
+multiple redirezioni mandano l'output sbagliato
+Non deve stampare ˆC con top e heredoc
+exit status con cat interattivo, con file senza permessi
+wildcard .* *. .*.
+
+*/
