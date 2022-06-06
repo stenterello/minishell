@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   term.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ddelladi <ddelladi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/27 15:04:30 by gimartin          #+#    #+#             */
-/*   Updated: 2022/06/03 17:38:44 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/06/05 12:55:01 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,6 @@ void	save_term(struct termios **terminal)
 void	init_terminal(char *line)
 {
 	int	ret;
-	int	fd;
 
 	get_term(line);
 	save_term(&g_term.termi);
@@ -60,10 +59,9 @@ void	init_terminal(char *line)
 	ret = tcsetattr(STDIN_FILENO, TCSAFLUSH, g_term.termi);
 	if (ret < 0)
 		die(strerror(errno));
-	fd = open("minishell", O_RDWR);
-	ioctl(fd,  TIOCSCTTY, 0);
 	g_term.child = 0;
 	g_term.delimiter = 0;
 	g_term.suspended_cat = 0;
 	g_term.is_suspended = 1;
+	g_term.top = 0;
 }

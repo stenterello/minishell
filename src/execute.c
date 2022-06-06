@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ddelladi <ddelladi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/27 15:05:42 by gimartin          #+#    #+#             */
-/*   Updated: 2022/06/03 18:27:42 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/06/05 12:31:21 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,6 +110,7 @@ void	born_child(t_command *tmp)
 		define_pipe_to(tmp);
 	if (!ft_strncmp(&tmp->cmd[ft_strlen(tmp->cmd) - 3], "top", 3))
 	{
+		g_term.top = 1;
 		g_term.child = fork();
 		if (g_term.child == 0)
 			execve(tmp->cmd, tmp->args, g_term.glob_environ);

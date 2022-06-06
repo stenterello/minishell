@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ddelladi <ddelladi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/03 21:54:58 by ddelladi          #+#    #+#             */
-/*   Updated: 2022/06/03 17:39:01 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/06/05 12:45:56 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,7 @@ typedef struct s_term
 	char				**glob_environ;
 	int					suspended_cat;
 	int					is_suspended;
+	int					top;
 }				t_term;
 
 typedef struct s_command

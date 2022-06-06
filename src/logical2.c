@@ -70,10 +70,8 @@ int	is_in_par(char *line, int limit)
 void	take_bonus(char *line, int *i, char c, int *ret)
 {
 	int	j;
-	int	flag;
 
 	j = 1;
-	flag = 0;
 	while (line[j] != c)
 	{
 		j++;

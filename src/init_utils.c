@@ -54,9 +54,7 @@ void	take_input(t_input *input)
 {
 	char	*typed;
 	char	*tmp;
-	int		i;
 
-	i = 0;
 	tmp = NULL;
 	typed = readline("whisper_hole: ");
 	check(typed, input);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ddelladi <ddelladi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/03 21:54:41 by ddelladi          #+#    #+#             */
-/*   Updated: 2022/06/03 19:07:03 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/06/05 13:19:54 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,7 @@ void	main_loop(void)
 		g_term.delimiter = 0;
 		g_term.suspended_cat = 0;
 		g_term.is_suspended = 1;
+		g_term.top = 0;
 	}
 }
 
@@ -110,8 +111,9 @@ int	main(int argc, char **argv)
 /* 
 
 multiple redirezioni mandano l'output sbagliato
-Non deve stampare ˆC con top e heredoc
+Se heredoc interrotto da ^C, segfault poco dopo
 exit status con cat interattivo, con file senza permessi
-wildcard .* *. .*.
+wildcard .* .*.
+>ciao2 > ciao4 cat < prova ------> LOOP (fd output rimane aperto)
 
 */

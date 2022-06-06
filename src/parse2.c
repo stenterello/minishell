@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gimartin <gimartin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/28 15:51:58 by gimartin          #+#    #+#             */
-/*   Updated: 2022/05/13 15:50:22 by gimartin         ###   ########.fr       */
+/*   Updated: 2022/06/05 13:18:13 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,10 @@ int	count_cleaned_cmd(char **tmp)
 			i++;
 		else
 			ret++;
-		i++;
+		if (tmp[i])
+			i++;
+		else
+			return (ret);
 	}
 	return (ret);
 }
