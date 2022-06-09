@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc3.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
+/*   By: ddelladi <ddelladi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/28 16:35:00 by gimartin          #+#    #+#             */
-/*   Updated: 2022/06/09 12:26:49 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/06/09 18:38:37 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ void	sup_treat(t_command *cmd, t_command *cmd2, char *typed)
 	ft_strlcpy(cmd2->cmd, typed, ft_strlen(typed) + 1);
 	cmd2->input_line = NULL;
 	cmd->input_line = NULL;
+	cmd->next = cmd2;
 	delimiter = take_delimiter(cmd2->cmd);
 	clean_heredoc(cmd2->cmd, "<<");
 	malloc_c_ptr(&cmd2->args, 2);
@@ -41,7 +42,14 @@ void	sup_treat(t_command *cmd, t_command *cmd2, char *typed)
 	ft_strlcpy(cmd2->args[0], cmd2->cmd, ft_strlen(cmd2->cmd) + 1);
 	cmd2->args[1] = NULL;
 	tmp = readline("> ");
-	sup1(delimiter, cmd, tmp, cmd2);
+	if (!tmp)
+	{
+		free_commands(cmd);
+		return ;
+	}
+	else
+		sup1(delimiter, cmd, tmp, cmd2);
+
 }
 
 int	treat_heredoc(char *typed)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signal.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gimartin <gimartin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ddelladi <ddelladi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/27 15:04:37 by gimartin          #+#    #+#             */
-/*   Updated: 2022/06/09 15:40:03 by gimartin         ###   ########.fr       */
+/*   Updated: 2022/06/09 18:34:18 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,20 +18,17 @@ void	sig_int(void)
 {
 	if (g_term.delimiter)
 	{
-		ft_putstr_fd("^C", STDOUT_FILENO);
-		g_term.delimiter = -1;
-		free_array_of_array(g_term.glob_environ);
+		ft_putstr_fd("\n", STDIN_FILENO);
+		g_term.delimiter = 0;
+		g_term.terminated = 1;
 	}
-	rl_replace_line("", 0);
-	ft_putchar_fd('\n', 1);
-	rl_on_new_line();
-	if (!g_term.delimiter)
-		rl_redisplay();
 	else
 	{
-		free(g_term.input.line);
-		g_term.delimiter = 0;
-		main_loop();
+		rl_replace_line("", 0);
+		ft_putchar_fd('\n', 1);
+		rl_on_new_line();
+		rl_redisplay();
+		g_term.terminated = 1;
 	}
 }
 

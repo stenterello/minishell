@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   term.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gimartin <gimartin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ddelladi <ddelladi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/27 15:04:30 by gimartin          #+#    #+#             */
-/*   Updated: 2022/06/06 14:54:41 by gimartin         ###   ########.fr       */
+/*   Updated: 2022/06/09 16:07:57 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,4 +64,5 @@ void	init_terminal(char *line)
 	g_term.suspended_cat = 0;
 	g_term.is_suspended = 1;
 	g_term.top = 0;
+	g_term.terminated = 0;
 }

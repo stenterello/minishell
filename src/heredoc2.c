@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc2.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
+/*   By: ddelladi <ddelladi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/27 15:16:53 by gimartin          #+#    #+#             */
-/*   Updated: 2022/06/09 12:27:35 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/06/09 17:23:19 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,8 @@ void	sup1(char *delimiter, t_command *cmd, char *tmp, t_command *cmd2)
 		free(tmp);
 		i++;
 		tmp = readline("> ");
+		if (g_term.terminated)
+			break ;
 	}
 	if (!tmp)
 		print_here(delimiter, i);

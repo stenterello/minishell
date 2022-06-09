@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirections_utils2.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
+/*   By: ddelladi <ddelladi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/27 15:11:01 by gimartin          #+#    #+#             */
-/*   Updated: 2022/06/09 11:54:10 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/06/09 17:57:31 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
