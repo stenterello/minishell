@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
+/*   By: gimartin <gimartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/03 21:54:58 by ddelladi          #+#    #+#             */
-/*   Updated: 2022/06/09 13:19:44 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/06/09 13:56:20 by gimartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,10 +103,6 @@ void	cd(t_command *cmd);
 void	exit_cmd(t_command *cmd);
 void	env(t_command *cmd);
 void	export(t_command *cmd);
-void	sup_sup_export(t_dict *new);
-int		extend_sup_exp(t_dict *new, int i, t_command *cmd, int j);
-void	insert_empty_var(t_dict *new);
-int		expand_if_sup_exp(t_dict *new, t_command *cmd);
 void	unset(t_command *cmd);
 void	cmd_not_found(t_command *cmd);
 int		find_script(t_command *cmd);
@@ -264,5 +260,10 @@ void	append_var(char *key, char *value);
 void	sup_export(t_command *cmd, t_dict *new, int i);
 int		preliminary(t_command *tmp);
 void	next_level(void);
+int		expand_if_sup_exp(t_dict *new, t_command *cmd);
+void	sup_export(t_command *cmd, t_dict *new, int i);
+void	insert_empty_var(t_dict *new);
+void	sup_sup_export(t_dict *new);
+int		extend_sup_exp(t_dict *new, int i, t_command *cmd, int j);
 
 #endif

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signal.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
+/*   By: gimartin <gimartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/27 15:04:37 by gimartin          #+#    #+#             */
-/*   Updated: 2022/06/09 14:15:55 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/06/09 15:40:03 by gimartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,9 @@ void	flush(int sig, siginfo_t *info, void *context)
 	(void)info;
 	(void)context;
 	if (g_term.child && sig == SIGINT)
+	{
 		sup_flush();
+	}
 	else if (g_term.child && sig == SIGQUIT)
 	{
 		kill(g_term.child, SIGQUIT);
