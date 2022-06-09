@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
+/*   By: gimartin <gimartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/03 21:54:58 by ddelladi          #+#    #+#             */
-/*   Updated: 2022/06/05 12:45:56 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/06/06 15:03:24 by gimartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -258,5 +258,7 @@ t_dict	*try_search(char *key, t_dict *where);
 t_dict	*find_ptr(char *key);
 void	append_var(char *key, char *value);
 void	sup_export(t_command *cmd, t_dict *new, int i);
+int		preliminary(t_command *tmp);
+void	next_level(void);
 
 #endif

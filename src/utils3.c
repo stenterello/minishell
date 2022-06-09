@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils3.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ddelladi <ddelladi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gimartin <gimartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/09 15:46:45 by gimartin          #+#    #+#             */
-/*   Updated: 2022/06/03 17:58:49 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/06/06 14:58:07 by gimartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ void	sup_try_expand(t_input *in, int i, int d_quot)
 	char		*var;
 
 	var = NULL;
-	if (in->line[i] =='$')
+	if (in->line[i] == '$')
 	{
 		free(g_term.input.line);
 		malloc_c(&g_term.input.line, 24);

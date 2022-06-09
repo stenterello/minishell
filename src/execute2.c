@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute2.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ddelladi <ddelladi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gimartin <gimartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/27 15:05:46 by gimartin          #+#    #+#             */
-/*   Updated: 2022/06/03 19:06:42 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/06/06 15:00:34 by gimartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,19 +121,4 @@ void	free_commands(t_command *cmd)
 		tmp = tmp->next;
 	}
 	tmp = cmd;
-}
-
-void	execute_tree(t_command *cmd)
-{
-	t_command	*tmp;
-	int			ret;
-
-	tmp = cmd;
-	if (preliminary(tmp))
-		return ;
-	ret = sup_ex(tmp);
-	if (!ret)
-		return ;
-	if (!g_term.delimiter)
-		free_commands(cmd);
 }

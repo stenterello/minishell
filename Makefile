@@ -10,6 +10,7 @@ SRC=main.c \
 	utils3.c \
 	execute.c \
 	execute2.c \
+	execute3.c \
 	find_script.c \
 	init_utils.c \
 	init_utils2.c \

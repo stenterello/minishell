@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
+/*   By: gimartin <gimartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/03 21:54:41 by ddelladi          #+#    #+#             */
-/*   Updated: 2022/06/05 13:19:54 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/06/06 14:48:11 by gimartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,13 +107,12 @@ int	main(int argc, char **argv)
 	return (0);
 }
 
-
 /* 
 
 multiple redirezioni mandano l'output sbagliato
 Se heredoc interrotto da ^C, segfault poco dopo
 exit status con cat interattivo, con file senza permessi
-wildcard .* .*.
+wildcard .*
 >ciao2 > ciao4 cat < prova ------> LOOP (fd output rimane aperto)
 
 */
