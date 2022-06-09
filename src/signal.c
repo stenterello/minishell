@@ -6,7 +6,7 @@
 /*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/27 15:04:37 by gimartin          #+#    #+#             */
-/*   Updated: 2022/06/09 13:38:50 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/06/09 14:15:55 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ void	sig_int(void)
 	{
 		ft_putstr_fd("^C", STDOUT_FILENO);
 		g_term.delimiter = -1;
+		free_array_of_array(g_term.glob_environ);
 	}
 	rl_replace_line("", 0);
 	ft_putchar_fd('\n', 1);
