@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gimartin <gimartin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/03 21:54:58 by ddelladi          #+#    #+#             */
-/*   Updated: 2022/06/06 15:03:24 by gimartin         ###   ########.fr       */
+/*   Updated: 2022/06/09 13:19:44 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,6 +103,10 @@ void	cd(t_command *cmd);
 void	exit_cmd(t_command *cmd);
 void	env(t_command *cmd);
 void	export(t_command *cmd);
+void	sup_sup_export(t_dict *new);
+int		extend_sup_exp(t_dict *new, int i, t_command *cmd, int j);
+void	insert_empty_var(t_dict *new);
+int		expand_if_sup_exp(t_dict *new, t_command *cmd);
 void	unset(t_command *cmd);
 void	cmd_not_found(t_command *cmd);
 int		find_script(t_command *cmd);

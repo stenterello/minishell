@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute3.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
+/*   By: gimartin <gimartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/06 14:58:30 by gimartin          #+#    #+#             */
-/*   Updated: 2022/06/09 12:29:05 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/06/09 12:44:01 by gimartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,4 +70,31 @@ void	born_child(t_command *tmp)
 	{
 		sup_born_child(tmp, status);
 	}
+}
+
+void	free_commands(t_command *cmd)
+{
+	t_command	*tmp;
+	int			i;
+
+	i = 0;
+	tmp = cmd;
+	while (tmp)
+	{
+		i = 0;
+		if (tmp->args)
+		{
+			while (tmp->args[i])
+				free(tmp->args[i++]);
+			free(tmp->args);
+		}
+		if (tmp->cmd)
+			free(tmp->cmd);
+		if (tmp->input_line)
+			free(tmp->input_line);
+		if (!tmp->first)
+			free(tmp);
+		tmp = tmp->next;
+	}
+	tmp = cmd;
 }

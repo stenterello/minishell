@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ddelladi <ddelladi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gimartin <gimartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/27 15:03:30 by gimartin          #+#    #+#             */
-/*   Updated: 2022/06/03 18:53:09 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/06/09 12:53:27 by gimartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,13 +42,6 @@ int	expand_if_sup_exp(t_dict *new, t_command *cmd)
 {
 	new->value = NULL;
 	new->value = search_vars(cmd->args[1], g_term.var);
-	// if (!new->value)
-	// {
-	// 	free(new->key);
-	// 	free(new);
-	// 	g_term.last_exit = 0;
-	// 	return (0);
-	// }
 	if (!new->value)
 		return (0);
 	return (1);
@@ -99,37 +92,4 @@ void	insert_empty_var(t_dict *new)
 		}
 		tmp = tmp->next;
 	}
-}
-
-void	sup_export(t_command *cmd, t_dict *new, int i)
-{
-	int		j;
-
-	j = 0;
-	while (cmd->args[1][j] && cmd->args[1][j] != '='
-		&& ft_strncmp(&cmd->args[1][j], "+=", 2))
-		j++;
-	if (!ft_strncmp(&cmd->args[1][j], "+=", 2))
-		j++;
-	if (!cmd->args[1][j])
-	{
-		if (!expand_if_sup_exp(new, cmd))
-		{
-			insert_empty_var(new);
-			return ;
-		}
-	}
-	else if (!ft_strncmp(&cmd->args[1][j - 2], "+=", 2))
-	{
-		if (extend_sup_exp(new, i, cmd, j))
-			return ;
-	}
-	else
-	{
-		j++;
-		malloc_c(&new->value, ft_strlen(&cmd->args[1][j]));
-		ft_strlcpy(new->value, &cmd->args[1][j], ft_strlen(&cmd->args[1][j]) + 1);
-	}
-	new->next = NULL;
-	sup_sup_export(new);
 }

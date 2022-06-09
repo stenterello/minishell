@@ -6,7 +6,7 @@
 /*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/27 15:05:46 by gimartin          #+#    #+#             */
-/*   Updated: 2022/06/09 12:35:33 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/06/09 13:33:48 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,8 @@ int	sup_ex(t_command *tmp)
 	{
 		if (!builtin(tmp))
 		{
-			if (tmp->input_line || (g_term.delimiter && !tmp->input_line && !tmp->cmd))
+			if (tmp->input_line || (g_term.delimiter
+					&& !tmp->input_line && !tmp->cmd))
 			{
 				ft_putstr_fd(tmp->input_line, tmp->output_fd);
 				close(tmp->output_fd);
@@ -107,31 +108,4 @@ int	preliminary(t_command *tmp)
 		return (1);
 	}
 	return (0);
-}
-
-void	free_commands(t_command *cmd)
-{
-	t_command	*tmp;
-	int			i;
-
-	i = 0;
-	tmp = cmd;
-	while (tmp)
-	{
-		i = 0;
-		if (tmp->args)
-		{
-			while (tmp->args[i])
-				free(tmp->args[i++]);
-			free(tmp->args);
-		}
-		if (tmp->cmd)
-			free(tmp->cmd);
-		if (tmp->input_line)
-			free(tmp->input_line);
-		if (!tmp->first)
-			free(tmp);
-		tmp = tmp->next;
-	}
-	tmp = cmd;
 }
