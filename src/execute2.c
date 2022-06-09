@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute2.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gimartin <gimartin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/27 15:05:46 by gimartin          #+#    #+#             */
-/*   Updated: 2022/06/06 15:00:34 by gimartin         ###   ########.fr       */
+/*   Updated: 2022/06/09 12:35:33 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,13 +33,26 @@ void	sup_born(t_command *tmp, int status)
 		treat_heredoc_child(&status, tmp);
 }
 
+void	restore_all(t_command *cmd)
+{
+	t_command	*tmp;
+
+	tmp = cmd;
+	while (tmp)
+	{
+		restore_fd(tmp);
+		tmp = tmp->next;
+	}
+	return ;
+}
+
 int	sup_ex(t_command *tmp)
 {
 	while (tmp)
 	{
 		if (!builtin(tmp))
 		{
-			if (tmp->input_line)
+			if (tmp->input_line || (g_term.delimiter && !tmp->input_line && !tmp->cmd))
 			{
 				ft_putstr_fd(tmp->input_line, tmp->output_fd);
 				close(tmp->output_fd);
@@ -68,7 +81,7 @@ int	infinite_exit(t_command *tmp)
 	next = tmp;
 	while (next)
 	{
-		if (ft_strncmp(tmp->cmd, "exit\0", 5))
+		if (tmp->cmd && ft_strncmp(tmp->cmd, "exit\0", 5))
 			return (0);
 		next = next->next;
 	}

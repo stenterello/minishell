@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirections_utils.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gimartin <gimartin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/27 15:10:18 by gimartin          #+#    #+#             */
-/*   Updated: 2022/05/13 16:08:52 by gimartin         ###   ########.fr       */
+/*   Updated: 2022/06/09 12:32:06 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,8 @@ void	restore_fd(t_command *cmd)
 		restore_output(cmd);
 	if (cmd->redir_in || cmd->to_pipe_to)
 		restore_input(cmd);
+	if (g_term.delimiter)
+		restore_output(cmd);
 }
 
 void	control_define1(char **tmp, t_command *cmd, int i)
