@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ddelladi <ddelladi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/03 21:54:58 by ddelladi          #+#    #+#             */
-/*   Updated: 2022/06/09 16:07:41 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/06/10 12:11:51 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,7 @@ typedef struct s_term
 	int					is_suspended;
 	int					top;
 	int					terminated;
+	int					signaled;
 }				t_term;
 
 typedef struct s_command
@@ -266,5 +267,6 @@ void	sup_export(t_command *cmd, t_dict *new, int i);
 void	insert_empty_var(t_dict *new);
 void	sup_sup_export(t_dict *new);
 int		extend_sup_exp(t_dict *new, int i, t_command *cmd, int j);
+int		permitted(t_command *tmp);
 
 #endif

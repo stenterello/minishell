@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   find_script.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ddelladi <ddelladi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/27 15:05:51 by gimartin          #+#    #+#             */
-/*   Updated: 2022/06/03 19:09:37 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/06/10 12:21:02 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,11 @@ int	search_in_dir(DIR *stream, t_command *cmd, char *dir_name)
 				born_child(cmd);
 				return (1);
 			}
+			else
+			{
+				permitted(cmd);
+				return (-2);
+			}
 		}
 		entry = readdir(stream);
 	}
@@ -73,7 +78,7 @@ int	sup_sup_find(char **path, DIR *stream, t_command *cmd, int is_exec)
 		closedir(stream);
 		i++;
 	}
-	return (1);
+	return (-1);
 }
 
 int	sup_find_script(char **path, t_command *cmd)
@@ -89,13 +94,15 @@ int	sup_find_script(char **path, t_command *cmd)
 int	find_script(t_command *cmd)
 {
 	char	**path;
+	int		ret;
 
 	path = ft_split(ft_getenv("PATH\0"), ':');
 	if (path)
 	{
-		if (sup_find_script(path, cmd) == 0)
+		ret = sup_find_script(path, cmd);
+		if (!ret)
 			return (0);
 		free_array_of_array(path);
 	}
-	return (-1);
+	return (ret);
 }

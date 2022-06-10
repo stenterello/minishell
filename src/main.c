@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ddelladi <ddelladi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/03 21:54:41 by ddelladi          #+#    #+#             */
-/*   Updated: 2022/06/09 16:31:55 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/06/10 12:08:02 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,7 @@ void	main_loop(void)
 		g_term.is_suspended = 1;
 		g_term.top = 0;
 		g_term.terminated = 0;
+		g_term.signaled = 0;
 	}
 }
 
@@ -111,8 +112,6 @@ int	main(int argc, char **argv)
 /* 
 
 Se heredoc interrotto da ^C, segfault poco dopo
-exit status con cat interattivo (deve essere 130, è 0)
-exit status esecuzione di file senza permessi (deve essere 126, è 127)
 wildcard .*
 >ciao2 > ciao4 cat < prova ------> LOOP (fd output rimane aperto)
 

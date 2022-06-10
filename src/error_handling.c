@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error_handling.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ddelladi <ddelladi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/27 15:05:05 by gimartin          #+#    #+#             */
-/*   Updated: 2022/06/03 19:10:48 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/06/10 12:15:52 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,18 +43,22 @@ int	is_directory(t_command *cmd)
 	int			i;
 
 	i = 0;
-	stat(cmd->cmd, &file_stat);
-	if ((file_stat.st_mode & S_IFMT) == S_IFDIR)
+	if (!access(cmd->cmd, F_OK))
 	{
-		ft_putstr_fd(last_field(ft_getenv("SHELL")), STDOUT_FILENO);
-		ft_putstr_fd(": ", STDOUT_FILENO);
-		ft_putstr_fd(cmd->cmd, STDOUT_FILENO);
-		ft_putendl_fd(": Is a directory", STDOUT_FILENO);
-		while (cmd->args[i])
-			free(cmd->args[i++]);
-		free(cmd->args);
-		free(cmd->cmd);
-		return (1);
+		stat(cmd->cmd, &file_stat);
+		if ((file_stat.st_mode & S_IFMT) == S_IFDIR)
+		{
+			ft_putstr_fd(last_field(ft_getenv("SHELL")), STDOUT_FILENO);
+			ft_putstr_fd(": ", STDOUT_FILENO);
+			ft_putstr_fd(cmd->cmd, STDOUT_FILENO);
+			ft_putendl_fd(": Is a directory", STDOUT_FILENO);
+			while (cmd->args[i])
+				free(cmd->args[i++]);
+			free(cmd->args);
+			free(cmd->cmd);
+			g_term.last_exit = 126;
+			return (1);
+		}
 	}
 	return (0);
 }

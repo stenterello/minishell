@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute2.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gimartin <gimartin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/27 15:05:46 by gimartin          #+#    #+#             */
-/*   Updated: 2022/06/09 12:44:07 by gimartin         ###   ########.fr       */
+/*   Updated: 2022/06/10 12:16:31 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,13 @@ void	sup_born(t_command *tmp, int status)
 	else if (!g_term.delimiter)
 	{
 		waitpid(g_term.child, &status, 0);
-		if (WIFEXITED(status))
-			g_term.last_exit = status / 256;
-		else
-			g_term.last_exit = status;
+		if (!g_term.signaled)
+		{
+			if (WIFEXITED(status))
+				g_term.last_exit = status / 256;
+			else
+				g_term.last_exit = status;
+		}
 		g_term.child = 0;
 		restore_fd(tmp);
 		g_term.is_suspended = 0;
@@ -46,6 +49,20 @@ void	restore_all(t_command *cmd)
 	return ;
 }
 
+int	permitted(t_command *tmp)
+{
+	if (!access(tmp->cmd, F_OK) && access(tmp->cmd, X_OK) == -1)
+	{
+		g_term.last_exit = 126;
+		ft_putstr_fd("minishell: ", STDERR_FILENO);
+		ft_putstr_fd(tmp->cmd, STDERR_FILENO);
+		ft_putstr_fd(": ", STDERR_FILENO);
+		ft_putendl_fd(strerror(errno), STDERR_FILENO);		
+		return (0);
+	}
+	return (1);
+}
+
 int	sup_ex(t_command *tmp)
 {
 	while (tmp)
@@ -65,7 +82,7 @@ int	sup_ex(t_command *tmp)
 			}
 			else
 			{
-				if (is_directory(tmp))
+				if (is_directory(tmp) || !permitted(tmp))
 					return (0);
 				born_child(tmp);
 			}
