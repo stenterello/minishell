@@ -6,7 +6,7 @@
 /*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/27 15:04:30 by gimartin          #+#    #+#             */
-/*   Updated: 2022/06/10 12:06:50 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/06/10 15:13:01 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,5 @@ void	init_terminal(char *line)
 	g_term.suspended_cat = 0;
 	g_term.is_suspended = 1;
 	g_term.top = 0;
-	g_term.terminated = 0;
 	g_term.signaled = 0;
 }

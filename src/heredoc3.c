@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc3.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ddelladi <ddelladi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/28 16:35:00 by gimartin          #+#    #+#             */
-/*   Updated: 2022/06/09 18:38:37 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/06/10 15:46:18 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,9 @@ void	sup_treat(t_command *cmd, t_command *cmd2, char *typed)
 {
 	char	*delimiter;
 	char	*tmp;
+	int		i;
 
+	i = 1;
 	init_cmd(cmd);
 	init_cmd(cmd2);
 	cmd->first = 1;
@@ -41,15 +43,27 @@ void	sup_treat(t_command *cmd, t_command *cmd2, char *typed)
 	malloc_c(&cmd2->args[0], ft_strlen(cmd2->cmd) + 1);
 	ft_strlcpy(cmd2->args[0], cmd2->cmd, ft_strlen(cmd2->cmd) + 1);
 	cmd2->args[1] = NULL;
+	if (g_term.last_exit == 130)
+		g_term.last_exit = 0;
 	tmp = readline("> ");
-	if (!tmp)
+	while (g_term.last_exit != 130 && tmp && ft_strncmp(tmp, delimiter, ft_strlen(delimiter)))
 	{
-		free_commands(cmd);
-		return ;
+		if (cmd->input_line)
+			sup1_sup1(cmd, tmp);
+		else
+		{
+			malloc_c(&cmd->input_line, ft_strlen(tmp) + 1);
+			ft_strlcpy(cmd->input_line, tmp, ft_strlen(tmp) + 1);
+			ft_strlcat(cmd->input_line, "\n", ft_strlen(cmd->input_line) + 2);
+		}
+		free(tmp);
+		i++;
+		tmp = readline("> ");
 	}
-	else
-		sup1(delimiter, cmd, tmp, cmd2);
-
+	if (!tmp)
+		print_here(delimiter, i);
+	if (g_term.last_exit != 130)
+		free_here(tmp, delimiter, cmd, cmd2);
 }
 
 int	treat_heredoc(char *typed)

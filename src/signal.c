@@ -6,7 +6,7 @@
 /*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/27 15:04:37 by gimartin          #+#    #+#             */
-/*   Updated: 2022/06/10 12:07:20 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/06/10 15:43:29 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,8 @@ void	sig_int(void)
 {
 	if (g_term.delimiter)
 	{
-		ft_putstr_fd("\n", STDIN_FILENO);
-		g_term.delimiter = 0;
-		g_term.terminated = 1;
+		ioctl(STDIN_FILENO, TIOCSTI, "\n");
+		g_term.last_exit = 130;
 	}
 	else
 	{
@@ -28,7 +27,6 @@ void	sig_int(void)
 		ft_putchar_fd('\n', 1);
 		rl_on_new_line();
 		rl_redisplay();
-		g_term.terminated = 1;
 	}
 }
 
