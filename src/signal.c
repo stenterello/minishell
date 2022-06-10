@@ -6,7 +6,7 @@
 /*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/27 15:04:37 by gimartin          #+#    #+#             */
-/*   Updated: 2022/06/10 15:43:29 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/06/10 16:09:19 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ void	sig_int(void)
 	if (g_term.delimiter)
 	{
 		ioctl(STDIN_FILENO, TIOCSTI, "\n");
+		rl_replace_line("", 0);
+		rl_on_new_line();
 		g_term.last_exit = 130;
 	}
 	else
