@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute2.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
+/*   By: gimartin <gimartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/27 15:05:46 by gimartin          #+#    #+#             */
-/*   Updated: 2022/06/10 14:37:11 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/06/10 15:56:53 by gimartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ int	permitted(t_command *tmp)
 		ft_putstr_fd("minishell: ", STDERR_FILENO);
 		ft_putstr_fd(tmp->cmd, STDERR_FILENO);
 		ft_putstr_fd(": ", STDERR_FILENO);
-		ft_putendl_fd(strerror(errno), STDERR_FILENO);		
+		ft_putendl_fd(strerror(errno), STDERR_FILENO);
 		return (0);
 	}
 	return (1);
@@ -104,25 +104,4 @@ int	infinite_exit(t_command *tmp)
 		next = next->next;
 	}
 	return (1);
-}
-
-int	preliminary(t_command *tmp)
-{
-	t_command	*bench;
-
-	bench = tmp->next;
-	if (!tmp->cmd && !g_term.delimiter)
-	{
-		treat_var_decl(tmp);
-		return (1);
-	}
-	else if (!tmp->cmd && tmp->args && ft_strchr(tmp->args[0], '=')
-		&& tmp->args[0][0] != '=' && tmp->args[1])
-		rewrite_args(tmp);
-	else if (infinite_exit(tmp) && bench && !ft_strncmp(bench->cmd, "exit\0", 5))
-	{
-		free_commands(tmp);
-		return (1);
-	}
-	return (0);
 }

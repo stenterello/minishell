@@ -6,7 +6,7 @@
 /*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/28 16:35:00 by gimartin          #+#    #+#             */
-/*   Updated: 2022/06/10 15:46:18 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/06/10 17:17:01 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,31 +22,12 @@ void	print_here(char *delimiter, int i)
 	ft_putendl_fd("\" was required)", 2);
 }
 
-void	sup_treat(t_command *cmd, t_command *cmd2, char *typed)
+char	*sup_sup_treat(char *tmp, int i, char *d, t_command *cmd)
 {
-	char	*delimiter;
-	char	*tmp;
-	int		i;
-
-	i = 1;
-	init_cmd(cmd);
-	init_cmd(cmd2);
-	cmd->first = 1;
-	malloc_c(&cmd2->cmd, ft_strlen(typed) + 1);
-	ft_strlcpy(cmd2->cmd, typed, ft_strlen(typed) + 1);
-	cmd2->input_line = NULL;
-	cmd->input_line = NULL;
-	cmd->next = cmd2;
-	delimiter = take_delimiter(cmd2->cmd);
-	clean_heredoc(cmd2->cmd, "<<");
-	malloc_c_ptr(&cmd2->args, 2);
-	malloc_c(&cmd2->args[0], ft_strlen(cmd2->cmd) + 1);
-	ft_strlcpy(cmd2->args[0], cmd2->cmd, ft_strlen(cmd2->cmd) + 1);
-	cmd2->args[1] = NULL;
 	if (g_term.last_exit == 130)
 		g_term.last_exit = 0;
 	tmp = readline("> ");
-	while (g_term.last_exit != 130 && tmp && ft_strncmp(tmp, delimiter, ft_strlen(delimiter)))
+	while (g_term.last_exit != 130 && tmp && ft_strncmp(tmp, d, ft_strlen(d)))
 	{
 		if (cmd->input_line)
 			sup1_sup1(cmd, tmp);
@@ -61,9 +42,38 @@ void	sup_treat(t_command *cmd, t_command *cmd2, char *typed)
 		tmp = readline("> ");
 	}
 	if (!tmp)
-		print_here(delimiter, i);
+		print_here(d, i);
+	return (tmp);
+}
+
+void	sup_treat(t_command *cmd, t_command *cmd2, char *typed)
+{
+	char	*d;
+	char	*tmp;
+	int		i;
+
+	i = 1;
+	tmp = NULL;
+	init_cmd(cmd);
+	init_cmd(cmd2);
+	cmd->first = 1;
+	malloc_c(&cmd2->cmd, ft_strlen(typed) + 1);
+	ft_strlcpy(cmd2->cmd, typed, ft_strlen(typed) + 1);
+	cmd2->input_line = NULL;
+	cmd->input_line = NULL;
+	cmd->next = cmd2;
+	d = take_delimiter(cmd2->cmd);
+	clean_heredoc(cmd2->cmd, "<<");
+	malloc_c_ptr(&cmd2->args, 2);
+	malloc_c(&cmd2->args[0], ft_strlen(cmd2->cmd) + 1);
+	ft_strlcpy(cmd2->args[0], cmd2->cmd, ft_strlen(cmd2->cmd) + 1);
+	cmd2->args[1] = NULL;
+	tmp = sup_sup_treat(tmp, i, d, cmd);
 	if (g_term.last_exit != 130)
-		free_here(tmp, delimiter, cmd, cmd2);
+		free_here(tmp, d, cmd, cmd2);
+	free(typed);
+	if (tmp)
+		free(tmp);
 }
 
 int	treat_heredoc(char *typed)
@@ -79,5 +89,11 @@ int	treat_heredoc(char *typed)
 	if (!cmd2)
 		die("Malloc error");
 	sup_treat(cmd, cmd2, typed);
+	free(cmd2->cmd);
+	free(cmd2->args[0]);
+	free(cmd->args);
+	free(cmd2);
+	free(cmd);
+	free(cmd2->input_line);
 	return (1);
 }

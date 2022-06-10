@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   wildcards_utils2.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
+/*   By: gimartin <gimartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/10 11:15:41 by gimartin          #+#    #+#             */
-/*   Updated: 2022/06/10 13:28:46 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/06/10 16:04:41 by gimartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ char	**sup_get_res(struct dirent *en, char **ret, char **port, DIR *stream)
 	return (ret);
 }
 
-char	**sup_get_hidden_res(struct dirent *en, char **ret, char **port, DIR *stream)
+char	**sup_h_res(struct dirent *en, char **ret, char **port, DIR *stream)
 {
 	int	i;
 
@@ -104,27 +104,4 @@ char	**get_results(char **portions, int len)
 	}
 	entry = readdir(stream);
 	return (sup_get_res(entry, ret, portions, stream));
-}
-
-char	**get_hidden_results(char **portions, int len)
-{
-	DIR				*stream;
-	char			**ret;
-	struct dirent	*entry;
-
-	malloc_c_ptr(&ret, len + 1);
-	stream = opendir(".");
-	if (!stream)
-	{
-		ft_putendl_fd(strerror(errno), 2);
-		return (NULL);
-	}
-	entry = readdir(stream);
-	return (sup_get_hidden_res(entry, ret, portions, stream));
-}
-
-int	helper_guess(t_command *cmd)
-{
-	free_array_of_array(cmd->portions);
-	return (-1);
 }

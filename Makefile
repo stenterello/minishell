@@ -11,6 +11,7 @@ SRC=main.c \
 	execute.c \
 	execute2.c \
 	execute3.c \
+	execute4.c \
 	find_script.c \
 	init_utils.c \
 	init_utils2.c \
@@ -46,8 +47,10 @@ SRC=main.c \
 	wildcards_bools.c \
 	wildcards_bools2.c \
 	wildcards_count.c \
+	wildcards_count2.c \
 	wildcards_utils.c \
-	wildcards_utils2.c 
+	wildcards_utils2.c \
+	wildcards_utils3.c 
 SRCS=$(addprefix src/, $(SRC))
 OBJS=$(SRCS:.c=.o)
 BUILTIN=pwd.c \

@@ -6,7 +6,7 @@
 /*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/27 15:16:53 by gimartin          #+#    #+#             */
-/*   Updated: 2022/06/10 15:30:32 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/06/10 17:16:53 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,10 @@ void	free_single_command(t_command *cmd)
 void	free_here(char *tmp, char *delimiter, t_command *cmd, t_command *cmd2)
 {
 	if (tmp)
+	{
 		free(tmp);
+		tmp = NULL;
+	}
 	free(delimiter);
 	cmd->next = cmd2;
 	cmd2->prev = cmd;

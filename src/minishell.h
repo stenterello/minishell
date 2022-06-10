@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
+/*   By: gimartin <gimartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/03 21:54:58 by ddelladi          #+#    #+#             */
-/*   Updated: 2022/06/10 15:31:36 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/06/10 16:35:48 by gimartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -221,7 +221,7 @@ int		count_portions(char *line);
 int		count_range(char a, char b);
 int		count_letters(char *brackets);
 int		count_results(char **portions);
-int		count_hidden_results(char **portions);
+int		count_h_results(char **portions);
 int		take_brackets_param(char *line, char **portion);
 void	insert_brackets_param(char *line, char *portion, int len);
 char	*chrs_range(char a, char b);
@@ -273,5 +273,11 @@ void	sup_sup_export(t_dict *new);
 int		extend_sup_exp(t_dict *new, int i, t_command *cmd, int j);
 int		permitted(t_command *tmp);
 void	restore_all(t_command *cmd);
+int		infinite_exit(t_command *tmp);
+char	**sup_h_res(struct dirent *en, char **ret, char **port, DIR *stream);
+int		free_guess(char **tmp, t_command *cmd);
+int		sup_guess(t_command *cmd, int i, int j, int k);
+int		free_hidden_guess(char **tmp, t_command *cmd);
+void	free_single_command(t_command *cmd);
 
 #endif
