@@ -6,7 +6,7 @@
 /*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/03 21:54:58 by ddelladi          #+#    #+#             */
-/*   Updated: 2022/06/10 12:11:51 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/06/10 13:30:29 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -219,6 +219,7 @@ int		count_portions(char *line);
 int		count_range(char a, char b);
 int		count_letters(char *brackets);
 int		count_results(char **portions);
+int		count_hidden_results(char **portions);
 int		take_brackets_param(char *line, char **portion);
 void	insert_brackets_param(char *line, char *portion, int len);
 char	*chrs_range(char a, char b);
@@ -226,6 +227,7 @@ char	*get_letters(char *brackets);
 int		try_parse_brackets(char *line);
 void	take_string_portion(char *line, char **portion);
 char	**get_results(char **portions, int len);
+char	**get_hidden_results(char **portions, int len);
 int		is_verified(char *file, char **portions);
 int		helper_guess(t_command *cmd);
 int		check_export(t_command *cmd);

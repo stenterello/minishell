@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   wildcards_count.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gimartin <gimartin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/10 11:01:53 by gimartin          #+#    #+#             */
-/*   Updated: 2022/05/10 11:33:37 by gimartin         ###   ########.fr       */
+/*   Updated: 2022/06/10 13:03:59 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,32 @@ int	count_results(char **portions)
 	{
 		if (ft_strncmp(entry->d_name, ".", 1)
 			&& is_verified(entry->d_name, portions) > 0)
+			ret++;
+		else if (is_verified(entry->d_name, portions) == -1)
+			return (-1);
+		entry = readdir(stream);
+	}
+	closedir(stream);
+	return (ret);
+}
+
+int	count_hidden_results(char **portions)
+{
+	DIR				*stream;
+	int				ret;
+	struct dirent	*entry;
+
+	ret = 0;
+	stream = opendir(".");
+	if (!stream)
+	{
+		ft_putendl_fd(strerror(errno), 2);
+		return (-1);
+	}
+	entry = readdir(stream);
+	while (entry)
+	{
+		if (is_verified(entry->d_name, portions) > 0)
 			ret++;
 		else if (is_verified(entry->d_name, portions) == -1)
 			return (-1);

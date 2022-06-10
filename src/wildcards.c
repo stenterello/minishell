@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   wildcards.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gimartin <gimartin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/10 11:02:38 by gimartin          #+#    #+#             */
-/*   Updated: 2022/05/13 16:14:25 by gimartin         ###   ########.fr       */
+/*   Updated: 2022/06/10 13:30:52 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,24 @@ int	free_guess(char **tmp, t_command *cmd)
 	return (1);
 }
 
+int	free_hidden_guess(char **tmp, t_command *cmd)
+{
+	tmp = get_hidden_results(cmd->portions, count_hidden_results(cmd->portions));
+	if (!tmp)
+		return (-1);
+	substitute_args(cmd, tmp);
+	free_array_of_array(tmp);
+	free_array_of_array(cmd->portions);
+	return (1);
+}
+
+int	hidden_files(char *str)
+{
+	if (!ft_strncmp(".\0", str, 2) || !ft_strncmp("..\0", str, 3))
+		return (1);
+	return (0);
+}
+
 int	guess(t_command *cmd, int i)
 {
 	int		j;
@@ -107,10 +125,23 @@ int	guess(t_command *cmd, int i)
 	if (ret == -1)
 		return (-1);
 	cmd->portions[k] = NULL;
-	if (count_results(cmd->portions) == -1)
-		helper_guess(cmd);
-	else if (count_results(cmd->portions) == 0)
-		return (0);
-	tmp = NULL;
-	return (free_guess(tmp, cmd));
+	if (!hidden_files(cmd->portions[0]))
+	{
+		if (count_results(cmd->portions) == -1)
+			helper_guess(cmd);
+		else if (count_results(cmd->portions) == 0)
+			return (0);
+		tmp = NULL;
+		return (free_guess(tmp, cmd));
+	}
+	else
+	{
+		if (count_hidden_results(cmd->portions) == -1)
+			helper_guess(cmd);
+		else if (count_hidden_results(cmd->portions) == 0)
+			return (0);
+		tmp = NULL;
+		return (free_hidden_guess(tmp, cmd));
+	}
+	
 }

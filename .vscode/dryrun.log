@@ -51,6 +51,7 @@ ar rcs libft.a ft_isalpha.o ft_isdigit.o ft_isalnum.o ft_isascii.o ft_isprint.o 
 make[1]: Leaving directory '/home/davide/Documenti/Codici/42/minishell/include/libft'
 gcc    -c -o src/main.o src/main.c
 gcc    -c -o src/main2.o src/main2.c
+ 
 gcc    -c -o src/special_run.o src/special_run.c
 gcc    -c -o src/special_childs.o src/special_childs.c
 gcc    -c -o src/utils.o src/utils.c
@@ -83,6 +84,7 @@ gcc    -c -o src/heredoc2.o src/heredoc2.c
 gcc    -c -o src/heredoc3.o src/heredoc3.c
 gcc    -c -o src/split_fields.o src/split_fields.c
 gcc    -c -o src/split_fields2.o src/split_fields2.c
+ 
 gcc    -c -o src/signal.o src/signal.c
 gcc    -c -o src/error_handling.o src/error_handling.c
 gcc    -c -o src/logical.o src/logical.c

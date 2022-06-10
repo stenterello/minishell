@@ -6,7 +6,7 @@
 /*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/10 11:15:41 by gimartin          #+#    #+#             */
-/*   Updated: 2022/06/09 11:44:56 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/06/10 13:28:46 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,25 @@ char	**sup_get_res(struct dirent *en, char **ret, char **port, DIR *stream)
 	return (ret);
 }
 
+char	**sup_get_hidden_res(struct dirent *en, char **ret, char **port, DIR *stream)
+{
+	int	i;
+
+	i = 0;
+	while (en)
+	{
+		if (is_verified(en->d_name, port) > 0)
+		{
+			malloc_c(&ret[i], ft_strlen(en->d_name) + 1);
+			ft_strlcpy(ret[i++], en->d_name, ft_strlen(en->d_name) + 1);
+		}
+		en = readdir(stream);
+	}
+	ret[i] = NULL;
+	closedir(stream);
+	return (ret);
+}
+
 char	**get_results(char **portions, int len)
 {
 	DIR				*stream;
@@ -85,6 +104,23 @@ char	**get_results(char **portions, int len)
 	}
 	entry = readdir(stream);
 	return (sup_get_res(entry, ret, portions, stream));
+}
+
+char	**get_hidden_results(char **portions, int len)
+{
+	DIR				*stream;
+	char			**ret;
+	struct dirent	*entry;
+
+	malloc_c_ptr(&ret, len + 1);
+	stream = opendir(".");
+	if (!stream)
+	{
+		ft_putendl_fd(strerror(errno), 2);
+		return (NULL);
+	}
+	entry = readdir(stream);
+	return (sup_get_hidden_res(entry, ret, portions, stream));
 }
 
 int	helper_guess(t_command *cmd)
