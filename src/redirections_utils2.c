@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirections_utils2.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ddelladi <ddelladi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/27 15:11:01 by gimartin          #+#    #+#             */
-/*   Updated: 2022/06/09 17:57:31 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/06/10 14:35:51 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,16 @@ int	sup_check_red(char **tmp, int i, t_command *cmd)
 {
 	while (tmp[i] && is_redir(tmp[i]) == 0)
 	{
-		if (define_input(tmp[++i], cmd) != -1)
+		if (access(tmp[i + 1], F_OK))
+		{
+			ft_putstr_fd("minishell: ", STDERR_FILENO);
+			ft_putstr_fd(tmp[i + 1], STDERR_FILENO);
+			ft_putstr_fd(": ", STDERR_FILENO);
+			ft_putendl_fd(strerror(errno), STDERR_FILENO);
+			restore_fd(cmd);
+			return (-1);
+		}
+		else if (define_input(tmp[++i], cmd) != -1)
 			i++;
 		else
 			return (-1);

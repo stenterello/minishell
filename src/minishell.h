@@ -6,7 +6,7 @@
 /*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/03 21:54:58 by ddelladi          #+#    #+#             */
-/*   Updated: 2022/06/10 13:30:29 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/06/10 14:13:48 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -270,5 +270,6 @@ void	insert_empty_var(t_dict *new);
 void	sup_sup_export(t_dict *new);
 int		extend_sup_exp(t_dict *new, int i, t_command *cmd, int j);
 int		permitted(t_command *tmp);
+void	restore_all(t_command *cmd);
 
 #endif

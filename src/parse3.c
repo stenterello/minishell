@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse3.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gimartin <gimartin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/13 15:49:35 by gimartin          #+#    #+#             */
-/*   Updated: 2022/05/13 16:08:21 by gimartin         ###   ########.fr       */
+/*   Updated: 2022/06/10 14:13:53 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ char	**clean_command(char **tmp, t_command *cmd, int start)
 	else
 	{
 		free(cleaned);
-		restore_fd(cmd);
+		restore_all(cmd);
 		return (NULL);
 	}
 	return (cleaned);
