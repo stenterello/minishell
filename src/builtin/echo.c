@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
+/*   By: ddelladi <ddelladi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/27 15:03:21 by gimartin          #+#    #+#             */
-/*   Updated: 2022/05/04 11:57:02 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/06/13 17:18:44 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void	sup_echo(t_command *cmd)
 	int		i;
 
 	i = 1;
-	while (!ft_strncmp("-n\0", cmd->args[i], 3))
+	while (!ft_strncmp("-n", cmd->args[i], 2))
 		i++;
 	while (cmd->args[i])
 	{
@@ -45,7 +45,7 @@ void	sup_echo(t_command *cmd)
 		if (cmd->args[i])
 			ft_putchar_fd(' ', STDOUT_FILENO);
 	}
-	if (ft_strncmp("-n\0", cmd->args[1], 3))
+	if (ft_strncmp("-n", cmd->args[1], 2))
 		ft_putchar_fd('\n', STDOUT_FILENO);
 }
 

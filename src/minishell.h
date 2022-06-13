@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gimartin <gimartin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ddelladi <ddelladi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/03 21:54:58 by ddelladi          #+#    #+#             */
-/*   Updated: 2022/06/10 16:35:48 by gimartin         ###   ########.fr       */
+/*   Updated: 2022/06/13 19:30:34 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -199,6 +199,7 @@ int		key_len(char *line);
 int		value_len(char *line);
 void	sup1(char *delimiter, t_command *cmd, char *tmp, t_command *cmd2);
 void	sup1_sup1(t_command *cmd, char *tmp);
+void	execute_free_here(char *tmp, char *delimiter, t_command *cmd, t_command *cmd2);
 void	free_here(char *tmp, char *delimiter, t_command *cmd, t_command *cmd2);
 int		sup_check(char *typed, int i, t_input *input, int *open);
 void	sup_check2(char *typed, t_input *input, int *open, int i);
@@ -279,5 +280,6 @@ int		free_guess(char **tmp, t_command *cmd);
 int		sup_guess(t_command *cmd, int i, int j, int k);
 int		free_hidden_guess(char **tmp, t_command *cmd);
 void	free_single_command(t_command *cmd);
+void	flush2(int sig);
 
 #endif

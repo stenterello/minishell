@@ -6,7 +6,7 @@
 /*   By: ddelladi <ddelladi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/27 15:04:40 by gimartin          #+#    #+#             */
-/*   Updated: 2022/06/03 14:44:02 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/06/13 18:35:16 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,31 @@ void	insert_into_vars(char *key, char *value, t_dict *where)
 	new->next = NULL;
 }
 
+char	*cleaned_value(char *val)
+{
+	char	*ret;
+	int		i;
+	int		i2;
+
+	i = 1;
+	i2 = 0;
+	if ((val[0] == '\'' && val[ft_strlen(val) - 1] == '\'') ||
+		(val[0] == '"' && val[ft_strlen(val) - 1] == '"'))
+	{
+		malloc_c(&ret, ft_strlen(val) - 1);
+		while (i < (int)ft_strlen(val) - 1)
+		{
+			ret[i2++] = val[i];
+			i++;
+		}
+		ret[i2] = '\0';
+		free(val);
+		return (ret);
+	}
+	else
+		return (val);
+}
+
 int	change_exist_var_in_dict(char *key, char *value, t_dict *where)
 {
 	t_dict	*tmp;
@@ -49,11 +74,13 @@ int	change_exist_var_in_dict(char *key, char *value, t_dict *where)
 	}
 	else
 		tmp = where;
+	//value = cleaned_value(value);
 	while (tmp && tmp->key)
 	{
 		if (!ft_strncmp(tmp->key, key, ft_strlen(key) + 1))
 		{
-			free(tmp->value);
+			if (tmp->value)
+				free(tmp->value);
 			malloc_c(&tmp->value, ft_strlen(value) + 1);
 			ft_strlcpy(tmp->value, value, ft_strlen(value) + 1);
 			return (1);

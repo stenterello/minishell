@@ -6,7 +6,7 @@
 /*   By: ddelladi <ddelladi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/03 21:54:41 by ddelladi          #+#    #+#             */
-/*   Updated: 2022/06/13 15:35:25 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/06/13 20:55:47 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,6 +110,7 @@ int	main(int argc, char **argv)
 
 /* 
 
-Se heredoc interrotto da ^C, segfault poco dopo
+L'heredoc con virgolette aperte non viene gestito es: |     cat << "eof      |
+Errore: > out2 > out4 cat Makefile | grep all | wc -l > out5
 
 */

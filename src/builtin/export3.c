@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export3.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gimartin <gimartin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ddelladi <ddelladi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/03 14:55:14 by ddelladi          #+#    #+#             */
-/*   Updated: 2022/06/09 12:55:20 by gimartin         ###   ########.fr       */
+/*   Updated: 2022/06/13 18:35:37 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,9 +110,18 @@ void	sup_export(t_command *cmd, t_dict *new, int i)
 	else
 	{
 		j++;
-		malloc_c(&new->value, ft_strlen(&cmd->args[1][j]));
-		ft_strlcpy(new->value, &cmd->args[1][j],
-			ft_strlen(&cmd->args[1][j]) + 1);
+		if (cmd->args[1][j] == '\'' && cmd->args[1][ft_strlen(cmd->args[1]) - 1] == '\'')
+		{
+			malloc_c(&new->value, ft_strlen(&cmd->args[1][++j]));
+			ft_strlcpy(new->value, &cmd->args[1][j],
+				ft_strlen(&cmd->args[1][j]));
+		}
+		else
+		{
+			malloc_c(&new->value, ft_strlen(&cmd->args[1][j]));
+			ft_strlcpy(new->value, &cmd->args[1][j],
+				ft_strlen(&cmd->args[1][j]) + 1);
+		}
 	}
 	new->next = NULL;
 	sup_sup_export(new);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc2.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
+/*   By: ddelladi <ddelladi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/27 15:16:53 by gimartin          #+#    #+#             */
-/*   Updated: 2022/06/10 17:16:53 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/06/13 19:30:27 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,16 +36,31 @@ void	free_single_command(t_command *cmd)
 	if (cmd->args)
 	{
 		while (cmd->args[i])
-			free(cmd->args[i++]);
+		{
+			free(cmd->args[i]);
+			cmd->args[i++] = NULL;
+		}
 		free(cmd->args);
+		cmd->args = NULL;
 	}
 	if (cmd->cmd)
+	{
 		free(cmd->cmd);
+		cmd->cmd = NULL;
+	}
 	if (cmd->input_line)
+	{
 		free(cmd->input_line);
+		cmd->input_line = NULL;
+	}
+	if (cmd)
+	{
+		free(cmd);
+		cmd = NULL;
+	}
 }
 
-void	free_here(char *tmp, char *delimiter, t_command *cmd, t_command *cmd2)
+void	execute_free_here(char *tmp, char *delimiter, t_command *cmd, t_command *cmd2)
 {
 	if (tmp)
 	{
@@ -57,6 +72,18 @@ void	free_here(char *tmp, char *delimiter, t_command *cmd, t_command *cmd2)
 	cmd2->prev = cmd;
 	define_heredoc_pipe(cmd);
 	execute_tree(cmd);
+	free_single_command(cmd);
+	free_single_command(cmd2);
+}
+
+void	free_here(char *tmp, char *delimiter, t_command *cmd, t_command *cmd2)
+{
+	if (tmp)
+	{
+		free(tmp);
+		tmp = NULL;
+	}
+	free(delimiter);
 	free_single_command(cmd);
 	free_single_command(cmd2);
 }

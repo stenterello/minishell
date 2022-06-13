@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signal.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gimartin <gimartin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ddelladi <ddelladi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/27 15:04:37 by gimartin          #+#    #+#             */
-/*   Updated: 2022/06/10 16:12:35 by gimartin         ###   ########.fr       */
+/*   Updated: 2022/06/13 18:19:18 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,30 +51,29 @@ void	flush(int sig, siginfo_t *info, void *context)
 	(void)context;
 	if (g_term.child && sig == SIGINT)
 		sup_flush();
-	else if (g_term.child && sig == SIGQUIT)
-	{
-		kill(g_term.child, SIGQUIT);
-		ft_putstr_fd("Quit: 3\n", STDOUT_FILENO);
-		g_term.last_exit = 131;
-	}
 	else if (sig == SIGINT)
 		sig_int();
-	else if (sig == SIGQUIT)
+}
+
+void	flush2(int sig)
+{
+	if (g_term.child && sig == SIGQUIT)
 	{
-		rl_replace_line("", 0);
-		rl_on_new_line();
-		rl_redisplay();
+		kill(g_term.child, SIGQUIT);
+		ft_putstr_fd("^\\Quit: 3\n", STDOUT_FILENO);
+		g_term.last_exit = 131;
 	}
 }
 
 void	add_signals(void)
 {
-	int	sigs[2];
+	int	sig;
 
 	g_term.acts.sa_sigaction = &flush;
 	sigemptyset(&g_term.acts.sa_mask);
-	sigs[0] = sigaction(SIGINT, &g_term.acts, NULL);
-	sigs[1] = sigaction(SIGQUIT, &g_term.acts, NULL);
-	if (sigs[0] || sigs[1])
+	sig = sigaction(SIGINT, &g_term.acts, NULL);
+	errno = 0;
+	signal(SIGQUIT, SIG_IGN);
+	if (sig || errno)
 		die("Signal error");
 }
