@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc3.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
+/*   By: ddelladi <ddelladi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/28 16:35:00 by gimartin          #+#    #+#             */
-/*   Updated: 2022/06/10 17:17:01 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/06/13 15:57:30 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,8 +59,6 @@ void	sup_treat(t_command *cmd, t_command *cmd2, char *typed)
 	cmd->first = 1;
 	malloc_c(&cmd2->cmd, ft_strlen(typed) + 1);
 	ft_strlcpy(cmd2->cmd, typed, ft_strlen(typed) + 1);
-	cmd2->input_line = NULL;
-	cmd->input_line = NULL;
 	cmd->next = cmd2;
 	d = take_delimiter(cmd2->cmd);
 	clean_heredoc(cmd2->cmd, "<<");
