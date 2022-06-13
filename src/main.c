@@ -6,7 +6,7 @@
 /*   By: ddelladi <ddelladi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/03 21:54:41 by ddelladi          #+#    #+#             */
-/*   Updated: 2022/06/13 20:55:47 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/06/13 22:42:07 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,15 @@ int	main(int argc, char **argv)
 
 /* 
 
-L'heredoc con virgolette aperte non viene gestito es: |     cat << "eof      |
 Errore: > out2 > out4 cat Makefile | grep all | wc -l > out5
+Errore: se export su variabile già esistente, dà problemi
+	{
+		provare: export ciao=allora
+					export ciao
+					export
+		provare: export ciao
+					export ciao="25"
+		e via dicendo
+	}
 
 */

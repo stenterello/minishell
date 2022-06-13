@@ -6,7 +6,7 @@
 /*   By: ddelladi <ddelladi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/03 14:55:14 by ddelladi          #+#    #+#             */
-/*   Updated: 2022/06/13 18:35:37 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/06/13 22:13:21 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,21 +108,7 @@ void	sup_export(t_command *cmd, t_dict *new, int i)
 			return ;
 	}
 	else
-	{
-		j++;
-		if (cmd->args[1][j] == '\'' && cmd->args[1][ft_strlen(cmd->args[1]) - 1] == '\'')
-		{
-			malloc_c(&new->value, ft_strlen(&cmd->args[1][++j]));
-			ft_strlcpy(new->value, &cmd->args[1][j],
-				ft_strlen(&cmd->args[1][j]));
-		}
-		else
-		{
-			malloc_c(&new->value, ft_strlen(&cmd->args[1][j]));
-			ft_strlcpy(new->value, &cmd->args[1][j],
-				ft_strlen(&cmd->args[1][j]) + 1);
-		}
-	}
+		new = norm_sup_export(j, cmd, new);
 	new->next = NULL;
 	sup_sup_export(new);
 }

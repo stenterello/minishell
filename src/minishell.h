@@ -6,7 +6,7 @@
 /*   By: ddelladi <ddelladi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/03 21:54:58 by ddelladi          #+#    #+#             */
-/*   Updated: 2022/06/13 19:30:34 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/06/13 22:13:33 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -281,5 +281,6 @@ int		sup_guess(t_command *cmd, int i, int j, int k);
 int		free_hidden_guess(char **tmp, t_command *cmd);
 void	free_single_command(t_command *cmd);
 void	flush2(int sig);
+t_dict	*norm_sup_export(int j, t_command *cmd, t_dict *new);
 
 #endif

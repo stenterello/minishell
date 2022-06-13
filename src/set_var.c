@@ -6,7 +6,7 @@
 /*   By: ddelladi <ddelladi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/27 15:04:40 by gimartin          #+#    #+#             */
-/*   Updated: 2022/06/13 18:35:16 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/06/13 22:38:55 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ int	change_exist_var_in_dict(char *key, char *value, t_dict *where)
 	}
 	else
 		tmp = where;
-	//value = cleaned_value(value);
+	// value = cleaned_value(value);
 	while (tmp && tmp->key)
 	{
 		if (!ft_strncmp(tmp->key, key, ft_strlen(key) + 1))

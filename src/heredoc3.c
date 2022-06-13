@@ -6,7 +6,7 @@
 /*   By: ddelladi <ddelladi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/28 16:35:00 by gimartin          #+#    #+#             */
-/*   Updated: 2022/06/13 20:55:21 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/06/13 21:45:30 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ char	*take_key(char *str)
 
 	i = 0;
 	ret = NULL;
-	while (str[i] && str[i] != '\n')
+	while (str[i])
 	{
 		if (str[i] == '$' && !is_open(str, i))
 		{
@@ -106,6 +106,20 @@ char	*take_key(char *str)
 	return (ret);
 }
 
+int	ft_strlen_rl(char *str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] == '\n')
+			return (++i);
+		i++;
+	}
+	return (i);
+}
+
 char	*try_expand_str(t_command *cmd)
 {
 	char	*ret;
@@ -114,29 +128,18 @@ char	*try_expand_str(t_command *cmd)
 
 	i = 0;
 	key = take_key(cmd->input_line);
-	if (ft_getenv(key) != NULL)
-	{
-		malloc_c(&ret, ft_strlen(cmd->input_line) - ft_strlen(key) + ft_strlen(ft_getenv(key)));
-		while (cmd->input_line[i] != '$')
-			i++;
-		ft_strlcpy(ret, cmd->input_line, i + 1);
+	malloc_c(&ret, ft_strlen_rl(cmd->input_line) - ft_strlen(key) + ft_strlen(ft_getenv(key)));
+	while (cmd->input_line[i] != '$')
+		i++;
+	ft_strlcpy(ret, cmd->input_line, i + 1);
+	if (ft_getenv(key))
 		ft_strlcat(ret, ft_getenv(key), ft_strlen(ret) + ft_strlen(ft_getenv(key)) + 1);
-		ft_strlcat(ret, &cmd->input_line[i + ft_strlen(key) + 1],
-			ft_strlen(ret) + ft_strlen(&cmd->input_line[i + ft_strlen(key) + 1]) + 1);
-		free(cmd->input_line);
+	ft_strlcat(ret, &cmd->input_line[i + ft_strlen(key) + 1],
+		ft_strlen(ret) + ft_strlen_rl(&cmd->input_line[i + ft_strlen(key) + 1]) + 1);
+	free(cmd->input_line);
+	if (key)
 		free(key);
-		return (ret);
-	}
-	else
-	{
-		malloc_c(&ret, until_dollar(cmd->input_line) + 1);
-		ft_strlcpy(ret, cmd->input_line, until_dollar(cmd->input_line));
-		ft_strlcat(ret, "\n", ft_strlen(ret) + 2);
-		free(cmd->input_line);
-		if (key)
-			free(key);
-		return (ret);
-	}
+	return (ret);
 }
 
 void	sup_treat(t_command *cmd, t_command *cmd2, char *typed)
@@ -162,7 +165,7 @@ void	sup_treat(t_command *cmd, t_command *cmd2, char *typed)
 	ft_strlcpy(cmd2->args[0], cmd2->cmd, ft_strlen(cmd2->cmd) + 1);
 	cmd2->args[1] = NULL;
 	tmp = sup_sup_treat(tmp, i, d, cmd);
-	if (exp)
+	if (exp && !is_open(typed, ft_strlen(typed)))
 	{
 		while (to_expand_str(cmd->input_line))
 			cmd->input_line = try_expand_str(cmd);

@@ -62,6 +62,7 @@ BUILTIN=pwd.c \
 		export.c \
 		export2.c \
 		export3.c \
+		export4.c \
 		unset.c
 BUILTINS=$(addprefix src/builtin/, $(BUILTIN))
 BUILTIN_OBJS=$(BUILTINS:.c=.o)

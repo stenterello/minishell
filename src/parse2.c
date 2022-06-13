@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
+/*   By: ddelladi <ddelladi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/28 15:51:58 by gimartin          #+#    #+#             */
-/*   Updated: 2022/06/05 13:18:13 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/06/13 22:22:47 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,8 @@ void	fill_next(t_command *cmd, int *c, char **tmp)
 		init_cmd(next);
 		cmd->next = next;
 		next->prev = cmd;
+		while (!is_token(tmp[c[0]]))
+			c[0]++;
 		++c[0];
 		fill_cmd_fields(tmp, next, c[0]);
 	}
