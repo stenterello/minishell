@@ -3,38 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ddelladi <ddelladi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/03 21:54:41 by ddelladi          #+#    #+#             */
-/*   Updated: 2022/06/13 22:42:07 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/06/14 14:37:13 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-int	empty_redir(char *line)
-{
-	char	*tmp;
-
-	tmp = ft_strtrim(line, " ()");
-	if (tmp[0] == '>')
-	{
-		free(tmp);
-		return (empty_output(line));
-	}
-	else if (tmp[0] == '<')
-	{
-		free(tmp);
-		return (empty_input(line));
-	}
-	else if (no_output(line))
-	{
-		free(tmp);
-		return (syntax_error_no_arr());
-	}
-	free(tmp);
-	return (0);
-}
 
 void	sup_loop(t_command cmd)
 {
@@ -110,15 +86,6 @@ int	main(int argc, char **argv)
 
 /* 
 
-Errore: > out2 > out4 cat Makefile | grep all | wc -l > out5
-Errore: se export su variabile già esistente, dà problemi
-	{
-		provare: export ciao=allora
-					export ciao
-					export
-		provare: export ciao
-					export ciao="25"
-		e via dicendo
-	}
+Se heredoc interrotto da ^C, segfault poco dopo
 
 */

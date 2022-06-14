@@ -6,18 +6,11 @@
 /*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/27 15:05:05 by gimartin          #+#    #+#             */
-/*   Updated: 2022/06/10 12:15:52 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/06/14 14:33:00 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-void	print_error(t_command *cmd)
-{
-	ft_putstr_fd(cmd->cmd, STDERR_FILENO);
-	strerror(errno);
-	g_term.last_exit = errno;
-}
 
 void	cmd_not_found(t_command *cmd)
 {
@@ -61,4 +54,11 @@ int	is_directory(t_command *cmd)
 		}
 	}
 	return (0);
+}
+
+int	syntax_error_no_arr(void)
+{
+	ft_putstr_fd(last_field(ft_getenv("SHELL")), 2);
+	ft_putendl_fd(": syntax error near unexpected token \"newline\"", 2);
+	return (1);
 }

@@ -6,7 +6,7 @@
 /*   By: ddelladi <ddelladi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/27 15:03:27 by gimartin          #+#    #+#             */
-/*   Updated: 2022/06/13 17:01:25 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/06/03 18:55:07 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ void	exit_cmd(t_command *cmd)
 		return ;
 	reset_term();
 	ft_putendl_fd("exit", STDOUT_FILENO);
+	free_array_of_array(cmd->args);
 	if (cmd->portions)
 		free_array_of_array(cmd->portions);
 	free(cmd->cmd);

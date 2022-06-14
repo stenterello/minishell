@@ -1,17 +1,29 @@
 make all --print-data-base --no-builtin-variables --no-builtin-rules --question
 # GNU Make 4.2.1
+ 
 # Built for x86_64-pc-linux-gnu
+ 
 # Copyright (C) 1988-2016 Free Software Foundation, Inc.
+ 
 # License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
+ 
 # This is free software: you are free to change and redistribute it.
+ 
 # There is NO WARRANTY, to the extent permitted by law.
+ 
 
-# Make data base, printed on Fri Jun 10 17:08:08 2022
+ 
+# Make data base, printed on Tue Jun 14 14:14:46 2022
+ 
 
 # Variables
+ 
 
+ 
 # automatic
+ 
 <D = $(patsubst %/,%,$(dir $<))
+ 
 # automatic
 ?F = $(notdir $?)
 # environment
@@ -79,13 +91,13 @@ XDG_SESSION_PATH = /org/freedesktop/DisplayManager/Session0
 # default
 MAKE_HOST := x86_64-pc-linux-gnu
 # environment
-PATH = /home/davide/.local/bin:/home/davide/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games
+PATH = /home/davide/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
 # environment
 GPG_AGENT_INFO = /run/user/1000/gnupg/S.gpg-agent:0:1
 # environment
 PG_OF_PATH = /home/davide/Programmi/OpenFrameworks/of_v0.11.2_linux64gcc6_release
 # environment
-SESSION_MANAGER = local/ThinkPad-E550:@/tmp/.ICE-unix/2134,unix/ThinkPad-E550:/tmp/.ICE-unix/2134
+SESSION_MANAGER = local/ThinkPad-E550:@/tmp/.ICE-unix/1411,unix/ThinkPad-E550:/tmp/.ICE-unix/1411
 # environment
 XDG_RUNTIME_DIR = /run/user/1000
 # environment
@@ -105,7 +117,7 @@ XDG_SESSION_DESKTOP = cinnamon
 # environment
 SSH_AUTH_SOCK = /run/user/1000/keyring/ssh
 # environment
-GIO_LAUNCHED_DESKTOP_FILE_PID = 114314
+GIO_LAUNCHED_DESKTOP_FILE_PID = 22186
 # automatic
 %F = $(notdir $%)
 # environment
@@ -118,12 +130,12 @@ PWD = /home/davide/Documenti/Codici/42/minishell
 QT_QPA_PLATFORMTHEME = qt5ct
 # default
 .LOADED := 
-# makefile (from 'Makefile', line 66)
+# makefile (from 'Makefile', line 67)
 BUILTINS = $(addprefix src/builtin/, $(BUILTIN))
 # environment
 XDG_SEAT = seat0
 # environment
-SSH_AGENT_PID = 2204
+SSH_AGENT_PID = 1481
 # environment
 ORIGINAL_XDG_CURRENT_DESKTOP = X-Cinnamon
 # environment
@@ -158,12 +170,12 @@ MAKECMDGOALS := all
 SRCS = $(addprefix src/, $(SRC))
 # environment
 SHLVL = 0
-# makefile (from 'Makefile', line 68)
+# makefile (from 'Makefile', line 69)
 LIBFT = ./include/libft/libft.a
 # makefile (from 'Makefile', line 2)
 CC = gcc
 # environment
-VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-b2d13c72-658c-49a1-b785-f20cf8097b3c.sock
+VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-d949f9dc-c95b-469d-8cff-21e90cabcbaf.sock
 # environment
 XDG_SESSION_ID = c2
 # environment
@@ -190,7 +202,7 @@ XDG_SEAT_PATH = /org/freedesktop/DisplayManager/Seat0
 VSCODE_IPC_HOOK = /run/user/1000/vscode-c5f300b3-1.68.0-main.sock
 # makefile
 MAKEFLAGS = pqrR
-# makefile (from 'Makefile', line 67)
+# makefile (from 'Makefile', line 68)
 BUILTIN_OBJS = $(BUILTINS:.c=.o)
 # environment
 MFLAGS = -pqrR
@@ -203,6 +215,8 @@ GDK_BACKEND = x11
 # automatic
 +F = $(notdir $+)
 # environment
+NO_AT_BRIDGE = 1
+# environment
 CINNAMON_VERSION = 5.2.7
 # environment
 QT_ACCESSIBILITY = 1
@@ -213,7 +227,7 @@ MAKEFILES :=
 # automatic
 <F = $(notdir $<)
 # makefile (from 'Makefile', line 56)
-BUILTIN = pwd.c cd.c cd2.c echo.c exit.c env.c export.c export2.c export3.c unset.c
+BUILTIN = pwd.c cd.c cd2.c echo.c exit.c env.c export.c export2.c export3.c export4.c unset.c
 # environment
 LC_ALL = C
 # environment
@@ -223,7 +237,7 @@ GJS_DEBUG_TOPICS = JS ERROR;JS LOG
 # default
 SUFFIXES := 
 # makefile (from 'Makefile', line 3)
-FLAGS = -Wall -Werror -Wextra -L$(HOME)/.brew/opt/readline/lib -I$(HOME)/.brew/opt/readline/include -g
+FLAGS = -Wall -Werror -Wextra -L$(HOME)/.brew/opt/readline/lib -I$(HOME)/.brew/opt/readline/include -g -ffunction-sections -Wl,--gc-sections -Wl,--print-gc-sections
 # environment
 CHROME_DESKTOP = code-url-handler.desktop
 # default
@@ -237,9 +251,9 @@ NAME = minishell
 # environment
 LANG = C
 # environment
-VSCODE_PID = 114314
+VSCODE_PID = 21982
 # variable set hash-table stats:
-# Load=114/1024=11%, Rehash=0, Collisions=15/149=10%
+# Load=115/1024=11%, Rehash=0, Collisions=15/150=10%
 
 # Pattern-specific Variable Values
 
@@ -247,7 +261,7 @@ VSCODE_PID = 114314
 
 # Directories
 
-# . (device 2049, inode 23462498): 9 files, no impossibilities.
+# . (device 2049, inode 17307560): 9 files, no impossibilities.
 
 # 9 files, no impossibilities in 1 directories.
 
@@ -260,43 +274,44 @@ VSCODE_PID = 114314
 # Not a target:
 src/count.o:
 #  Implicit rule search has been done.
-#  Last modified 2022-06-10 17:07:26.193904937
+#  Last modified 2022-06-14 10:31:27.520225747
 #  File has been updated.
 #  Successfully updated.
 
 # Not a target:
 src/redirections_utils2.o:
 #  Implicit rule search has been done.
-#  Last modified 2022-06-10 17:07:26.405908213
+#  Last modified 2022-06-14 10:31:27.724239073
 #  File has been updated.
 #  Successfully updated.
 
 # Not a target:
 src/utils2.o:
 #  Implicit rule search has been done.
-#  Last modified 2022-06-10 17:07:25.121888354
+#  Last modified 2022-06-14 10:31:26.452155985
 #  File has been updated.
 #  Successfully updated.
 
 # Not a target:
 src/execute3.o:
 #  Implicit rule search has been done.
- 
-#  Last modified 2022-06-10 17:07:25.34589182
+#  Last modified 2022-06-14 10:31:26.664169833
 #  File has been updated.
 #  Successfully updated.
 
 # Not a target:
 src/wildcards_utils.o:
+ 
 #  Implicit rule search has been done.
-#  Last modified 2022-06-10 17:07:27.421923905
+ 
+#  Last modified 2022-06-14 10:31:28.676301266
 #  File has been updated.
 #  Successfully updated.
 
 # Not a target:
 src/wildcards_bools2.o:
 #  Implicit rule search has been done.
-#  Last modified 2022-06-10 17:07:27.265921497
+#  Last modified 2022-06-14 10:31:28.520291074
 #  File has been updated.
 #  Successfully updated.
 
@@ -311,7 +326,7 @@ all: minishell
 # Not a target:
 src/init_utils3.o:
 #  Implicit rule search has been done.
-#  Last modified 2022-06-10 17:07:25.609895904
+#  Last modified 2022-06-14 10:31:26.920186553
 #  File has been updated.
 #  Successfully updated.
 
@@ -323,148 +338,148 @@ src/init_utils3.o:
 # Not a target:
 src/main.o:
 #  Implicit rule search has been done.
-#  Last modified 2022-06-10 17:07:24.849884141
+#  Last modified 2022-06-14 13:31:16.614584388
 #  File has been updated.
 #  Successfully updated.
 
 # Not a target:
 src/builtin/cd2.o:
 #  Implicit rule search has been done.
-#  Last modified 2022-06-10 17:07:27.701928226
+#  Last modified 2022-06-14 10:31:28.936318252
 #  File has been updated.
 #  Successfully updated.
 
 # Not a target:
 src/term.o:
 #  Implicit rule search has been done.
-#  Last modified 2022-06-10 17:07:25.76989838
+#  Last modified 2022-06-14 10:31:27.084197265
 #  File has been updated.
 #  Successfully updated.
 
 # Not a target:
 src/builtin/env.o:
 #  Implicit rule search has been done.
-#  Last modified 2022-06-10 17:07:27.845930448
+#  Last modified 2022-06-14 10:31:29.08032766
 #  File has been updated.
 #  Successfully updated.
 
 # Not a target:
 src/init_utils.o:
 #  Implicit rule search has been done.
-#  Last modified 2022-06-10 17:07:25.505894296
+#  Last modified 2022-06-14 10:31:26.820180021
 #  File has been updated.
 #  Successfully updated.
 
 # Not a target:
 src/heredoc2.o:
 #  Implicit rule search has been done.
-#  Last modified 2022-06-10 17:07:26.513909882
+#  Last modified 2022-06-14 10:31:27.824245605
 #  File has been updated.
 #  Successfully updated.
 
 # Not a target:
 src/builtin/exit.o:
 #  Implicit rule search has been done.
-#  Last modified 2022-06-10 17:07:27.797929708
+#  Last modified 2022-06-14 10:31:29.032324523
 #  File has been updated.
 #  Successfully updated.
 
 # Not a target:
 src/execute.o:
 #  Implicit rule search has been done.
-#  Last modified 2022-06-10 17:07:25.24189021
+#  Last modified 2022-06-14 10:31:26.564163301
 #  File has been updated.
 #  Successfully updated.
 
 # Not a target:
 src/split_fields.o:
 #  Implicit rule search has been done.
-#  Last modified 2022-06-10 17:07:26.621911551
+#  Last modified 2022-06-14 10:31:27.936252921
 #  File has been updated.
 #  Successfully updated.
 
 # Not a target:
 src/logical2.o:
 #  Implicit rule search has been done.
-#  Last modified 2022-06-10 17:07:26.889915692
+#  Last modified 2022-06-14 10:31:28.196269907
 #  File has been updated.
 #  Successfully updated.
 
 # Not a target:
 src/bools4.o:
 #  Implicit rule search has been done.
-#  Last modified 2022-06-10 17:07:26.141904134
+#  Last modified 2022-06-14 10:31:27.472222611
 #  File has been updated.
 #  Successfully updated.
 
 # Not a target:
 Makefile:
 #  Implicit rule search has been done.
-#  Last modified 2022-06-10 16:06:22
+#  Last modified 2022-06-14 10:31:20.019736017
 #  File has been updated.
 #  Successfully updated.
 
 # Not a target:
 src/memory.o:
 #  Implicit rule search has been done.
-#  Last modified 2022-06-10 17:07:26.245905741
+#  Last modified 2022-06-14 10:31:27.572229143
 #  File has been updated.
 #  Successfully updated.
 
 # Not a target:
 src/wildcards_count.o:
 #  Implicit rule search has been done.
-#  Last modified 2022-06-10 17:07:27.321922362
+#  Last modified 2022-06-14 10:31:28.576294733
 #  File has been updated.
 #  Successfully updated.
 
 # Not a target:
 src/parse3.o:
 #  Implicit rule search has been done.
-#  Last modified 2022-06-10 17:07:25.933900918
+#  Last modified 2022-06-14 10:31:27.256208501
 #  File has been updated.
 #  Successfully updated.
 
 # Not a target:
 src/bools3.o:
 #  Implicit rule search has been done.
-#  Last modified 2022-06-10 17:07:26.085903268
+#  Last modified 2022-06-14 10:31:27.416218953
 #  File has been updated.
 #  Successfully updated.
 
 # Not a target:
 src/builtin/unset.o:
 #  Implicit rule search has been done.
-#  Last modified 2022-06-10 17:07:28.057933718
+#  Last modified 2022-06-14 10:31:29.332344125
 #  File has been updated.
 #  Successfully updated.
 
 # Not a target:
 src/builtin/export2.o:
 #  Implicit rule search has been done.
-#  Last modified 2022-06-10 17:07:27.949932054
+#  Last modified 2022-06-14 10:31:29.180334193
 #  File has been updated.
 #  Successfully updated.
 
-minishell: include/libft/libft.a src/main.o src/main2.o src/special_run.o src/special_childs.o src/utils.o src/utils2.o src/utils3.o src/execute.o src/execute2.o src/execute3.o src/execute4.o src/find_script.o src/init_utils.o src/init_utils2.o src/init_utils3.o src/set_var.o src/set_var2.o src/term.o src/parse.o src/parse2.o src/parse3.o src/bools.o src/bools2.o src/bools3.o src/bools4.o src/count.o src/memory.o src/redirections.o src/redirections_utils.o src/redirections_utils2.o src/heredoc.o src/heredoc2.o src/heredoc3.o src/split_fields.o src/split_fields2.o src/signal.o src/error_handling.o src/logical.o src/logical2.o src/logical3.o src/logical4.o src/wildcards.o src/wildcards2.o src/wildcards_bools.o src/wildcards_bools2.o src/wildcards_count.o src/wildcards_count2.o src/wildcards_utils.o src/wildcards_utils2.o src/wildcards_utils3.o src/builtin/pwd.o src/builtin/cd.o src/builtin/cd2.o src/builtin/echo.o src/builtin/exit.o src/builtin/env.o src/builtin/export.o src/builtin/export2.o src/builtin/export3.o src/builtin/unset.o
+minishell: include/libft/libft.a src/main.o src/main2.o src/special_run.o src/special_childs.o src/utils.o src/utils2.o src/utils3.o src/execute.o src/execute2.o src/execute3.o src/execute4.o src/find_script.o src/init_utils.o src/init_utils2.o src/init_utils3.o src/set_var.o src/set_var2.o src/term.o src/parse.o src/parse2.o src/parse3.o src/bools.o src/bools2.o src/bools3.o src/bools4.o src/count.o src/memory.o src/redirections.o src/redirections_utils.o src/redirections_utils2.o src/heredoc.o src/heredoc2.o src/heredoc3.o src/split_fields.o src/split_fields2.o src/signal.o src/error_handling.o src/logical.o src/logical2.o src/logical3.o src/logical4.o src/wildcards.o src/wildcards2.o src/wildcards_bools.o src/wildcards_bools2.o src/wildcards_count.o src/wildcards_count2.o src/wildcards_utils.o src/wildcards_utils2.o src/wildcards_utils3.o src/builtin/pwd.o src/builtin/cd.o src/builtin/cd2.o src/builtin/echo.o src/builtin/exit.o src/builtin/env.o src/builtin/export.o src/builtin/export2.o src/builtin/export3.o src/builtin/export4.o src/builtin/unset.o
 #  Implicit rule search has not been done.
-#  Last modified 2022-06-10 17:07:31.369984678
+#  Last modified 2022-06-14 13:31:20.942277223
 #  File has been updated.
 #  Successfully updated.
-#  recipe to execute (from 'Makefile', line 71):
+#  recipe to execute (from 'Makefile', line 72):
 	$(CC) $(FLAGS) $(SRCS) $(BUILTINS) $(LIBFT) -lreadline -lncurses -o $(NAME) 
 
 # Not a target:
 src/wildcards.o:
 #  Implicit rule search has been done.
-#  Last modified 2022-06-10 17:07:27.093918844
+#  Last modified 2022-06-14 10:31:28.35628036
 #  File has been updated.
 #  Successfully updated.
 
 # Not a target:
 src/bools.o:
 #  Implicit rule search has been done.
-#  Last modified 2022-06-10 17:07:25.985901722
+#  Last modified 2022-06-14 10:31:27.312212159
 #  File has been updated.
 #  Successfully updated.
 
@@ -473,63 +488,63 @@ fclean: clean
 #  Implicit rule search has not been done.
 #  File does not exist.
 #  File has not been updated.
-#  recipe to execute (from 'Makefile', line 83):
+#  recipe to execute (from 'Makefile', line 84):
 	rm -f $(NAME)
 	$(MAKE) fclean -C ./include/libft
 
 # Not a target:
 src/utils3.o:
 #  Implicit rule search has been done.
-#  Last modified 2022-06-10 17:07:25.181889282
+#  Last modified 2022-06-14 10:31:26.508159643
 #  File has been updated.
 #  Successfully updated.
 
 # Not a target:
 src/wildcards_utils2.o:
 #  Implicit rule search has been done.
-#  Last modified 2022-06-10 17:07:27.473924708
+#  Last modified 2022-06-14 10:31:28.728304663
 #  File has been updated.
 #  Successfully updated.
 
 # Not a target:
 src/logical4.o:
 #  Implicit rule search has been done.
-#  Last modified 2022-06-10 17:07:27.005917485
+#  Last modified 2022-06-14 10:31:28.300276702
 #  File has been updated.
 #  Successfully updated.
 
 # Not a target:
 src/set_var.o:
 #  Implicit rule search has been done.
-#  Last modified 2022-06-10 17:07:25.665896771
+#  Last modified 2022-06-14 10:31:26.97218995
 #  File has been updated.
 #  Successfully updated.
 
 # Not a target:
 src/parse.o:
 #  Implicit rule search has been done.
-#  Last modified 2022-06-10 17:07:25.821899185
+#  Last modified 2022-06-14 10:31:27.144201185
 #  File has been updated.
 #  Successfully updated.
 
 # Not a target:
 src/redirections_utils.o:
 #  Implicit rule search has been done.
-#  Last modified 2022-06-10 17:07:26.349907348
+#  Last modified 2022-06-14 10:31:27.668235414
 #  File has been updated.
 #  Successfully updated.
 
 # Not a target:
 src/utils.o:
 #  Implicit rule search has been done.
-#  Last modified 2022-06-10 17:07:25.065887487
+#  Last modified 2022-06-14 10:31:26.40415285
 #  File has been updated.
 #  Successfully updated.
 
 # Not a target:
 src/main2.o:
 #  Implicit rule search has been done.
-#  Last modified 2022-06-10 17:07:24.905885009
+#  Last modified 2022-06-14 13:31:16.670580421
 #  File has been updated.
 #  Successfully updated.
 
@@ -542,43 +557,44 @@ src/main2.o:
 # Not a target:
 src/error_handling.o:
 #  Implicit rule search has been done.
-#  Last modified 2022-06-10 17:07:26.777913962
+#  Last modified 2022-06-14 10:31:28.088262852
 #  File has been updated.
 #  Successfully updated.
 
 # Not a target:
 src/heredoc3.o:
 #  Implicit rule search has been done.
-#  Last modified 2022-06-10 17:07:26.565910686
+#  Last modified 2022-06-14 10:31:27.884249524
 #  File has been updated.
 #  Successfully updated.
 
 include/libft/libft.a:
 #  Implicit rule search has not been done.
-#  Last modified 2022-06-10 17:07:24.793883273
+#  Last modified 2022-06-14 10:31:26.124134561
 #  File has been updated.
 #  Successfully updated.
-#  recipe to execute (from 'Makefile', line 74):
+#  recipe to execute (from 'Makefile', line 75):
 	$(MAKE) bonus -C ./include/libft
 
 # Not a target:
 src/wildcards_bools.o:
 #  Implicit rule search has been done.
-#  Last modified 2022-06-10 17:07:27.209920634
+#  Last modified 2022-06-14 10:31:28.460287154
+ 
 #  File has been updated.
 #  Successfully updated.
 
 # Not a target:
 src/execute2.o:
 #  Implicit rule search has been done.
-#  Last modified 2022-06-10 17:07:25.297891077
+#  Last modified 2022-06-14 10:31:26.616166697
 #  File has been updated.
 #  Successfully updated.
 
 # Not a target:
 src/signal.o:
 #  Implicit rule search has been done.
-#  Last modified 2022-06-10 17:07:26.725913159
+#  Last modified 2022-06-14 10:31:28.040259716
 #  File has been updated.
 #  Successfully updated.
 
@@ -591,7 +607,7 @@ re: fclean all
 # Not a target:
 src/init_utils2.o:
 #  Implicit rule search has been done.
-#  Last modified 2022-06-10 17:07:25.561895162
+#  Last modified 2022-06-14 10:31:26.872183418
 #  File has been updated.
 #  Successfully updated.
 
@@ -599,166 +615,172 @@ clean:
 #  Phony target (prerequisite of .PHONY).
 #  Implicit rule search has not been done.
 #  File does not exist.
- 
 #  File has not been updated.
-#  recipe to execute (from 'Makefile', line 79):
+#  recipe to execute (from 'Makefile', line 80):
 	rm -f $(BUILTIN_OBJS) $(OBJS)
 	$(MAKE) clean -C ./include/libft
 
 # Not a target:
 src/logical3.o:
 #  Implicit rule search has been done.
-#  Last modified 2022-06-10 17:07:26.945916558
+#  Last modified 2022-06-14 10:31:28.252273566
 #  File has been updated.
 #  Successfully updated.
 
 # Not a target:
 src/split_fields2.o:
 #  Implicit rule search has been done.
-#  Last modified 2022-06-10 17:07:26.677912417
+#  Last modified 2022-06-14 10:31:27.99225658
+#  File has been updated.
+#  Successfully updated.
+
+# Not a target:
+src/builtin/export4.o:
+#  Implicit rule search has been done.
+#  Last modified 2022-06-14 10:31:29.276340466
 #  File has been updated.
 #  Successfully updated.
 
 # Not a target:
 src/builtin/pwd.o:
 #  Implicit rule search has been done.
-#  Last modified 2022-06-10 17:07:27.585926436
+#  Last modified 2022-06-14 10:31:28.824310935
 #  File has been updated.
 #  Successfully updated.
 
 # Not a target:
 src/builtin/cd.o:
 #  Implicit rule search has been done.
-#  Last modified 2022-06-10 17:07:27.6419273
+#  Last modified 2022-06-14 10:31:28.880314593
 #  File has been updated.
 #  Successfully updated.
 
 # Not a target:
 src/wildcards_count2.o:
 #  Implicit rule search has been done.
-#  Last modified 2022-06-10 17:07:27.369923103
+#  Last modified 2022-06-14 10:31:28.624297868
 #  File has been updated.
 #  Successfully updated.
 
 # Not a target:
 src/execute4.o:
 #  Implicit rule search has been done.
-#  Last modified 2022-06-10 17:07:25.393892562
+#  Last modified 2022-06-14 10:31:26.712172968
 #  File has been updated.
 #  Successfully updated.
 
 # Not a target:
 src/logical.o:
 #  Implicit rule search has been done.
-#  Last modified 2022-06-10 17:07:26.837914889
+#  Last modified 2022-06-14 10:31:28.14426651
 #  File has been updated.
 #  Successfully updated.
 
 # Not a target:
 src/builtin/export3.o:
 #  Implicit rule search has been done.
-#  Last modified 2022-06-10 17:07:28.001932856
+#  Last modified 2022-06-14 10:31:29.232337591
 #  File has been updated.
 #  Successfully updated.
 
 # Not a target:
 src/heredoc.o:
 #  Implicit rule search has been done.
-#  Last modified 2022-06-10 17:07:26.457909017
+#  Last modified 2022-06-14 10:31:27.772242208
 #  File has been updated.
 #  Successfully updated.
 
 # Not a target:
 src/special_run.o:
 #  Implicit rule search has been done.
-#  Last modified 2022-06-10 17:07:24.957885815
+#  Last modified 2022-06-14 10:31:26.296145796
 #  File has been updated.
 #  Successfully updated.
 
 # Not a target:
 src/wildcards2.o:
 #  Implicit rule search has been done.
-#  Last modified 2022-06-10 17:07:27.157919831
+#  Last modified 2022-06-14 10:31:28.412284018
 #  File has been updated.
 #  Successfully updated.
 
 # Not a target:
 src/special_childs.o:
 #  Implicit rule search has been done.
-#  Last modified 2022-06-10 17:07:25.00988662
+#  Last modified 2022-06-14 10:31:26.348149192
 #  File has been updated.
 #  Successfully updated.
 
 # Not a target:
 src/builtin/echo.o:
 #  Implicit rule search has been done.
-#  Last modified 2022-06-10 17:07:27.749928967
+#  Last modified 2022-06-14 10:31:28.980321126
 #  File has been updated.
 #  Successfully updated.
 
 # Not a target:
 src/bools2.o:
 #  Implicit rule search has been done.
-#  Last modified 2022-06-10 17:07:26.037902527
+#  Last modified 2022-06-14 10:31:27.364215556
 #  File has been updated.
 #  Successfully updated.
 
 # Not a target:
 src/builtin/export.o:
 #  Implicit rule search has been done.
-#  Last modified 2022-06-10 17:07:27.897931251
+#  Last modified 2022-06-14 10:31:29.132331057
 #  File has been updated.
 #  Successfully updated.
 
 # Not a target:
 src/redirections.o:
 #  Implicit rule search has been done.
-#  Last modified 2022-06-10 17:07:26.297906545
+#  Last modified 2022-06-14 10:31:27.620232279
 #  File has been updated.
 #  Successfully updated.
 
 # Not a target:
 src/wildcards_utils3.o:
 #  Implicit rule search has been done.
-#  Last modified 2022-06-10 17:07:27.533925634
+#  Last modified 2022-06-14 10:31:28.776307799
 #  File has been updated.
 #  Successfully updated.
 
 # Not a target:
 src/parse2.o:
 #  Implicit rule search has been done.
-#  Last modified 2022-06-10 17:07:25.877900051
+#  Last modified 2022-06-14 10:31:27.200204843
 #  File has been updated.
 #  Successfully updated.
 
 # Not a target:
 src/set_var2.o:
 #  Implicit rule search has been done.
-#  Last modified 2022-06-10 17:07:25.721897638
+#  Last modified 2022-06-14 10:31:27.032193869
 #  File has been updated.
 #  Successfully updated.
 
 # Not a target:
 src/find_script.o:
 #  Implicit rule search has been done.
-#  Last modified 2022-06-10 17:07:25.449893429
+#  Last modified 2022-06-14 10:31:26.764176364
 #  File has been updated.
 #  Successfully updated.
 
 # files hash-table stats:
-# Load=70/1024=7%, Rehash=0, Collisions=0/151=0%
+# Load=71/1024=7%, Rehash=0, Collisions=0/153=0%
 # VPATH Search Paths
 
 # No 'vpath' search paths.
 
 # No general ('VPATH' variable) search path.
 
-# strcache buffers: 1 (0) / strings = 79 / storage = 1179 B / avg = 14 B
-# current buf: size = 8162 B / used = 1179 B / count = 79 / avg = 14 B
+# strcache buffers: 1 (0) / strings = 80 / storage = 1201 B / avg = 15 B
+# current buf: size = 8162 B / used = 1201 B / count = 80 / avg = 15 B
 
-# strcache performance: lookups = 101 / hit rate = 21%
+# strcache performance: lookups = 102 / hit rate = 21%
 # hash-table stats:
-# Load=79/8192=1%, Rehash=0, Collisions=1/101=1%
-# Finished Make data base on Fri Jun 10 17:08:08 2022
+# Load=80/8192=1%, Rehash=0, Collisions=1/102=1%
+# Finished Make data base on Tue Jun 14 14:14:46 2022
 
  

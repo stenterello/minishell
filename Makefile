@@ -1,8 +1,7 @@
 NAME=minishell
 CC=gcc
-FLAGS=-Wall -Werror -Wextra -L$(HOME)/.brew/opt/readline/lib -I$(HOME)/.brew/opt/readline/include -g
+FLAGS=-Wall -Werror -Wextra -L$(HOME)/.brew/opt/readline/lib -I$(HOME)/.brew/opt/readline/include -g -ffunction-sections -Wl,--gc-sections -Wl,--print-gc-sections
 SRC=main.c \
-	main2.c \
 	special_run.c \
 	special_childs.c \
 	utils.c \
@@ -62,7 +61,6 @@ BUILTIN=pwd.c \
 		export.c \
 		export2.c \
 		export3.c \
-		export4.c \
 		unset.c
 BUILTINS=$(addprefix src/builtin/, $(BUILTIN))
 BUILTIN_OBJS=$(BUILTINS:.c=.o)

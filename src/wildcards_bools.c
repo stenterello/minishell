@@ -3,21 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   wildcards_bools.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gimartin <gimartin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/10 11:00:24 by gimartin          #+#    #+#             */
-/*   Updated: 2022/05/10 11:24:34 by gimartin         ###   ########.fr       */
+/*   Updated: 2022/06/14 14:22:24 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-int	ft_islower(char c)
-{
-	if (97 <= c && c <= 122)
-		return (1);
-	return (0);
-}
 
 int	is_wildcard(char c)
 {

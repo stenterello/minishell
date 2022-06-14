@@ -6,7 +6,7 @@
 /*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/27 15:08:51 by gimartin          #+#    #+#             */
-/*   Updated: 2022/05/03 21:57:36 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/06/14 14:19:02 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,11 +54,4 @@ void	malloc_and_check_dict(t_dict **dst, int len)
 	dst[0]->key = NULL;
 	dst[0]->value = NULL;
 	dst[0]->next = NULL;
-}
-
-void	malloc_and_check_list(t_list **dst, int len)
-{
-	*dst = malloc(sizeof(t_list) * len);
-	if (!*dst)
-		die("Malloc error");
 }

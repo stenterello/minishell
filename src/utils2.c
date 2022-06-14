@@ -3,52 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   utils2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gimartin <gimartin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/28 14:11:38 by gimartin          #+#    #+#             */
-/*   Updated: 2022/05/09 15:47:09 by gimartin         ###   ########.fr       */
+/*   Updated: 2022/06/14 14:16:32 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-void	clean_text(char *dst, char *src)
-{
-	int	i;
-	int	j;
-
-	i = 0;
-	j = 0;
-	malloc_c(&dst, ft_strlen(src));
-	while (src[i])
-	{
-		if (src[i] != '\"')
-			dst[j++] = src[i++];
-		else
-			i++;
-	}
-	dst[j] = '\0';
-}
-
-int	dollar_pos(char *line)
-{
-	int	i;
-
-	i = 0;
-	while (line[i] != '$')
-		i++;
-	return (i);
-}
-
-// int	until_dollar(char *line)
-// {
-// 	int	i;
-
-// 	i = 0;
-// 	while (line[i] != '$')
-// 		i++;
-// 	return (++i);
-// }
 
 int	until_dollar(char *line)
 {

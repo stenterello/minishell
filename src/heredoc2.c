@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc2.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ddelladi <ddelladi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/27 15:16:53 by gimartin          #+#    #+#             */
-/*   Updated: 2022/06/13 19:30:27 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/06/14 14:19:59 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,31 +36,16 @@ void	free_single_command(t_command *cmd)
 	if (cmd->args)
 	{
 		while (cmd->args[i])
-		{
-			free(cmd->args[i]);
-			cmd->args[i++] = NULL;
-		}
+			free(cmd->args[i++]);
 		free(cmd->args);
-		cmd->args = NULL;
 	}
 	if (cmd->cmd)
-	{
 		free(cmd->cmd);
-		cmd->cmd = NULL;
-	}
 	if (cmd->input_line)
-	{
 		free(cmd->input_line);
-		cmd->input_line = NULL;
-	}
-	if (cmd)
-	{
-		free(cmd);
-		cmd = NULL;
-	}
 }
 
-void	execute_free_here(char *tmp, char *delimiter, t_command *cmd, t_command *cmd2)
+void	free_here(char *tmp, char *delimiter, t_command *cmd, t_command *cmd2)
 {
 	if (tmp)
 	{
@@ -74,52 +59,4 @@ void	execute_free_here(char *tmp, char *delimiter, t_command *cmd, t_command *cm
 	execute_tree(cmd);
 	free_single_command(cmd);
 	free_single_command(cmd2);
-}
-
-void	free_here(char *tmp, char *delimiter, t_command *cmd, t_command *cmd2)
-{
-	if (tmp)
-	{
-		free(tmp);
-		tmp = NULL;
-	}
-	free(delimiter);
-	free_single_command(cmd);
-	free_single_command(cmd2);
-}
-
-void	sup1(char *delimiter, t_command *cmd, char *tmp, t_command *cmd2)
-{
-	int	i;
-
-	i = 1;
-	while (tmp && ft_strncmp(tmp, delimiter, ft_strlen(delimiter) + 1))
-	{
-		if (cmd->input_line)
-			sup1_sup1(cmd, tmp);
-		else
-		{
-			malloc_c(&cmd->input_line, ft_strlen(tmp) + 1);
-			ft_strlcpy(cmd->input_line, tmp, ft_strlen(tmp) + 1);
-			ft_strlcat(cmd->input_line, "\n", ft_strlen(cmd->input_line) + 2);
-		}
-		free(tmp);
-		i++;
-		tmp = readline("> ");
-		if (g_term.terminated)
-			break ;
-	}
-	if (!tmp)
-		print_here(delimiter, i);
-	free_here(tmp, delimiter, cmd, cmd2);
-}
-
-void	init_here(t_command *cmd, t_command *cmd2)
-{
-	cmd = malloc(sizeof(t_command));
-	if (!cmd)
-		die("Malloc error");
-	cmd2 = malloc(sizeof(t_command));
-	if (!cmd2)
-		die("Malloc error");
 }

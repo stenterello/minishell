@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export3.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ddelladi <ddelladi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gimartin <gimartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/03 14:55:14 by ddelladi          #+#    #+#             */
-/*   Updated: 2022/06/13 22:13:21 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/06/09 12:55:20 by gimartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,12 @@ void	sup_export(t_command *cmd, t_dict *new, int i)
 			return ;
 	}
 	else
-		new = norm_sup_export(j, cmd, new);
+	{
+		j++;
+		malloc_c(&new->value, ft_strlen(&cmd->args[1][j]));
+		ft_strlcpy(new->value, &cmd->args[1][j],
+			ft_strlen(&cmd->args[1][j]) + 1);
+	}
 	new->next = NULL;
 	sup_sup_export(new);
 }

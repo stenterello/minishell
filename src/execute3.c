@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute3.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ddelladi <ddelladi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gimartin <gimartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/06 14:58:30 by gimartin          #+#    #+#             */
-/*   Updated: 2022/06/13 18:18:02 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/06/09 12:44:01 by gimartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,6 @@ void	born_child(t_command *tmp)
 		define_pipe(tmp);
 	if (tmp->to_pipe_to)
 		define_pipe_to(tmp);
-	signal(SIGQUIT, &flush2);
 	if (!ft_strncmp(&tmp->cmd[ft_strlen(tmp->cmd) - 3], "top", 3))
 	{
 		g_term.top = 1;

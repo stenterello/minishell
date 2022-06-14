@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute2.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ddelladi <ddelladi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gimartin <gimartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/27 15:05:46 by gimartin          #+#    #+#             */
-/*   Updated: 2022/06/13 22:32:32 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/06/10 15:56:53 by gimartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,9 +65,6 @@ int	permitted(t_command *tmp)
 
 int	sup_ex(t_command *tmp)
 {
-	t_command	*f;
-
-	f = tmp;
 	while (tmp)
 	{
 		if (!builtin(tmp))
@@ -92,7 +89,6 @@ int	sup_ex(t_command *tmp)
 		}
 		tmp = tmp->next;
 	}
-	restore_all(f);
 	return (1);
 }
 

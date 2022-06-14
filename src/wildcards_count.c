@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   wildcards_count.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ddelladi <ddelladi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gimartin <gimartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/10 11:01:53 by gimartin          #+#    #+#             */
-/*   Updated: 2022/06/13 15:52:56 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/06/10 16:06:01 by gimartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	sup_count(char *line, int i, int ret)
 	{
 		ret++;
 	}
-	else if (ft_isalnum(line[i]) || line[i] == '.')
+	else if (ft_isalnum(line[i]))
 	{
 		ret++;
 		while (line[i] && !is_wildcard(line[i]))

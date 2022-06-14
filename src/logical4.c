@@ -3,27 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   logical4.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gimartin <gimartin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/24 12:53:03 by ddelladi          #+#    #+#             */
-/*   Updated: 2022/05/24 14:34:19 by gimartin         ###   ########.fr       */
+/*   Updated: 2022/06/14 14:21:58 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-char	*single_trim(char const *s1)
-{
-	char	*newstr;
-
-	if (!s1)
-		return (NULL);
-	newstr = malloc(sizeof(char) * (ft_strlen(s1) - 1));
-	if (!newstr)
-		return (NULL);
-	ft_strlcpy(newstr, &s1[1], ft_strlen(s1) - 1);
-	return (newstr);
-}
 
 int	skip_spaces(char *line, int i)
 {

@@ -6,7 +6,7 @@
 /*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/27 15:10:12 by gimartin          #+#    #+#             */
-/*   Updated: 2022/05/07 12:26:43 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/06/14 14:24:36 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,25 +73,4 @@ void	free_array_of_array(char **arr)
 	}
 	if (arr)
 		free(arr);
-}
-
-void	syntax_error(char **tmp)
-{
-	int		i;
-	char	tok[8];
-
-	ft_putstr_fd(last_field(ft_getenv("SHELL")), 2);
-	ft_putstr_fd(": syntax error near unexpected token \"", 2);
-	i = 0;
-	while (tmp[i])
-	{
-		if (is_token(tmp[i]))
-			ft_strlcpy(tok, tmp[i], ft_strlen(tmp[i]) + 1);
-		i++;
-	}
-	tok[ft_strlen(tmp[i])] = '\0';
-	if (tok[0] == '<' || tok[0] == '>')
-		ft_strlcpy(tok, "newline", 8);
-	ft_putstr_fd(tok, 2);
-	ft_putendl_fd("\"", 2);
 }

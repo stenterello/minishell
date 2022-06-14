@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc3.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ddelladi <ddelladi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/28 16:35:00 by gimartin          #+#    #+#             */
-/*   Updated: 2022/06/13 21:45:30 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/06/10 17:17:01 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,108 +46,11 @@ char	*sup_sup_treat(char *tmp, int i, char *d, t_command *cmd)
 	return (tmp);
 }
 
-int	to_exp(char *str)
-{
-	int	i;
-
-	i = 0;
-	while (ft_strncmp(&str[i], "<<", 2))
-		i++;
-	i += 2;
-	while (str[i] == ' ')
-		i++;
-	if (str[i] == '\'')
-		return (0);
-	return (1);
-}
-
-int	to_expand_str(char *str)
-{
-	int		i;
-
-	i = 0;
-	while (str[i])
-	{
-		if (str[i] == '$' && !is_open(str, i))
-			return (1);
-		i++;
-	}
-	return (0);
-}
-
-int	key_here_len(char *str)
-{
-	int	i;
-
-	i = 0;
-	while (str[i] && ft_isalnum(str[i]))
-		i++;
-	return (i);
-}
-
-char	*take_key(char *str)
-{
-	int		i;
-	char	*ret;
-
-	i = 0;
-	ret = NULL;
-	while (str[i])
-	{
-		if (str[i] == '$' && !is_open(str, i))
-		{
-			i++;
-			malloc_c(&ret, key_here_len(&str[i]) + 1);
-			ft_strlcpy(ret, &str[i], key_here_len(&str[i]) + 1);
-			return (ret);
-		}
-		i++;
-	}
-	return (ret);
-}
-
-int	ft_strlen_rl(char *str)
-{
-	int	i;
-
-	i = 0;
-	while (str[i])
-	{
-		if (str[i] == '\n')
-			return (++i);
-		i++;
-	}
-	return (i);
-}
-
-char	*try_expand_str(t_command *cmd)
-{
-	char	*ret;
-	char	*key;
-	int		i;
-
-	i = 0;
-	key = take_key(cmd->input_line);
-	malloc_c(&ret, ft_strlen_rl(cmd->input_line) - ft_strlen(key) + ft_strlen(ft_getenv(key)));
-	while (cmd->input_line[i] != '$')
-		i++;
-	ft_strlcpy(ret, cmd->input_line, i + 1);
-	if (ft_getenv(key))
-		ft_strlcat(ret, ft_getenv(key), ft_strlen(ret) + ft_strlen(ft_getenv(key)) + 1);
-	ft_strlcat(ret, &cmd->input_line[i + ft_strlen(key) + 1],
-		ft_strlen(ret) + ft_strlen_rl(&cmd->input_line[i + ft_strlen(key) + 1]) + 1);
-	free(cmd->input_line);
-	if (key)
-		free(key);
-	return (ret);
-}
-
 void	sup_treat(t_command *cmd, t_command *cmd2, char *typed)
 {
 	char	*d;
 	char	*tmp;
 	int		i;
-	int		exp;
 
 	i = 1;
 	tmp = NULL;
@@ -156,25 +59,21 @@ void	sup_treat(t_command *cmd, t_command *cmd2, char *typed)
 	cmd->first = 1;
 	malloc_c(&cmd2->cmd, ft_strlen(typed) + 1);
 	ft_strlcpy(cmd2->cmd, typed, ft_strlen(typed) + 1);
+	cmd2->input_line = NULL;
+	cmd->input_line = NULL;
 	cmd->next = cmd2;
 	d = take_delimiter(cmd2->cmd);
-	exp = to_exp(cmd2->cmd);
 	clean_heredoc(cmd2->cmd, "<<");
 	malloc_c_ptr(&cmd2->args, 2);
 	malloc_c(&cmd2->args[0], ft_strlen(cmd2->cmd) + 1);
 	ft_strlcpy(cmd2->args[0], cmd2->cmd, ft_strlen(cmd2->cmd) + 1);
 	cmd2->args[1] = NULL;
 	tmp = sup_sup_treat(tmp, i, d, cmd);
-	if (exp && !is_open(typed, ft_strlen(typed)))
-	{
-		while (to_expand_str(cmd->input_line))
-			cmd->input_line = try_expand_str(cmd);
-	}
 	if (g_term.last_exit != 130)
-		execute_free_here(tmp, d, cmd, cmd2);
-	else
 		free_here(tmp, d, cmd, cmd2);
 	free(typed);
+	if (tmp)
+		free(tmp);
 }
 
 int	treat_heredoc(char *typed)
@@ -190,5 +89,11 @@ int	treat_heredoc(char *typed)
 	if (!cmd2)
 		die("Malloc error");
 	sup_treat(cmd, cmd2, typed);
+	free(cmd2->cmd);
+	free(cmd2->args[0]);
+	free(cmd->args);
+	free(cmd2);
+	free(cmd);
+	free(cmd2->input_line);
 	return (1);
 }
