@@ -6,7 +6,7 @@
 /*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/03 21:54:41 by ddelladi          #+#    #+#             */
-/*   Updated: 2022/06/14 14:37:13 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/06/14 14:42:59 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,10 @@ int	main(int argc, char **argv)
 
 /* 
 
-Se heredoc interrotto da ^C, segfault poco dopo
+Copiare backup heredoc
+Esportazioni delle variabili malfunzionanti
+> out2 > out4 cat Makefile | grep all | wc -l > out5
+Segnali
+Exit status quando si chiude il terminale
 
 */
