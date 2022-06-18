@@ -6,7 +6,7 @@
 /*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/27 15:04:52 by gimartin          #+#    #+#             */
-/*   Updated: 2022/05/03 21:56:17 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/06/15 10:13:27 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ int	is_token(char *line)
 	return (1);
 }
 
-int	is_logical_token(char c)
+int	is_chaining_token(char c)
 {
 	if (ft_strchr("|&", c) == NULL)
 		return (0);

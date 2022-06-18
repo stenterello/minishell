@@ -6,7 +6,7 @@
 /*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/27 15:08:51 by gimartin          #+#    #+#             */
-/*   Updated: 2022/06/14 14:19:02 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/06/15 15:07:15 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,4 +54,25 @@ void	malloc_and_check_dict(t_dict **dst, int len)
 	dst[0]->key = NULL;
 	dst[0]->value = NULL;
 	dst[0]->next = NULL;
+}
+
+void	free_single_command(t_command *cmd)
+{
+	if (cmd->args)
+		free_array_of_array(cmd->args);
+	if (cmd->cmd)
+	{
+		free(cmd->cmd);
+		cmd->cmd = NULL;
+	}
+	if (cmd->input_line)
+	{
+		free(cmd->input_line);
+		cmd->input_line = NULL;
+	}
+	if (cmd)
+	{
+		free(cmd);
+		cmd = NULL;
+	}
 }

@@ -6,55 +6,58 @@
 /*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/09 15:46:45 by gimartin          #+#    #+#             */
-/*   Updated: 2022/06/14 14:16:57 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/06/15 14:33:30 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	sup_sup_try(int d_quot, t_input *in, int i, char *var)
+void	sup_sup_try(int d_quot, t_terminfo *terminfo, int i, char *var)
 {
 	char	*tmp;
 	char	*tmp2;
 
-	tmp = NULL;
 	if (d_quot)
 	{
-		tmp = define_var_name(in->line);
-		var = ft_getenv(tmp);
+		tmp = define_var_name(terminfo->input->line);
+		var = ft_getenv(tmp, terminfo);
 		malloc_c(&tmp2, ft_strlen(var)
-			+ (ft_strlen(in->line) - ft_strlen(tmp)) + 1);
-		ft_strlcpy(tmp2, in->line, until_dollar(in->line));
+			+ (ft_strlen(terminfo->input->line) - ft_strlen(tmp)) + 1);
+		ft_strlcpy(tmp2, terminfo->input->line,
+			until_dollar(terminfo->input->line));
 		ft_strlcat(tmp2, var, ft_strlen(var) + ft_strlen(tmp2) + 1);
-		ft_strlcat(tmp2, &in->line[until_end_var_name(in->line, tmp)],
+		ft_strlcat(tmp2, &terminfo->input->line
+		[until_end_var_name(terminfo->input->line, tmp)],
 			ft_strlen(tmp2)
-			+ ft_strlen(&in->line[until_end_var_name(in->line, tmp)]) + 1);
+			+ ft_strlen(&terminfo->input->line
+			[until_end_var_name(terminfo->input->line, tmp)]) + 1);
 		free(tmp);
-		free(in->line);
-		malloc_c(&in->line, ft_strlen(tmp2) + 1);
-		ft_strlcpy(in->line, tmp2, ft_strlen(tmp2) + 1);
+		free(terminfo->input->line);
+		malloc_c(&terminfo->input->line, ft_strlen(tmp2) + 1);
+		ft_strlcpy(terminfo->input->line, tmp2, ft_strlen(tmp2) + 1);
 		free(tmp2);
 	}
 	else
-		take_variable(&in->line[i], in, i - 1);
+		take_variable(&terminfo->input->line[i], terminfo, i - 1);
 }
 
-void	sup_try_expand(t_input *in, int i, int d_quot)
+void	sup_try_expand(t_terminfo *terminfo, int i, int d_quot)
 {
 	char		*var;
 
 	var = NULL;
-	if (in->line[i] == '$')
+	if (terminfo->input->line[i] == '$')
 	{
-		free(g_term.input.line);
-		malloc_c(&g_term.input.line, 24);
-		ft_strlcpy(g_term.input.line, "echo can\'t use getpid()", 24);
+		free(terminfo->input->line);
+		malloc_c(&terminfo->input->line, 24);
+		ft_strlcpy(terminfo->input->line, "echo can\'t use getpid()", 24);
 	}
-	else if (ft_isalnum(in->line[i]) || in->line[i] == '?')
-		sup_sup_try(d_quot, in, i, var);
+	else if (ft_isalnum(terminfo->input->line[i])
+		|| terminfo->input->line[i] == '?')
+		sup_sup_try(d_quot, terminfo, i, var);
 }
 
-void	try_expand(t_input *input)
+void	try_expand(t_terminfo *terminfo)
 {
 	int		i;
 	int		s_quot;
@@ -63,20 +66,20 @@ void	try_expand(t_input *input)
 	i = 0;
 	s_quot = 0;
 	d_quot = 0;
-	while (input->line[i])
+	while (terminfo->input->line[i])
 	{
-		if (input->line[i] == '\'' && !s_quot && !d_quot)
+		if (terminfo->input->line[i] == '\'' && !s_quot && !d_quot)
 			s_quot = 1;
-		else if (input->line[i] == '\'' && s_quot && !d_quot)
+		else if (terminfo->input->line[i] == '\'' && s_quot && !d_quot)
 			s_quot = 0;
-		if (input->line[i] == '"' && !s_quot && !d_quot)
+		if (terminfo->input->line[i] == '"' && !s_quot && !d_quot)
 			d_quot = 1;
-		else if (input->line[i] == '"' && !s_quot && d_quot)
+		else if (terminfo->input->line[i] == '"' && !s_quot && d_quot)
 			d_quot = 0;
-		if (input->line[i] == '$' && !s_quot)
+		if (terminfo->input->line[i] == '$' && !s_quot)
 		{
 			i++;
-			sup_try_expand(input, i, d_quot);
+			sup_try_expand(terminfo, i, d_quot);
 			return ;
 		}
 		i++;

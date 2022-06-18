@@ -6,7 +6,7 @@
 /*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/28 15:51:58 by gimartin          #+#    #+#             */
-/*   Updated: 2022/06/14 14:18:21 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/06/14 18:24:06 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ void	fill_prev(t_command *cmd, int *c, char **tmp)
 	}
 }
 
-void	fill_next(t_command *cmd, int *c, char **tmp)
+void	fill_next(t_command *cmd, int *c, char **tmp, t_terminfo *terminfo)
 {
 	t_command	*next;
 
@@ -66,7 +66,7 @@ void	fill_next(t_command *cmd, int *c, char **tmp)
 		cmd->next = next;
 		next->prev = cmd;
 		++c[0];
-		fill_cmd_fields(tmp, next, c[0]);
+		fill_cmd_fields(tmp, next, c[0], terminfo);
 	}
 }
 

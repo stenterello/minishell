@@ -6,20 +6,20 @@
 /*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/27 15:04:30 by gimartin          #+#    #+#             */
-/*   Updated: 2022/06/10 15:13:01 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/06/15 10:26:19 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	reset_term(void)
+void	reset_term(t_terminfo *terminfo)
 {
 	int	ret;
 
-	ret = tcsetattr(STDIN_FILENO, 0, g_term.old_term);
+	ret = tcsetattr(STDIN_FILENO, 0, terminfo->old_term);
 	if (ret < 0)
 		die(strerror(errno));
-	free(g_term.old_term);
+	free(terminfo->old_term);
 }
 
 void	get_term(char *line)
@@ -45,24 +45,23 @@ void	save_term(struct termios **terminal)
 		die(strerror(errno));
 }
 
-void	init_terminal(char *line)
+void	init_terminal(char *line, t_terminfo *terminfo)
 {
 	int	ret;
 
 	get_term(line);
-	save_term(&g_term.termi);
-	ft_bzero(&g_term.termi->c_lflag, sizeof(tcflag_t));
-	g_term.termi->c_lflag |= (ICANON | ISIG | IEXTEN | ECHO
+	save_term(&terminfo->new_term);
+	ft_bzero(&terminfo->new_term->c_lflag, sizeof(tcflag_t));
+	terminfo->new_term->c_lflag |= (ICANON | ISIG | IEXTEN | ECHO
 			| ECHOE | ECHOK | ECHOKE | PENDIN);
-	g_term.termi->c_lflag |= ~(ECHONL | ECHOPRT | NOFLSH
+	terminfo->new_term->c_lflag |= ~(ECHONL | ECHOPRT | NOFLSH
 			| TOSTOP | FLUSHO | EXTPROC | ECHOCTL);
-	ret = tcsetattr(STDIN_FILENO, TCSAFLUSH, g_term.termi);
+	ret = tcsetattr(STDIN_FILENO, TCSAFLUSH, terminfo->new_term);
 	if (ret < 0)
 		die(strerror(errno));
-	g_term.child = 0;
-	g_term.delimiter = 0;
-	g_term.suspended_cat = 0;
-	g_term.is_suspended = 1;
-	g_term.top = 0;
-	g_term.signaled = 0;
+	terminfo->delimiter = 0;
+	terminfo->suspended_cat = 0;
+	terminfo->is_suspended = 1;
+	terminfo->top = 0;
+	terminfo->signaled = 0;
 }

@@ -6,17 +6,17 @@
 /*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/27 15:04:58 by gimartin          #+#    #+#             */
-/*   Updated: 2022/06/14 14:18:38 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/06/15 15:51:00 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	sup_builtin(t_command *cmd)
+void	sup_builtin(t_command *cmd, t_terminfo *terminfo)
 {
 	char	*ret;
 
-	ret = pwd();
+	ret = pwd(terminfo);
 	if (cmd->to_pipe)
 		define_pipe(cmd);
 	if (cmd->to_pipe_to)
@@ -25,28 +25,27 @@ void	sup_builtin(t_command *cmd)
 	free(ret);
 }
 
-int	builtin(t_command *cmd)
+int	builtin(t_command *cmd, t_terminfo *terminfo)
 {
 	if (!cmd->cmd)
 		return (0);
 	if (!ft_strncmp(cmd->cmd, "pwd\0", 4))
-		sup_builtin(cmd);
+		sup_builtin(cmd, terminfo);
 	else if (!ft_strncmp(cmd->cmd, "cd\0", 3))
-		cd(cmd);
+		cd(cmd, terminfo);
 	else if (!ft_strncmp(cmd->cmd, "echo\0", 5))
-		echo(cmd);
+		echo(cmd, terminfo);
 	else if (!ft_strncmp(cmd->cmd, "exit\0", 5))
-		exit_cmd(cmd);
+		exit_cmd(cmd, terminfo);
 	else if (!ft_strncmp(cmd->cmd, "env\0", 4))
-		env(cmd);
+		env(cmd, terminfo);
 	else if (!ft_strncmp(cmd->cmd, "export\0", 7))
-		export(cmd);
+		export(cmd, terminfo);
 	else if (!ft_strncmp(cmd->cmd, "unset\0", 6))
-		unset(cmd);
+		unset(cmd, terminfo);
 	else
 		return (0);
 	if (cmd->to_pipe || cmd->to_pipe_to || cmd->redir_in || cmd->redir_out)
-		restore_fd(cmd);
-	g_term.child = 0;
+		restore_fd(cmd, terminfo);
 	return (1);
 }

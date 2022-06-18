@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   logical.c                                          :+:      :+:    :+:   */
+/*   chain.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gimartin <gimartin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/28 14:29:19 by gimartin          #+#    #+#             */
-/*   Updated: 2022/05/24 18:38:47 by gimartin         ###   ########.fr       */
+/*   Updated: 2022/06/15 15:46:19 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	unit_len2(char *line)
+int	unit_len(char *line)
 {
 	int	i;
 	int	ret;
@@ -41,7 +41,7 @@ int	unit_len2(char *line)
 	}
 }
 
-int	next_unit2(char *line)
+int	next_unit(char *line)
 {
 	int	i;
 	int	ret;
@@ -70,7 +70,7 @@ int	next_unit2(char *line)
 	}
 }
 
-int	next_logic_unit(char **l, int *lvl)
+int	next_chained_unit(char **l, int *lvl)
 {
 	int	i;
 	int	n_lvl;
@@ -90,21 +90,21 @@ int	next_logic_unit(char **l, int *lvl)
 	return (i);
 }
 
-void	start_thinking(char **u_lines, t_command *cmd)
+void	remove_handcuffs(char **u_lines, t_command *cmd, t_terminfo *terminfo)
 {
 	int	*exits;
 	int	c[2];
 
 	exits = NULL;
 	create_exits(&exits, u_lines);
-	c[0] = 0;
-	c[1] = 0;
+	ft_bzero((void *)c, 8);
 	while (u_lines[c[0]])
 	{
-		if (ft_isalnum(u_lines[c[0]][0]) && split_command(u_lines[c[0]], cmd))
+		if (ft_isalnum(u_lines[c[0]][0])
+			&& split_command(u_lines[c[0]], cmd, terminfo))
 		{
-			execute_tree(cmd);
-			exits[c[1]] = g_term.last_exit;
+			execute_tree(cmd, terminfo);
+			exits[c[1]] = terminfo->last_exit;
 		}
 		if (u_lines[c[0]][0] == '(')
 			c[1]++;
@@ -112,14 +112,14 @@ void	start_thinking(char **u_lines, t_command *cmd)
 			c[1]--;
 		else if ((!ft_strncmp("&&", u_lines[c[0]], 2) && exits[c[1]] != 0)
 			|| (!ft_strncmp("||", u_lines[c[0]], 2) && exits[c[1]] == 0))
-			c[0] += next_logic_unit(&u_lines[c[0]], &c[1]);
+			c[0] += next_chained_unit(&u_lines[c[0]], &c[1]);
 		if (u_lines[c[0]])
 			c[0]++;
 	}
 	free(exits);
 }
 
-void	get_logical(char *line, t_command *cmd)
+void	get_keys(char *line, t_command *cmd, t_terminfo *terminfo)
 {
 	int		i;
 	int		j;
@@ -130,12 +130,12 @@ void	get_logical(char *line, t_command *cmd)
 	malloc_c_ptr(&u_lines, count_units(line, 0) + 1);
 	while (i < count_units(line, 0))
 	{
-		malloc_c(&u_lines[i], unit_len2(&line[j]) + 1);
-		ft_strlcpy(u_lines[i], &line[j], unit_len2(&line[j]) + 1);
+		malloc_c(&u_lines[i], unit_len(&line[j]) + 1);
+		ft_strlcpy(u_lines[i], &line[j], unit_len(&line[j]) + 1);
 		i++;
-		j += next_unit2(&line[j]);
+		j += next_unit(&line[j]);
 	}
 	u_lines[i] = NULL;
-	start_thinking(u_lines, cmd);
+	remove_handcuffs(u_lines, cmd, terminfo);
 	free_array_of_array(u_lines);
 }

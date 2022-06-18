@@ -6,66 +6,70 @@
 /*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/13 15:49:35 by gimartin          #+#    #+#             */
-/*   Updated: 2022/06/10 14:13:53 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/06/15 15:13:25 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	**sup_clean_cmd(char **tmp, int start, t_command *cmd, int *j)
+static char	**cleaning_loop(char **tmp, int j[2],
+	t_command *cmd, t_terminfo *terminfo)
 {
 	char	**cleaned;
 
-	cleaned = malloc(sizeof(char *) * count_cleaned_cmd(&tmp[start]) + 1);
-	while (tmp[start] && ft_strncmp(tmp[start], "|\0", 2))
+	cleaned = malloc(sizeof(char *) * count_cleaned_cmd(&tmp[j[0]]) + 1);
+	while (tmp[j[0]] && ft_strncmp(tmp[j[0]], "|\0", 2))
 	{
-		if (is_redir(tmp[start]) >= 0)
+		if (is_redir(tmp[j[0]]) >= 0)
 		{
-			if (check_redirection(&tmp[start], cmd) != -1)
-				start++;
+			if (check_redirection(&tmp[j[0]], cmd, terminfo) != -1)
+				j[0]++;
 			else
 			{
-				cleaned[*j] = NULL;
+				cleaned[j[1]] = NULL;
 				free_array_of_array(cleaned);
 				return (NULL);
 			}
 		}
 		else
 		{
-			malloc_c(&cleaned[*j], ft_strlen(tmp[start]) + 1);
-			ft_strlcpy(cleaned[(*j)++], tmp[start], ft_strlen(tmp[start]) + 1);
+			malloc_c(&cleaned[j[1]], ft_strlen(tmp[j[0]]) + 1);
+			ft_strlcpy(cleaned[(j[1])++], tmp[j[0]], ft_strlen(tmp[j[0]]) + 1);
 		}
-		start++;
+		j[0]++;
 	}
 	return (cleaned);
 }
 
-char	**clean_command(char **tmp, t_command *cmd, int start)
+char	**clean_command(char **tmp, t_command *cmd,
+	int start, t_terminfo *terminfo)
 {
-	int		j;
+	int		j[2];
 	char	**cleaned;
 
-	j = 0;
-	cleaned = sup_clean_cmd(tmp, start, cmd, &j);
+	j[0] = start;
+	j[1] = 0;
+	cleaned = cleaning_loop(tmp, j, cmd, terminfo);
 	if (cleaned == NULL)
 		return (NULL);
 	if (cleaned[0])
-		cleaned[j] = NULL;
+		cleaned[j[1]] = NULL;
 	else
 	{
 		free(cleaned);
-		restore_all(cmd);
+		restore_all(cmd, terminfo);
 		return (NULL);
 	}
 	return (cleaned);
 }
 
-void	sup_fill_cmd(char **original, t_command *cmd, int *c)
+void	filling_chain(char **original, t_command *cmd,
+	int *c, t_terminfo *terminfo)
 {
 	if (original[c[0]])
 	{
 		fill_prev(cmd, c, original);
-		fill_next(cmd, c, original);
+		fill_next(cmd, c, original, terminfo);
 	}
 	if (cmd->first)
 		free_array_of_array(original);
@@ -74,21 +78,21 @@ void	sup_fill_cmd(char **original, t_command *cmd, int *c)
 	check_wildcards(cmd);
 }
 
-int	fill_cmd_fields(char **tmp, t_command *cmd, int start)
+int	fill_cmd_fields(char **tmp, t_command *cmd, int start, t_terminfo *terminfo)
 {
 	int		c[3];
 	char	**cleaned;
 	char	**original;
 
 	original = tmp;
-	cleaned = clean_command(tmp, cmd, start);
+	cleaned = clean_command(tmp, cmd, start, terminfo);
 	if (!cleaned)
 		return (-1);
 	tmp = cleaned;
 	if (!tmp[0])
 	{
 		free(tmp);
-		restore_fd(cmd);
+		restore_fd(cmd, terminfo);
 		return (-1);
 	}
 	c[2] = count_args(tmp);
@@ -97,12 +101,12 @@ int	fill_cmd_fields(char **tmp, t_command *cmd, int start)
 	c[1] = 0;
 	cpy_and_slide(tmp, c, start, cmd);
 	c[0] += start;
-	sup_fill_cmd(original, cmd, c);
+	filling_chain(original, cmd, c, terminfo);
 	free_array_of_array(tmp);
 	return (0);
 }
 
-int	split_command(char *line, t_command *cmd)
+int	split_command(char *line, t_command *cmd, t_terminfo *terminfo)
 {
 	char	**tmp;
 
@@ -114,7 +118,7 @@ int	split_command(char *line, t_command *cmd)
 	{
 		tmp = split_fields(line, ' ');
 		cmd->first = 1;
-		if (fill_cmd_fields(tmp, cmd, 0) == -1)
+		if (fill_cmd_fields(tmp, cmd, 0, terminfo) == -1)
 			return (0);
 	}
 	return (1);

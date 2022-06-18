@@ -6,7 +6,7 @@
 /*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/27 15:10:12 by gimartin          #+#    #+#             */
-/*   Updated: 2022/06/14 14:24:36 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/06/15 15:02:13 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,8 +69,14 @@ void	free_array_of_array(char **arr)
 	if (arr[i])
 	{
 		while (arr[i])
-			free(arr[i++]);
+		{
+			free(arr[i]);
+			arr[i++] = NULL;
+		}
 	}
 	if (arr)
+	{
 		free(arr);
+		arr = NULL;
+	}
 }

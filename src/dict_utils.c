@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   export2.c                                          :+:      :+:    :+:   */
+/*   dict_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gimartin <gimartin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/05/09 13:36:08 by gimartin          #+#    #+#             */
-/*   Updated: 2022/06/09 12:55:35 by gimartin         ###   ########.fr       */
+/*   Created: 2022/06/15 10:59:10 by ddelladi          #+#    #+#             */
+/*   Updated: 2022/06/15 12:32:18 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "minishell.h"
 
 int	key_len(char *line)
 {
@@ -40,16 +40,24 @@ int	value_len(char *line)
 	return (i - j);
 }
 
-int	check_export(t_command *cmd)
+int	var_exists(t_dict *new, t_command *cmd, t_terminfo *terminfo)
 {
-	if (cmd->args[1][0] == '=')
-	{
-		ft_putstr_fd(ft_getenv("SHELL"), 2);
-		ft_putstr_fd(": ", 2);
-		ft_putstr_fd(cmd->args[1] + 1, 2);
-		ft_putendl_fd(" not found", 2);
-		g_term.last_exit = 127;
-		return (1);
-	}
-	return (0);
+	new->value = NULL;
+	new->value = search_vars_value(cmd->args[1], terminfo->var);
+	if (!new->value)
+		return (0);
+	return (1);
+}
+
+int	equal_char_index(t_command *cmd, int ind)
+{
+	int	j;
+
+	j = 0;
+	while (cmd->args[ind][j] && cmd->args[ind][j] != '='
+		&& ft_strncmp(&cmd->args[ind][j], "+=", 2))
+		j++;
+	if (!ft_strncmp(&cmd->args[ind][j], "+=", 2))
+		j++;
+	return (j);
 }

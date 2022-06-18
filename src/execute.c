@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gimartin <gimartin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/27 15:05:42 by gimartin          #+#    #+#             */
-/*   Updated: 2022/06/06 15:00:27 by gimartin         ###   ########.fr       */
+/*   Updated: 2022/06/17 18:11:10 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,66 +40,85 @@ void	rewrite_args(t_command *cmd)
 	}
 }
 
-void	next_level(void)
+int	permitted(t_command *tmp, t_terminfo *terminfo)
 {
-	char	*bef;
-
-	bef = ft_itoa((ft_atoi(ft_getenv("SHLVL")) + 1));
-	change_exist_var_in_dict("SHLVL", bef, g_term.env);
-	free_array_of_array(g_term.glob_environ);
-	transform_environ(g_term.env);
-	free(bef);
+	if (!access(tmp->cmd, F_OK) && access(tmp->cmd, X_OK) == -1)
+	{
+		terminfo->last_exit = 126;
+		ft_putstr_fd("minishell: ", STDERR_FILENO);
+		ft_putstr_fd(tmp->cmd, STDERR_FILENO);
+		ft_putstr_fd(": ", STDERR_FILENO);
+		ft_putendl_fd(strerror(errno), STDERR_FILENO);
+		return (0);
+	}
+	return (1);
 }
 
-int	env_size(t_dict *env)
+int	preliminary(t_command *tmp, t_terminfo *terminfo)
 {
-	int		i;
-	t_dict	*tmp;
+	t_command	*bench;
 
-	i = 0;
-	tmp = env;
+	bench = tmp->next;
+	if (!tmp->cmd && !terminfo->delimiter)
+	{
+		treat_var_decl(tmp, terminfo);
+		return (1);
+	}
+	else if (!tmp->cmd && tmp->args && ft_strchr(tmp->args[0], '=')
+		&& tmp->args[0][0] != '=' && tmp->args[1])
+		rewrite_args(tmp);
+	else if (infinite_exit(tmp) && bench && !ft_strncmp(bench->cmd, "exit\0", 5))
+	{
+		free_commands(tmp);
+		return (1);
+	}
+	return (0);
+}
+
+void	write_and_close(t_command *tmp)
+{
+	ft_putstr_fd(tmp->input_line, tmp->output_fd);
+	close(tmp->output_fd);
+}
+
+int	standard_execution(t_command *tmp, t_terminfo *terminfo)
+{
 	while (tmp)
 	{
-		i++;
+		if (!builtin(tmp, terminfo))
+		{
+			if (tmp->input_line || (terminfo->delimiter
+					&& !tmp->input_line && !tmp->cmd))
+				write_and_close(tmp);
+			else if (ft_strchr(tmp->cmd, '/') == NULL)
+			{
+				if (find_script(tmp, terminfo) == -1)
+					cmd_not_found(tmp, terminfo);
+			}
+			else
+			{
+				if (is_directory(tmp, terminfo)
+					|| !permitted(tmp, terminfo))
+					return (0);
+				born_child(tmp, terminfo);
+			}
+		}
 		tmp = tmp->next;
 	}
-	return (i);
+	return (1);
 }
 
-void	sup_transform(t_dict *tmp, int i)
+void	execute_tree(t_command *cmd, t_terminfo *terminfo)
 {
-	if (tmp->value)
-	{
-		malloc_c(&g_term.glob_environ[i], ft_strlen(tmp->key)
-			+ ft_strlen(tmp->value) + 2);
-		ft_strlcpy(g_term.glob_environ[i], tmp->key,
-			ft_strlen(tmp->key) + 1);
-		ft_strlcat(g_term.glob_environ[i], "=",
-			ft_strlen(g_term.glob_environ[i]) + 2);
-		ft_strlcat(g_term.glob_environ[i], tmp->value,
-			ft_strlen(g_term.glob_environ[i]) + ft_strlen(tmp->value) + 1);
-	}
-	else
-	{
-		malloc_c(&g_term.glob_environ[i], ft_strlen(tmp->key) + 1);
-		ft_strlcpy(g_term.glob_environ[i], tmp->key,
-			ft_strlen(tmp->key) + 1);
-	}
-}
+	t_command	*tmp;
+	int			ret;
 
-void	transform_environ(t_dict *env)
-{
-	t_dict	*tmp;
-	int		i;
-
-	i = 0;
-	malloc_c_ptr(&g_term.glob_environ, env_size(env) + 1);
-	tmp = env;
-	while (tmp)
-	{
-		sup_transform(tmp, i);
-		i++;
-		tmp = tmp->next;
-	}
-	g_term.glob_environ[i] = NULL;
+	tmp = cmd;
+	if (preliminary(tmp, terminfo))
+		return ;
+	ret = standard_execution(tmp, terminfo);
+	if (!ret)
+		return ;
+	if (!terminfo->delimiter)
+		free_commands(cmd);
 }

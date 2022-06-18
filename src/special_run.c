@@ -6,89 +6,85 @@
 /*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/24 12:33:48 by ddelladi          #+#    #+#             */
-/*   Updated: 2022/05/24 12:45:37 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/06/15 10:18:45 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	c_run(char **argv)
+int	c_run(char **argv, t_terminfo *terminfo)
 {
 	int			i;
-	t_command	cmd;
 
 	i = 0;
 	while (argv[i])
 		i++;
 	argv[i] = NULL;
-	transform_environ(g_term.env);
-	malloc_c(&g_term.input.line, ft_strlen(argv[2]) + 1);
-	ft_strlcpy(g_term.input.line, argv[2], ft_strlen(argv[2]) + 1);
-	init_cmd(&cmd);
-	sup_loop(cmd);
-	free(g_term.input.line);
-	reset_term();
-	return ;
+	transform_environ(terminfo);
+	malloc_c(&terminfo->input->line, ft_strlen(argv[2]) + 1);
+	ft_strlcpy(terminfo->input->line, argv[2], ft_strlen(argv[2]) + 1);
+	execution_loop(terminfo);
+	free(terminfo->input->line);
+	reset_term(terminfo);
+	return (0);
 }
 
-void	fd_error(char *line)
+void	fd_error(char *line, t_terminfo *terminfo)
 {
-	ft_putstr_fd(ft_getenv("SHELL"), 2);
+	ft_putstr_fd(ft_getenv("SHELL", terminfo), 2);
 	ft_putstr_fd(": ", 2);
 	ft_putstr_fd(line, 2);
 	ft_putstr_fd(": ", 2);
 	die(strerror(errno));
 }
 
-void	read_and_execute(char *line, t_command *cmd)
+void	read_and_execute(char *line, t_terminfo *terminfo)
 {
-	malloc_c(&g_term.input.line, ft_strlen(line) + 1);
-	ft_strlcpy(g_term.input.line, line, ft_strlen(line));
-	init_cmd(cmd);
-	sup_loop(*cmd);
-	free(g_term.input.line);
+	malloc_c(&terminfo->input->line, ft_strlen(line) + 1);
+	ft_strlcpy(terminfo->input->line, line, ft_strlen(line));
+	execution_loop(terminfo);
+	free(terminfo->input->line);
 }
 
-void	script_run(char **argv)
+int	script_run(char **argv, t_terminfo *terminfo)
 {
 	int			i;
 	int			fd;
 	char		*line;
-	t_command	cmd;
 
 	i = 0;
 	while (argv[i])
 		i++;
 	argv[i] = NULL;
-	transform_environ(g_term.env);
+	transform_environ(terminfo);
 	fd = open(argv[1], O_RDONLY);
 	if (fd < 0)
-		fd_error(argv[1]);
+		fd_error(argv[1], terminfo);
 	line = get_next_line(fd);
 	while (line)
 	{
 		if (ft_strncmp("#!/bin/bash", line, 11) && ft_strlen(line) > 1)
-			read_and_execute(line, &cmd);
+			read_and_execute(line, terminfo);
 		free(line);
 		line = get_next_line(fd);
 	}
 	close(fd);
-	reset_term();
-	return ;
+	reset_term(terminfo);
+	return (0);
 }
 
-void	suspended_cat(void)
+void	suspended_cat(t_terminfo *terminfo)
 {
 	int	i;
 
 	i = 0;
-	while (i < g_term.suspended_cat)
+	while (i < terminfo->suspended_cat)
 	{
-		g_term.input.line = readline("");
-		if (!ft_strlen(g_term.input.line))
+		terminfo->input->line = readline("");
+		if (!ft_strlen(terminfo->input->line))
 			ft_putchar_fd('\n', STDOUT_FILENO);
-		free(g_term.input.line);
-		g_term.input.line = NULL;
+		free(terminfo->input->line);
+		terminfo->input->line = NULL;
 		i++;
 	}
 }

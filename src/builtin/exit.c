@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ddelladi <ddelladi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/27 15:03:27 by gimartin          #+#    #+#             */
-/*   Updated: 2022/06/03 18:55:07 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/06/15 12:10:10 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	is_number(char *line)
 	return (1);
 }
 
-int	sup_exit_cmd(t_command *cmd, int i)
+int	check_exit_cmd(t_command *cmd, int i)
 {
 	if (i > 2)
 	{
@@ -43,29 +43,30 @@ int	sup_exit_cmd(t_command *cmd, int i)
 	return (1);
 }
 
-void	exit_cmd(t_command *cmd)
+void	exit_cmd(t_command *cmd, t_terminfo *terminfo)
 {
 	int	i;
 
 	i = 0;
 	while (cmd->args[i] != NULL)
 		i++;
-	if (!sup_exit_cmd(cmd, i))
+	if (!check_exit_cmd(cmd, i))
 		return ;
-	reset_term();
+	if (cmd->args[1] && ft_atoi(cmd->args[1]) < 0)
+		i = 256 - ft_atoi(cmd->args[1]);
+	else if (cmd->args[1])
+		i = ft_atoi(cmd->args[1]);
+	else
+		i = 0;
+	reset_term(terminfo);
 	ft_putendl_fd("exit", STDOUT_FILENO);
 	free_array_of_array(cmd->args);
 	if (cmd->portions)
 		free_array_of_array(cmd->portions);
 	free(cmd->cmd);
-	free_array_of_array(g_term.glob_environ);
-	free_dict(g_term.env);
-	free_dict(g_term.var);
-	free(g_term.input.line);
-	if (i == 1)
-		exit(0);
-	else if (ft_atoi(cmd->args[i - 1]) < 0)
-		exit(256 - ft_atoi(cmd->args[i - 1]));
-	else
-		exit(ft_atoi(cmd->args[i - 1]));
+	free_array_of_array(terminfo->glob_environ);
+	free_dict(terminfo->env);
+	free_dict(terminfo->var);
+	free(terminfo->input->line);
+	exit(i);
 }

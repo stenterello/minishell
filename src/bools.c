@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   bools.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gimartin <gimartin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/27 15:04:49 by gimartin          #+#    #+#             */
-/*   Updated: 2022/05/09 15:13:40 by gimartin         ###   ########.fr       */
+/*   Updated: 2022/06/17 14:44:59 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ int	is_var_def(char *line)
 	return (sup_is_var_def(line, i, s_quot, d_quot));
 }
 
-int	check_error(char *line)
+int	check_error(char *line, t_terminfo *terminfo)
 {
 	int	i;
 
@@ -59,7 +59,7 @@ int	check_error(char *line)
 	while (line[i])
 	{
 		if ((!ft_strncmp(&line[i], "&&", 2) || !ft_strncmp(&line[i], "||", 2))
-			&& line[i + 2] && is_logical_token(line[i + 2]))
+			&& line[i + 2] && is_chaining_token(line[i + 2]))
 		{
 			ft_putstr_fd("minishell: syntax error near unexpected token \"", 2);
 			ft_putchar_fd(line[i + 2], 2);
@@ -71,22 +71,22 @@ int	check_error(char *line)
 			while (line[i] == ' ')
 				i++;
 			if (is_token(&line[i]))
-				return (syntax_error_no_arr());
+				return (syntax_error_no_arr(terminfo));
 		}
 		i++;
 	}
 	return (0);
 }
 
-void	check(char *typed, t_input *input)
+void	check(char *typed, t_terminfo *terminfo)
 {
 	int	i;
 	int	open[4];
 
 	i = 0;
-	input->s_quot = 0;
-	input->d_quot = 0;
-	input->to_expand = 0;
+	terminfo->input->s_quot = 0;
+	terminfo->input->d_quot = 0;
+	terminfo->input->to_expand = 0;
 	open[0] = 0;
 	open[1] = 0;
 	open[2] = 0;
@@ -96,13 +96,13 @@ void	check(char *typed, t_input *input)
 		ft_putendl_fd("exit", STDOUT_FILENO);
 		exit(0);
 	}
-	if (check_error(typed))
+	if (check_error(typed, terminfo))
 	{
-		input->with_error = 1;
+		terminfo->input->with_error = 1;
 		return ;
 	}
-	i = sup_check(typed, i, input, open) - 1 ;
-	sup_check2(typed, input, open, i);
+	i = sup_check(typed, i, terminfo, open) - 1 ;
+	sup_check2(typed, terminfo->input, open, i);
 }
 
 int	is_open(char *typed, int limit)

@@ -6,7 +6,7 @@
 /*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/27 15:11:01 by gimartin          #+#    #+#             */
-/*   Updated: 2022/06/10 14:35:51 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/06/15 10:27:16 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ void	check_pipe(char *line, t_command *cmd)
 	}
 }
 
-int	sup_check_red(char **tmp, int i, t_command *cmd)
+int	sup_check_red(char **tmp, int i, t_command *cmd, t_terminfo *terminfo)
 {
 	while (tmp[i] && is_redir(tmp[i]) == 0)
 	{
@@ -88,10 +88,10 @@ int	sup_check_red(char **tmp, int i, t_command *cmd)
 			ft_putstr_fd(tmp[i + 1], STDERR_FILENO);
 			ft_putstr_fd(": ", STDERR_FILENO);
 			ft_putendl_fd(strerror(errno), STDERR_FILENO);
-			restore_fd(cmd);
+			restore_fd(cmd, terminfo);
 			return (-1);
 		}
-		else if (define_input(tmp[++i], cmd) != -1)
+		else if (define_input(tmp[++i], cmd, terminfo) != -1)
 			i++;
 		else
 			return (-1);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_utils2.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gimartin <gimartin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/24 18:50:11 by gimartin          #+#    #+#             */
-/*   Updated: 2022/05/24 19:05:05 by gimartin         ###   ########.fr       */
+/*   Updated: 2022/06/14 15:40:46 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,7 @@ char	*find_matching(char *line)
 	return (NULL);
 }
 
-void	unexpected(char *typed)
+void	unexpected(char *typed, t_terminfo *terminfo)
 {
 	char	*match;
 
@@ -111,11 +111,11 @@ void	unexpected(char *typed)
 		ft_putendl_fd("\'", 2);
 	}
 	ft_putendl_fd("bash: syntax error: unexpected end of file", 2);
-	free_array_of_array(g_term.glob_environ);
+	free_array_of_array(terminfo->glob_environ);
 	add_history(typed);
 	if (match)
 		free(match);
 	if (typed)
 		free(typed);
-	main_loop();
+	init_and_take_input(terminfo);
 }

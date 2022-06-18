@@ -6,13 +6,13 @@
 /*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/27 15:10:22 by gimartin          #+#    #+#             */
-/*   Updated: 2022/05/11 14:43:06 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/06/14 18:03:05 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	define_input(char *line, t_command *cmd)
+int	define_input(char *line, t_command *cmd, t_terminfo *terminfo)
 {
 	if (cmd->input_fd != 0)
 	{
@@ -23,7 +23,7 @@ int	define_input(char *line, t_command *cmd)
 	cmd->input_fd = open(line, O_RDONLY, 0664);
 	if (cmd->input_fd < 0)
 	{
-		ft_putstr_fd(ft_getenv("SHELL"), 2);
+		ft_putstr_fd(ft_getenv("SHELL", terminfo), 2);
 		ft_putstr_fd(": ", 2);
 		ft_putstr_fd(line, 2);
 		ft_putstr_fd(": ", 2);

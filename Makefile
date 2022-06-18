@@ -7,10 +7,9 @@ SRC=main.c \
 	utils.c \
 	utils2.c \
 	utils3.c \
+	dict_utils.c \
 	execute.c \
 	execute2.c \
-	execute3.c \
-	execute4.c \
 	find_script.c \
 	init_utils.c \
 	init_utils2.c \
@@ -27,20 +26,21 @@ SRC=main.c \
 	bools4.c \
 	count.c \
 	memory.c \
+	memory2.c \
 	redirections.c \
 	redirections_utils.c \
 	redirections_utils2.c \
 	heredoc.c \
 	heredoc2.c \
 	heredoc3.c \
+	heredoc4.c \
 	split_fields.c \
 	split_fields2.c \
 	signal.c \
 	error_handling.c \
-	logical.c \
-	logical2.c \
-	logical3.c \
-	logical4.c \
+	chain.c \
+	chain2.c \
+	chain3.c \
 	wildcards.c \
 	wildcards2.c \
 	wildcards_bools.c \
@@ -49,7 +49,8 @@ SRC=main.c \
 	wildcards_count2.c \
 	wildcards_utils.c \
 	wildcards_utils2.c \
-	wildcards_utils3.c 
+	wildcards_utils3.c \
+	child_process.c
 SRCS=$(addprefix src/, $(SRC))
 OBJS=$(SRCS:.c=.o)
 BUILTIN=pwd.c \
@@ -59,8 +60,7 @@ BUILTIN=pwd.c \
 		exit.c \
 		env.c \
 		export.c \
-		export2.c \
-		export3.c \
+		export_utils.c \
 		unset.c
 BUILTINS=$(addprefix src/builtin/, $(BUILTIN))
 BUILTIN_OBJS=$(BUILTINS:.c=.o)

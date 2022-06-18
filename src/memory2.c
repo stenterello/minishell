@@ -1,41 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   execute2.c                                         :+:      :+:    :+:   */
+/*   memory2.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/04/27 15:05:46 by gimartin          #+#    #+#             */
-/*   Updated: 2022/06/17 18:11:02 by ddelladi         ###   ########.fr       */
+/*   Created: 2022/06/17 18:04:15 by ddelladi          #+#    #+#             */
+/*   Updated: 2022/06/17 18:04:20 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	infinite_exit(t_command *tmp)
-{
-	t_command	*next;
-
-	next = tmp;
-	while (next)
-	{
-		if (tmp->cmd && ft_strncmp(tmp->cmd, "exit\0", 5))
-			return (0);
-		next = next->next;
-	}
-	return (1);
-}
-
-void	restore_all(t_command *cmd, t_terminfo *terminfo)
+void	free_commands(t_command *cmd)
 {
 	t_command	*tmp;
+	int			i;
 
+	i = 0;
 	tmp = cmd;
 	while (tmp)
 	{
-		restore_fd(tmp, terminfo);
+		i = 0;
+		if (tmp->args)
+		{
+			while (tmp->args[i])
+				free(tmp->args[i++]);
+			free(tmp->args);
+		}
+		if (tmp->cmd)
+			free(tmp->cmd);
+		if (tmp->input_line)
+			free(tmp->input_line);
+		if (!tmp->first)
+			free(tmp);
 		tmp = tmp->next;
 	}
-	return ;
+	tmp = cmd;
 }
-

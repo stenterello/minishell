@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gimartin <gimartin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/27 15:04:14 by gimartin          #+#    #+#             */
-/*   Updated: 2022/05/09 14:38:56 by gimartin         ###   ########.fr       */
+/*   Updated: 2022/06/15 15:48:00 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int	var_n_len(char *variable)
 	return (i);
 }
 
-char	*search_vars(char *var_name, t_dict *where)
+char	*search_vars_value(char *var_name, t_dict *where)
 {
 	t_dict	*tmp;
 	char	*ret;
@@ -80,7 +80,7 @@ char	*sup_take(t_input *input, int init_len, char *var_name, char *var1)
 	return (ret);
 }
 
-void	take_variable(char *var1, t_input *input, int init_len)
+void	take_variable(char *var1, t_terminfo *terminfo, int init_len)
 {
 	int		i;
 	char	*var_name;
@@ -96,15 +96,15 @@ void	take_variable(char *var1, t_input *input, int init_len)
 	}
 	var_name[i] = '\0';
 	if (!ft_strncmp(var_name, "?", 1))
-		input->expanded = ft_itoa(g_term.last_exit);
+		terminfo->input->expanded = ft_itoa(terminfo->last_exit);
 	else
-		input->expanded = search_vars(var_name, g_term.env);
-	if (input->expanded == NULL)
-		input->expanded = search_vars(var_name, g_term.var);
-	if (input->expanded == NULL)
-		input->expanded = ft_calloc(1, sizeof(char));
-	ret = sup_take(input, init_len, var_name, var1);
-	free(input->line);
-	input->line = ret;
-	free(input->expanded);
+		terminfo->input->expanded = search_vars_value(var_name, terminfo->env);
+	if (terminfo->input->expanded == NULL)
+		terminfo->input->expanded = search_vars_value(var_name, terminfo->var);
+	if (terminfo->input->expanded == NULL)
+		terminfo->input->expanded = ft_calloc(1, sizeof(char));
+	ret = sup_take(terminfo->input, init_len, var_name, var1);
+	free(terminfo->input->line);
+	terminfo->input->line = ret;
+	free(terminfo->input->expanded);
 }

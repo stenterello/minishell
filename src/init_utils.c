@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gimartin <gimartin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/27 15:06:53 by gimartin          #+#    #+#             */
-/*   Updated: 2022/05/24 19:02:05 by gimartin         ###   ########.fr       */
+/*   Updated: 2022/06/17 14:38:14 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,35 +40,35 @@ void	init_cmd(t_command *cmd)
 	cmd->portions = NULL;
 }
 
-void	sup_take_input(char *typed, char *tmp, t_input *input)
+void	more_take_input(char *typed, char *tmp, t_terminfo *terminfo)
 {
 	tmp = readline("> ");
 	if (!tmp)
-		unexpected(typed);
+		unexpected(typed, terminfo);
 	ft_strlcat(typed, tmp, ft_strlen(typed) + ft_strlen(tmp) + 2);
 	free(tmp);
-	check(typed, input);
+	check(typed, terminfo);
 }
 
-void	take_input(t_input *input)
+void	take_input(t_terminfo *terminfo)
 {
 	char	*typed;
 	char	*tmp;
 
 	tmp = NULL;
 	typed = readline("whisper_hole: ");
-	check(typed, input);
+	check(typed, terminfo);
 	if (is_heredoc(typed))
 	{
-		if (treat_heredoc(typed))
+		if (init_heredoc(typed, terminfo))
 			return ;
 	}
-	while (input->is_open)
-		sup_take_input(typed, tmp, input);
+	while (terminfo->input->is_open)
+		more_take_input(typed, tmp, terminfo);
 	tmp = ft_strtrim(typed, " ");
 	free(typed);
-	malloc_c(&input->line, ft_strlen(tmp) + 1);
-	ft_strlcpy(input->line, tmp, ft_strlen(tmp) + 1);
+	malloc_c(&terminfo->input->line, ft_strlen(tmp) + 1);
+	ft_strlcpy(terminfo->input->line, tmp, ft_strlen(tmp) + 1);
 	free(tmp);
 }
 

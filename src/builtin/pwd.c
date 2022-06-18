@@ -6,13 +6,13 @@
 /*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/27 15:03:33 by gimartin          #+#    #+#             */
-/*   Updated: 2022/05/03 21:56:00 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/06/15 15:49:08 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-char	*pwd(void)
+char	*pwd(t_terminfo *terminfo)
 {
 	char	*path;
 	int		i;
@@ -26,6 +26,6 @@ char	*pwd(void)
 		i++;
 		path = getcwd(path, i);
 	}
-	g_term.last_exit = 0;
+	terminfo->last_exit = 0;
 	return (path);
 }

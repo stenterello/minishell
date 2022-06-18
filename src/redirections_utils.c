@@ -6,7 +6,7 @@
 /*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/27 15:10:18 by gimartin          #+#    #+#             */
-/*   Updated: 2022/06/10 14:22:27 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/06/15 10:19:41 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,13 +29,13 @@ void	restore_input(t_command *cmd)
 	close(cmd->saved_in);
 }
 
-void	restore_fd(t_command *cmd)
+void	restore_fd(t_command *cmd, t_terminfo *terminfo)
 {
 	if (cmd->redir_out || cmd->to_pipe)
 		restore_output(cmd);
 	if (cmd->redir_in || cmd->to_pipe_to)
 		restore_input(cmd);
-	if (g_term.delimiter)
+	if (terminfo->delimiter)
 		restore_output(cmd);
 }
 
@@ -48,7 +48,7 @@ void	control_define1(char **tmp, t_command *cmd, int i)
 	}
 }
 
-int	check_redirection(char **tmp, t_command *cmd)
+int	check_redirection(char **tmp, t_command *cmd, t_terminfo *terminfo)
 {
 	int	i;
 
@@ -59,7 +59,7 @@ int	check_redirection(char **tmp, t_command *cmd)
 		control_define1(tmp, cmd, i);
 	else if (is_redir(tmp[i]) == 0)
 	{
-		if (sup_check_red(tmp, i, cmd) == -1)
+		if (sup_check_red(tmp, i, cmd, terminfo) == -1)
 			return (-1);
 	}
 	else if (is_redir(tmp[i]) == 1)

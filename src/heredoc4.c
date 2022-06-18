@@ -1,41 +1,48 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   execute2.c                                         :+:      :+:    :+:   */
+/*   heredoc4.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/04/27 15:05:46 by gimartin          #+#    #+#             */
-/*   Updated: 2022/06/17 18:11:02 by ddelladi         ###   ########.fr       */
+/*   Created: 2022/06/15 12:13:03 by ddelladi          #+#    #+#             */
+/*   Updated: 2022/06/15 12:13:33 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	infinite_exit(t_command *tmp)
+char	*take_key(char *str)
 {
-	t_command	*next;
+	int		i;
+	char	*ret;
 
-	next = tmp;
-	while (next)
+	i = 0;
+	ret = NULL;
+	while (str[i])
 	{
-		if (tmp->cmd && ft_strncmp(tmp->cmd, "exit\0", 5))
-			return (0);
-		next = next->next;
+		if (str[i] == '$' && !is_open(str, i))
+		{
+			i++;
+			malloc_c(&ret, key_here_len(&str[i]) + 1);
+			ft_strlcpy(ret, &str[i], key_here_len(&str[i]) + 1);
+			return (ret);
+		}
+		i++;
 	}
-	return (1);
+	return (ret);
 }
 
-void	restore_all(t_command *cmd, t_terminfo *terminfo)
+int	ft_strlen_rl(char *str)
 {
-	t_command	*tmp;
+	int	i;
 
-	tmp = cmd;
-	while (tmp)
+	i = 0;
+	while (str[i])
 	{
-		restore_fd(tmp, terminfo);
-		tmp = tmp->next;
+		if (str[i] == '\n')
+			return (++i);
+		i++;
 	}
-	return ;
+	return (i);
 }
-

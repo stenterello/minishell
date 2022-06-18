@@ -6,13 +6,13 @@
 /*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/27 15:07:01 by gimartin          #+#    #+#             */
-/*   Updated: 2022/06/14 14:20:26 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/06/15 10:14:06 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	is_logical(char *line)
+int	is_chained(char *line)
 {
 	int	i;
 

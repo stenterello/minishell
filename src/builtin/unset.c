@@ -6,7 +6,7 @@
 /*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/27 15:03:37 by gimartin          #+#    #+#             */
-/*   Updated: 2022/05/13 10:13:31 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/06/15 15:49:02 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,12 +20,13 @@ void	delete_dict_var(t_dict *tmp, int *flag)
 	*flag = 1;
 }
 
-void	sup_sd(t_dict *tmp, t_dict *tmp2, char *search, int flag)
+void	search_list_and_delete(t_dict *tmp, t_dict *tmp2,
+	char *search, int flag)
 {
 	while (tmp && !flag && tmp->next)
 	{
 		tmp2 = tmp->next;
-		if (!ft_strncmp(tmp2->key, search, ft_strlen(search)))
+		if (!ft_strncmp(tmp2->key, search, ft_strlen(search) + 1))
 		{
 			tmp->next = tmp2->next;
 			delete_dict_var(tmp2, &flag);
@@ -35,62 +36,53 @@ void	sup_sd(t_dict *tmp, t_dict *tmp2, char *search, int flag)
 	}
 }
 
-void	sup_sd2(t_dict *tmp, t_dict *tmp2, int flag, char *search)
-{
-	tmp = g_term.var;
-	if (!ft_strncmp(tmp->key, search, ft_strlen(search)))
-	{
-		g_term.var = tmp->next;
-		delete_dict_var(tmp, &flag);
-	}
-	while (tmp->next && !flag)
-	{
-		tmp2 = tmp->next;
-		if (!ft_strncmp(tmp2->key, search, ft_strlen(search)))
-		{
-			tmp->next = tmp2->next;
-			delete_dict_var(tmp2, &flag);
-			break ;
-		}
-		tmp = tmp->next;
-	}
-}
-
-void	search_and_delete(char *search)
+void	search_and_delete(char *search, t_terminfo *terminfo)
 {
 	t_dict	*tmp;
 	t_dict	*tmp2;
 	int		flag;
 
 	flag = 0;
-	if (!g_term.env)
+	if (!terminfo->env)
 		return ;
-	tmp = g_term.env;
+	tmp = terminfo->env;
 	tmp2 = tmp;
-	if (!ft_strncmp(tmp->key, search, ft_strlen(search)))
+	if (!ft_strncmp(tmp->key, search, ft_strlen(search) + 1))
 	{
-		g_term.env = tmp->next;
+		terminfo->env = tmp->next;
 		delete_dict_var(tmp, &flag);
 	}
-	sup_sd(tmp, tmp2, search, flag);
-	if (!flag && g_term.var && g_term.var->key)
-		sup_sd2(tmp, tmp2, flag, search);
+	search_list_and_delete(tmp, tmp2, search, flag);
+	if (!terminfo->var || !terminfo->var->key || flag)
+		return ;
+	tmp = terminfo->var;
+	if (!ft_strncmp(tmp->key, search, ft_strlen(search) + 1))
+	{
+		terminfo->var = tmp->next;
+		delete_dict_var(tmp, &flag);
+	}
+	search_list_and_delete(tmp, tmp2, search, flag);
 }
 
-void	unset(t_command *cmd)
+void	unset(t_command *cmd, t_terminfo *terminfo)
 {
 	int		i;
+	int		ind;
 	char	*search;
 
 	search = NULL;
-	if (!cmd->args[1])
-		return ;
-	i = ft_strlen(cmd->args[1]);
-	if (i == 0)
-		return ;
-	malloc_c(&search, i + 1);
-	ft_strlcpy(search, cmd->args[1], i + 1);
-	search_and_delete(search);
-	free(search);
-	g_term.last_exit = 0;
+	ind = 1;
+	while (cmd->args[ind])
+	{
+		i = ft_strlen(cmd->args[ind]);
+		if (i != 0)
+		{
+			malloc_c(&search, i + 1);
+			ft_strlcpy(search, cmd->args[ind], i + 1);
+			search_and_delete(search, terminfo);
+			free(search);
+		}
+		ind++;
+	}
+	terminfo->last_exit = 0;
 }

@@ -6,7 +6,7 @@
 /*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/27 15:05:51 by gimartin          #+#    #+#             */
-/*   Updated: 2022/06/10 14:48:21 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/06/17 13:32:22 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,8 @@ void	get_full_path(char *dir_name, t_command *cmd)
 	free(tmp);
 }
 
-int	search_in_dir(DIR *stream, t_command *cmd, char *dir_name)
+static int	search_in_dir(DIR *stream, t_command *cmd,
+	char *dir_name, t_terminfo *terminfo)
 {
 	struct dirent	*entry;
 
@@ -39,12 +40,12 @@ int	search_in_dir(DIR *stream, t_command *cmd, char *dir_name)
 			get_full_path(dir_name, cmd);
 			if (!access(cmd->cmd, X_OK))
 			{
-				born_child(cmd);
+				born_child(cmd, terminfo);
 				return (1);
 			}
 			else
 			{
-				permitted(cmd);
+				permitted(cmd, terminfo);
 				return (-2);
 			}
 		}
@@ -53,9 +54,10 @@ int	search_in_dir(DIR *stream, t_command *cmd, char *dir_name)
 	return (0);
 }
 
-int	sup_sup_find(char **path, DIR *stream, t_command *cmd, int is_exec)
+static int	parse_path(char **path, t_command *cmd, t_terminfo *terminfo)
 {
 	int	i;
+	DIR	*stream;
 
 	i = 0;
 	while (path[i])
@@ -68,8 +70,7 @@ int	sup_sup_find(char **path, DIR *stream, t_command *cmd, int is_exec)
 			ft_putendl_fd(strerror(errno), 2);
 			return (-1);
 		}
-		is_exec = search_in_dir(stream, cmd, path[i]);
-		if (is_exec)
+		if (search_in_dir(stream, cmd, path[i], terminfo))
 		{
 			closedir(stream);
 			free_array_of_array(path);
@@ -81,26 +82,16 @@ int	sup_sup_find(char **path, DIR *stream, t_command *cmd, int is_exec)
 	return (-1);
 }
 
-int	sup_find_script(char **path, t_command *cmd)
-{
-	int	is_exec;
-	DIR	*stream;
-
-	stream = NULL;
-	is_exec = 0;
-	return (sup_sup_find(path, stream, cmd, is_exec));
-}
-
-int	find_script(t_command *cmd)
+int	find_script(t_command *cmd, t_terminfo *terminfo)
 {
 	char	**path;
 	int		ret;
 
 	ret = -1;
-	path = ft_split(ft_getenv("PATH\0"), ':');
+	path = ft_split(ft_getenv("PATH\0", terminfo), ':');
 	if (path)
 	{
-		ret = sup_find_script(path, cmd);
+		ret = parse_path(path, cmd, terminfo);
 		if (!ret)
 			return (0);
 		free_array_of_array(path);

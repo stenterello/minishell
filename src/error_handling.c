@@ -6,18 +6,18 @@
 /*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/27 15:05:05 by gimartin          #+#    #+#             */
-/*   Updated: 2022/06/14 14:33:00 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/06/15 15:46:36 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	cmd_not_found(t_command *cmd)
+void	cmd_not_found(t_command *cmd, t_terminfo *terminfo)
 {
-	ft_putstr_fd(ft_getenv("SHELL"), STDERR_FILENO);
+	ft_putstr_fd(ft_getenv("SHELL", terminfo), STDERR_FILENO);
 	ft_putstr_fd(": command not found: ", STDERR_FILENO);
 	ft_putendl_fd(cmd->cmd, STDERR_FILENO);
-	g_term.last_exit = 127;
+	terminfo->last_exit = 127;
 }
 
 char	*last_field(char *line)
@@ -30,7 +30,7 @@ char	*last_field(char *line)
 	return (&line[++i]);
 }
 
-int	is_directory(t_command *cmd)
+int	is_directory(t_command *cmd, t_terminfo *terminfo)
 {
 	struct stat	file_stat;
 	int			i;
@@ -41,7 +41,8 @@ int	is_directory(t_command *cmd)
 		stat(cmd->cmd, &file_stat);
 		if ((file_stat.st_mode & S_IFMT) == S_IFDIR)
 		{
-			ft_putstr_fd(last_field(ft_getenv("SHELL")), STDOUT_FILENO);
+			ft_putstr_fd(last_field
+				(ft_getenv("SHELL", terminfo)), STDOUT_FILENO);
 			ft_putstr_fd(": ", STDOUT_FILENO);
 			ft_putstr_fd(cmd->cmd, STDOUT_FILENO);
 			ft_putendl_fd(": Is a directory", STDOUT_FILENO);
@@ -49,16 +50,16 @@ int	is_directory(t_command *cmd)
 				free(cmd->args[i++]);
 			free(cmd->args);
 			free(cmd->cmd);
-			g_term.last_exit = 126;
+			terminfo->last_exit = 126;
 			return (1);
 		}
 	}
 	return (0);
 }
 
-int	syntax_error_no_arr(void)
+int	syntax_error_no_arr(t_terminfo *terminfo)
 {
-	ft_putstr_fd(last_field(ft_getenv("SHELL")), 2);
+	ft_putstr_fd(last_field(ft_getenv("SHELL", terminfo)), 2);
 	ft_putendl_fd(": syntax error near unexpected token \"newline\"", 2);
 	return (1);
 }

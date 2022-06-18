@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   set_var.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ddelladi <ddelladi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/27 15:04:40 by gimartin          #+#    #+#             */
-/*   Updated: 2022/06/03 14:44:02 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/06/14 15:42:20 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,13 +95,13 @@ t_dict	*try_search(char *key, t_dict *where)
 	return (NULL);
 }
 
-t_dict	*find_ptr(char *key)
+t_dict	*find_ptr(char *key, t_terminfo *terminfo)
 {
 	t_dict	*ptr;
 
-	ptr = try_search(key, g_term.env);
+	ptr = try_search(key, terminfo->env);
 	if (!ptr)
-		ptr = try_search(key, g_term.var);
+		ptr = try_search(key, terminfo->var);
 	if (!ptr)
 		return (NULL);
 	return (ptr);

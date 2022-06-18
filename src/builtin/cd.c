@@ -6,46 +6,48 @@
 /*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/03 21:55:20 by ddelladi          #+#    #+#             */
-/*   Updated: 2022/05/10 14:18:05 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/06/15 16:30:36 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	sup_cd1(int ret, t_command *old, char *act)
+void	go_to_old_pwd(int ret, t_command *old, char *act, t_terminfo *terminfo)
 {
-	ret = chdir(ft_getenv("OLDPWD"));
+	ret = chdir(ft_getenv("OLDPWD", terminfo));
 	if (ret == -1)
 	{
-		ft_putstr_fd(last_field(ft_getenv("SHELL")), 2);
-		ft_putendl_fd(": cd: no OLDPWD in variables", 2);
-		g_term.last_exit = 1;
+		ft_putstr_fd(last_field(ft_getenv("SHELL", terminfo)), STDERR_FILENO);
+		ft_putendl_fd(": cd: no OLDPWD in variables", STDERR_FILENO);
+		terminfo->last_exit = 1;
 		return ;
 	}
-	else
-		sup_sup_cd1(old, act);
+	ft_putendl_fd(act, STDOUT_FILENO);
+	save_old_pwd(old, act, terminfo);
+	update_pwd(terminfo);
 }
 
-void	sup_cd2(int ret, t_command *old, char *act)
+void	go_to_home(int ret, t_command *old, char *act, t_terminfo *terminfo)
 {
-	ret = chdir(ft_getenv("HOME"));
+	ret = chdir(ft_getenv("HOME", terminfo));
 	if (ret == -1)
 	{
 		ft_putendl_fd("minishell: cd: HOME not set", 2);
-		g_term.last_exit = 1;
+		terminfo->last_exit = 1;
+		return ;
 	}
-	else
-		sup_sup_cd2(old, act);
+	save_old_pwd(old, act, terminfo);
+	update_pwd(terminfo);
 }
 
-int	sup_second_cd3(char **dest, t_command *cmd)
+int	get_home_path(char **dest, t_command *cmd, t_terminfo *terminfo)
 {
-	if (ft_getenv("HOME") != NULL)
+	if (ft_getenv("HOME", terminfo) != NULL)
 	{
-		malloc_c(dest, ft_strlen(ft_getenv("HOME")
+		malloc_c(dest, ft_strlen(ft_getenv("HOME", terminfo)
 				+ ft_strlen(cmd->args[1])));
-		ft_strlcpy(*dest, ft_getenv("HOME"),
-			ft_strlen(ft_getenv("HOME")) + 1);
+		ft_strlcpy(*dest, ft_getenv("HOME", terminfo),
+			ft_strlen(ft_getenv("HOME", terminfo)) + 1);
 		ft_strlcat(*dest, &cmd->args[1][1], ft_strlen(*dest)
 			+ ft_strlen(cmd->args[1]) + 1);
 		*dest = get_path(*dest);
@@ -58,7 +60,8 @@ int	sup_second_cd3(char **dest, t_command *cmd)
 	return (0);
 }
 
-void	sup_cd3(t_command *cmd, char *act, t_command *old)
+void	go_to_dir(t_command *cmd, char *act,
+	t_command *old, t_terminfo *terminfo)
 {
 	char		*dest;
 	int			ret;
@@ -66,8 +69,7 @@ void	sup_cd3(t_command *cmd, char *act, t_command *old)
 	dest = NULL;
 	if (cmd->args[1][0] == '~')
 	{
-		ret = sup_second_cd3(&dest, cmd);
-		if (ret)
+		if (get_home_path(&dest, cmd, terminfo))
 			return ;
 	}
 	else
@@ -75,26 +77,22 @@ void	sup_cd3(t_command *cmd, char *act, t_command *old)
 	ret = chdir(dest);
 	if (ret == -1)
 	{
-		ft_putstr_fd(ft_getenv("SHELL"), 2);
-		ft_putstr_fd(": cd: ", 2);
-		ft_putstr_fd(dest, 2);
-		ft_putstr_fd(": ", 2);
-		ft_putendl_fd(strerror(errno), 2);
-		g_term.last_exit = 1;
+		cd_error(dest, terminfo);
+		return ;
 	}
-	else
-		sup_sup_cd3(act, old);
+	save_old_pwd(old, act, terminfo);
+	update_pwd(terminfo);
 	free(dest);
 }
 
-void	cd(t_command *cmd)
+void	cd(t_command *cmd, t_terminfo *terminfo)
 {
 	int			ret;
 	char		*act;
 	t_command	*old;
 
 	ret = 0;
-	act = pwd();
+	act = pwd(terminfo);
 	old = malloc(sizeof(t_command));
 	if (!old)
 		die("Malloc error");
@@ -103,12 +101,12 @@ void	cd(t_command *cmd)
 	{
 		ft_putstr_fd(cmd->cmd, STDERR_FILENO);
 		ft_putendl_fd(": too many arguments", STDERR_FILENO);
-		g_term.last_exit = 1;
+		terminfo->last_exit = 1;
 	}
 	else if (cmd->args[1] && !ft_strncmp(cmd->args[1], "-\0", 2))
-		sup_cd1(ret, old, act);
+		go_to_old_pwd(ret, old, act, terminfo);
 	else if (!cmd->args[1])
-		sup_cd2(ret, old, act);
+		go_to_home(ret, old, act, terminfo);
 	else
-		sup_cd3(cmd, act, old);
+		go_to_dir(cmd, act, old, terminfo);
 }

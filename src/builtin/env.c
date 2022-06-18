@@ -3,23 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ddelladi <ddelladi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/27 15:03:23 by gimartin          #+#    #+#             */
-/*   Updated: 2022/06/03 18:36:50 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/06/15 15:48:42 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-char	*ft_getenv(char *line)
+char	*ft_getenv(char *line, t_terminfo *terminfo)
 {
 	t_dict	*tmp;
 	t_dict	*tmp2;
 
-	if (g_term.env)
+	if (terminfo->env)
 	{
-		tmp = g_term.env;
+		tmp = terminfo->env;
 		while (tmp)
 		{
 			if (!ft_strncmp(tmp->key, line, ft_strlen(line) + 1))
@@ -27,9 +27,9 @@ char	*ft_getenv(char *line)
 			tmp = tmp->next;
 		}
 	}
-	if (g_term.var && g_term.var->key)
+	if (terminfo->var && terminfo->var->key)
 	{
-		tmp2 = g_term.var;
+		tmp2 = terminfo->var;
 		while (tmp2)
 		{
 			if (!ft_strncmp(tmp2->key, line, ft_strlen(line) + 1))
@@ -40,7 +40,7 @@ char	*ft_getenv(char *line)
 	return (NULL);
 }
 
-void	env(t_command *cmd)
+void	env(t_command *cmd, t_terminfo *terminfo)
 {
 	t_dict	*tmp;
 
@@ -48,7 +48,7 @@ void	env(t_command *cmd)
 		define_pipe(cmd);
 	if (cmd->to_pipe_to)
 		define_pipe_to(cmd);
-	tmp = g_term.env;
+	tmp = terminfo->env;
 	while (tmp)
 	{
 		if (tmp->key && tmp->value)
@@ -59,5 +59,5 @@ void	env(t_command *cmd)
 		}
 		tmp = tmp->next;
 	}
-	g_term.last_exit = 0;
+	terminfo->last_exit = 0;
 }
