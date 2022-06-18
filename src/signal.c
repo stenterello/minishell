@@ -6,7 +6,7 @@
 /*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/27 15:04:37 by gimartin          #+#    #+#             */
-/*   Updated: 2022/06/18 16:34:49 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/06/18 18:28:45 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ void	first_struct(struct sigaction act, t_command *cmd, t_terminfo *terminfo)
 	sigemptyset(&act.sa_mask);
 	if (terminfo->delimiter)
 		act.sa_handler = &parent_signals_heredoc;
-	else if (g_child && cmd->cmd && !ft_strncmp("top\0", &cmd->cmd[ft_strlen(cmd->cmd) - 3], 4))
+	else if (g_child && cmd->cmd && (!ft_strncmp("top\0", &cmd->cmd[ft_strlen(cmd->cmd) - 3], 4) || !ft_strncmp("ping\0", &cmd->cmd[ft_strlen(cmd->cmd) - 4], 5)))
 		act.sa_handler = &top_child_signal;
 	else if (g_child)
 		act.sa_handler = &child_signals;

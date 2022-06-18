@@ -6,7 +6,7 @@
 /*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/09 14:59:13 by gimartin          #+#    #+#             */
-/*   Updated: 2022/06/17 15:00:24 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/06/18 18:25:06 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,35 +23,6 @@ void	sup_check2(char *typed, t_input *input, int *open, int i)
 		input->is_open = 0;
 }
 
-int	env_exists(char *line, t_terminfo *terminfo)
-{
-	int	i;
-
-	i = 0;
-	if (line == NULL)
-		return (0);
-	if (terminfo->env)
-	{
-		while (terminfo->env->key[i])
-		{
-			if (!ft_strncmp(line, terminfo->env[i].key, ft_strlen(line) + 1))
-				return (1);
-			i++;
-		}
-	}
-	i = 0;
-	if (terminfo->var)
-	{
-		while (terminfo->var->key[i])
-		{
-			if (!ft_strncmp(line, terminfo->var[i].key, ft_strlen(line) + 1))
-				return (1);
-			i++;
-		}
-	}
-	return (0);
-}
-
 char	*get_var_name(char *line)
 {
 	char	*ret;
@@ -59,17 +30,48 @@ char	*get_var_name(char *line)
 	int		len;
 
 	ret = NULL;
+	if (!line)
+		return (NULL);
 	i = 0;
 	while (ft_isalnum(line[i]))
 		i++;
 	if (i == 0)
 		return (NULL);
 	len = i;
-	i = -1;
-	while (++i < len)
-		ret[i] = line[i];
-	ret[i] = '\0';
+	malloc_c(&ret, len + 1);
+	ft_strlcpy(ret, line, len + 1);
 	return (ret);
+}
+
+int	env_exists(char *line, t_terminfo *terminfo)
+{
+	char	*ret;
+	t_dict	*tmp;
+
+	ret = get_var_name(line);
+	if (!ret)
+		return (0);
+	tmp = terminfo->env;
+	while (tmp)
+	{
+		if (!ft_strncmp(line, tmp->key, ft_strlen(line) + 1))
+		{
+			free(ret);
+			return (1);
+		}
+		tmp = tmp->next;
+	}
+	tmp = terminfo->var;
+	while (tmp)
+	{
+		if (!ft_strncmp(line, tmp->key, ft_strlen(line) + 1))
+		{
+			free(ret);
+			return (1);
+		}
+		tmp = tmp->next;
+	}
+	return (0);
 }
 
 void	sup_sup_check(char *typed, int i, t_terminfo *terminfo, int *open)
@@ -78,7 +80,7 @@ void	sup_sup_check(char *typed, int i, t_terminfo *terminfo, int *open)
 		terminfo->input->s_quot = 1;
 	else if (typed[i] == '\'' && terminfo->input->s_quot && !terminfo->input->d_quot)
 		terminfo->input->s_quot = 0;
-	else if (typed[i] == '$' && !terminfo->input->s_quot && typed[i + 1] && (typed[i + 1] == '?' || env_exists(get_var_name(&typed[i + 1]), terminfo)))
+	else if (typed[i] == '$' && !terminfo->input->s_quot && typed[i + 1] && (typed[i + 1] == '?' || typed[i + 1] == '$' || env_exists(&typed[i + 1], terminfo)))
 		terminfo->input->to_expand = 1;
 	else if (typed[i] == '\"' && !terminfo->input->d_quot && !terminfo->input->s_quot)
 		terminfo->input->d_quot = 1;
