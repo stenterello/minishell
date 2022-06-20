@@ -3,85 +3,101 @@
 /*                                                        :::      ::::::::   */
 /*   wildcards2.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gimartin <gimartin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/13 16:12:15 by gimartin          #+#    #+#             */
-/*   Updated: 2022/06/10 16:09:47 by gimartin         ###   ########.fr       */
+/*   Updated: 2022/06/20 12:51:03 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	check_wildcards(t_command *cmd)
+void	sup_sub_args(char **tmp, int j, char **helper, t_command *cmd)
 {
+	int	i2;
 	int	i;
 
-	i = 0;
+	i = j + 1;
+	i2 = 0;
+	while (tmp[i2])
+	{
+		malloc_c(&helper[j], ft_strlen(tmp[i2]) + 1);
+		ft_strlcpy(helper[j++], tmp[i2], ft_strlen(tmp[i2]) + 1);
+		i2++;
+	}
 	while (cmd->args[i])
 	{
-		if (has_wildcard(cmd->args[i]))
-		{
-			if (guess(cmd, i) == -1)
-				return (-1);
-		}
+		malloc_c(&helper[j], ft_strlen(cmd->args[i]) + 1);
+		ft_strlcpy(helper[j++], cmd->args[i], ft_strlen(cmd->args[i]) + 1);
 		i++;
 	}
-	if (ft_strncmp(cmd->args[0], cmd->cmd, ft_strlen(cmd->args[0]) + 1))
+	helper[j] = NULL;
+	free_array_of_array(cmd->args);
+	cmd->args = helper;
+}
+
+void	substitute_args(t_command *cmd, char **tmp)
+{
+	int		j;
+	int		len;
+	char	**helper;
+
+	len = count_args(cmd->args) + count_args(tmp);
+	malloc_c_ptr(&helper, len + 1);
+	j = 0;
+	while (cmd->args[j] && !has_wildcard(cmd->args[j]))
 	{
-		free(cmd->cmd);
-		malloc_c(&cmd->cmd, ft_strlen(cmd->args[0]) + 1);
-		ft_strlcpy(cmd->cmd, cmd->args[0], ft_strlen(cmd->args[0]) + 1);
+		malloc_c(&helper[j], ft_strlen(cmd->args[j]) + 1);
+		ft_strlcpy(helper[j], cmd->args[j], ft_strlen(cmd->args[j]) + 1);
+		j++;
 	}
-	return (0);
+	sup_sub_args(tmp, j, helper, cmd);
 }
 
-int	hidden_files(char *str)
+int	sup_guess(t_command *cmd, int i, int j, int k)
 {
-	if (!ft_strncmp(".\0", str, 2) || !ft_strncmp("..\0", str, 3))
-		return (1);
-	return (0);
-}
-
-int	guess2(t_command *cmd, char **tmp)
-{
-	if (!hidden_files(cmd->portions[0]))
+	if (!is_open(cmd->args[i], j)
+		&& (cmd->args[i][j] == '*' || cmd->args[i][j] == '?'))
 	{
-		if (count_results(cmd->portions) == -1)
+		malloc_c(&cmd->portions[k], 2);
+		ft_strlcpy(cmd->portions[k], &cmd->args[i][j], 2);
+		k++;
+	}
+	else if (!is_open(cmd->args[i], j) && cmd->args[i][j] == '[')
+	{
+		if (take_brackets_param(&cmd->args[i][j], &cmd->portions[k]) == -1)
 			helper_guess(cmd);
-		else if (count_results(cmd->portions) == 0)
-			return (0);
-		tmp = NULL;
-		return (free_guess(tmp, cmd));
+		k++;
+		j += try_parse_brackets(&cmd->args[i][j]) - 1;
 	}
 	else
 	{
-		if (count_h_results(cmd->portions) == -1)
-			helper_guess(cmd);
-		else if (count_h_results(cmd->portions) == 0)
-			return (0);
-		tmp = NULL;
-		return (free_hidden_guess(tmp, cmd));
+		take_string_portion(&cmd->args[i][j], &cmd->portions[k]);
+		j += ft_strlen(cmd->portions[k++]);
 	}
+	return (0);
 }
 
-int	guess(t_command *cmd, int i)
+int	free_guess(char **tmp, t_command *cmd)
 {
-	int		j;
-	int		k;
-	int		ret;
-	char	**tmp;
-
-	j = 0;
-	k = 0;
-	malloc_c_ptr(&cmd->portions, count_portions(cmd->args[i]) + 1);
-	while (cmd->args[i][j])
-	{
-		ret = sup_guess(cmd, i, j, k++);
-		j += ft_strlen(cmd->portions[k - 1]);
-	}
-	if (ret == -1)
+	tmp = get_results(cmd->portions, count_results(cmd->portions));
+	if (!tmp)
 		return (-1);
-	cmd->portions[k] = NULL;
-	tmp = NULL;
-	return (guess2(cmd, tmp));
+	substitute_args(cmd, tmp);
+	free_array_of_array(tmp);
+	free_array_of_array(cmd->portions);
+	cmd->portions = NULL;
+	return (1);
+}
+
+int	free_hidden_guess(char **tmp, t_command *cmd)
+{
+	tmp = get_hidden_results(cmd->portions, count_h_results(cmd->portions));
+	if (!tmp)
+		return (-1);
+	substitute_args(cmd, tmp);
+	free_array_of_array(tmp);
+	free_array_of_array(cmd->portions);
+	cmd->portions = NULL;
+	return (1);
 }
