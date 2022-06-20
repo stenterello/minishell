@@ -6,7 +6,7 @@
 /*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/28 16:35:00 by gimartin          #+#    #+#             */
-/*   Updated: 2022/06/20 16:03:36 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/06/20 16:13:06 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,9 @@ int	to_expand_str(char *str)
 	int		i;
 
 	i = 0;
-	while (str[i] != '\n')
+	if (!str)
+		return (0);
+	while (str[i])
 	{
 		if (str[i] == '$' && !is_open(str, i))
 			return (1);
