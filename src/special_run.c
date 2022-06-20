@@ -6,7 +6,7 @@
 /*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/24 12:33:48 by ddelladi          #+#    #+#             */
-/*   Updated: 2022/06/15 10:18:45 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/06/20 10:39:54 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,28 @@
 
 int	c_run(char **argv, t_terminfo *terminfo)
 {
-	int			i;
+	int		i;
+	char	*help;
 
 	i = 0;
 	while (argv[i])
 		i++;
 	argv[i] = NULL;
 	transform_environ(terminfo);
-	malloc_c(&terminfo->input->line, ft_strlen(argv[2]) + 1);
-	ft_strlcpy(terminfo->input->line, argv[2], ft_strlen(argv[2]) + 1);
+	i = 2;
+	while (argv[i])
+	{
+		malloc_c(&help, ft_strlen(terminfo->input->line) + ft_strlen(argv[i]) + 1);
+		ft_strlcpy(help, terminfo->input->line, ft_strlen(terminfo->input->line) + 1);
+		ft_strlcat(help, " ", ft_strlen(help) + 2);
+		ft_strlcat(help, argv[i], ft_strlen(help) + ft_strlen(argv[i]) + 1);
+		if (terminfo->input->line)
+			free(terminfo->input->line);
+		malloc_c(&terminfo->input->line, ft_strlen(help) + 1);
+		ft_strlcpy(terminfo->input->line, help, ft_strlen(help) + 1);
+		free(help);
+		i++;
+	}
 	execution_loop(terminfo);
 	free(terminfo->input->line);
 	reset_term(terminfo);

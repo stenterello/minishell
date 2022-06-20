@@ -6,7 +6,7 @@
 /*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/24 12:43:37 by ddelladi          #+#    #+#             */
-/*   Updated: 2022/06/15 16:54:28 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/06/20 10:19:20 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,11 @@
 
 void	treat_suspended_cat(t_command *tmp, t_terminfo *terminfo)
 {
+	int	status;
+
 	kill(g_child, 15);
+	wait(&status);
+	waitpid(g_child, &status, 0);
 	restore_fd(tmp, terminfo);
 	terminfo->suspended_cat++;
 	return ;
