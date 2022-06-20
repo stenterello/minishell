@@ -6,7 +6,7 @@
 /*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/28 14:29:19 by gimartin          #+#    #+#             */
-/*   Updated: 2022/06/15 15:46:19 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/06/20 13:12:30 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	unit_len(char *line)
 		return (2);
 	else
 	{
-		while ((ft_strncmp("&&", &line[i], 2) && ft_strncmp("||", &line[i], 2)
+		while (line[i] && (ft_strncmp("&&", &line[i], 2) && ft_strncmp("||", &line[i], 2)
 				&& line[i] != '(' && line[i] != ')'))
 		{
 			i++;
@@ -63,7 +63,7 @@ int	next_unit(char *line)
 	}
 	else
 	{
-		while ((ft_strncmp("&&", &line[i], 2) && ft_strncmp("||", &line[i], 2)
+		while (line[i] && (ft_strncmp("&&", &line[i], 2) && ft_strncmp("||", &line[i], 2)
 				&& line[i] != '(' && line[i] != ')'))
 			increment_couple(&i, &ret);
 		return (ret);
