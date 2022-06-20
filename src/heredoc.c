@@ -6,7 +6,7 @@
 /*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/27 15:06:02 by gimartin          #+#    #+#             */
-/*   Updated: 2022/06/15 15:47:30 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/06/20 15:47:29 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,21 +53,25 @@ char	*try_expand_str(t_command *cmd, t_terminfo *terminfo)
 	return (ret);
 }
 
-static void	prepare_heredoc(t_command *cmd, t_command *cmd2,
+static char	*prepare_heredoc(t_command *cmd, t_command *cmd2,
 	char *typed, int *exp)
 {
+	char	*ret;
+
 	init_cmd(cmd);
 	init_cmd(cmd2);
 	cmd->first = 1;
 	malloc_c(&cmd2->cmd, ft_strlen(typed) + 1);
 	ft_strlcpy(cmd2->cmd, typed, ft_strlen(typed) + 1);
 	cmd2->next = cmd;
+	ret = take_delimiter(cmd2->cmd);
 	*exp = to_exp(cmd2->cmd);
 	clean_heredoc(cmd2->cmd, "<<");
 	malloc_c_ptr(&cmd2->args, 2);
 	malloc_c(&cmd2->args[0], ft_strlen(cmd2->cmd) + 1);
 	ft_strlcpy(cmd2->args[0], cmd2->cmd, ft_strlen(cmd2->cmd) + 1);
 	cmd2->args[1] = NULL;
+	return (ret);
 }
 
 static void	treat_heredoc(t_command *cmd, t_command *cmd2,
@@ -78,8 +82,8 @@ static void	treat_heredoc(t_command *cmd, t_command *cmd2,
 	int		exp;
 
 	tmp = NULL;
-	prepare_heredoc(cmd, cmd2, typed, &exp);
-	d = take_delimiter(cmd2->cmd);
+	d = prepare_heredoc(cmd, cmd2, typed, &exp);
+	//d = take_delimiter(cmd2->cmd);
 	tmp = take_heredoc_input(tmp, d, cmd, terminfo);
 	if (exp && !is_open(typed, ft_strlen(typed)))
 	{

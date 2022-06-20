@@ -6,7 +6,7 @@
 /*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/27 15:16:53 by gimartin          #+#    #+#             */
-/*   Updated: 2022/06/18 16:44:56 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/06/20 15:49:36 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,9 +29,9 @@ char	*take_delimiter(char *line)
 
 	i = 0;
 	ret = NULL;
-	while (ft_strncmp(&line[i], " <<", 3))
+	while (line[i] && ft_strncmp(&line[i], "<<", 2))
 		i++;
-	i += 4;
+	i += 2;
 	while (!ft_isalnum(line[i]) && line[i] != '\'' && line[i] != '"')
 		i++;
 	if (line[i] == '\'' || line[i] == '"')

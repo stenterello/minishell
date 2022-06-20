@@ -6,7 +6,7 @@
 /*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/03 21:54:41 by ddelladi          #+#    #+#             */
-/*   Updated: 2022/06/20 10:12:28 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/06/20 13:32:48 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,6 +102,6 @@ int	main(int argc, char **argv)
 Segnali
 Verificare la dicitura: "Command not found" su bash
 Premendo tab in un prompt vuoto, vengono presentate le varie opzioni di selezione: è questo il comportamento nella bash?
-Al momento con sigquit il segnale inviato è un SIGINT perché con il SIGQUIT non viene terminato il processo (nella bash il SIGQUIT viene ignorato): verificare se è questo il comportamento da mantenere
+Al momento con sigquit il segnale inviato è un SIGINT perché con il SIGQUIT non viene terminato il processo (nella bash il SIGQUIT viene ignorato): verificare se è questo il comportamento da mantenere: è un problema soprattutto per quanto riguarda l'exit code (130 con SIGINT, 131 con SIGQUIT)
 
 */

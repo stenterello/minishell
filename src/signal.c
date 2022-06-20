@@ -6,7 +6,7 @@
 /*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/27 15:04:37 by gimartin          #+#    #+#             */
-/*   Updated: 2022/06/18 18:28:45 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/06/20 13:32:03 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ void	child_signals(int sig)
 	}
 	else if (sig == SIGQUIT)
 	{
-		kill(g_child, SIGINT);
+		kill(g_child, 3);
 		ft_putendl_fd("^\\Quit: 3", STDOUT_FILENO);
 	}
 }

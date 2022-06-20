@@ -6,7 +6,7 @@
 /*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/28 16:35:00 by gimartin          #+#    #+#             */
-/*   Updated: 2022/06/15 17:02:13 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/06/20 16:03:36 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ int	to_exp(char *str)
 	int	i;
 
 	i = 0;
-	while (ft_strncmp(&str[i], "<<", 2))
+	while (str[i] && ft_strncmp(&str[i], "<<", 2))
 		i++;
 	i += 2;
 	while (str[i] == ' ')
@@ -72,7 +72,7 @@ int	to_expand_str(char *str)
 	int		i;
 
 	i = 0;
-	while (str[i])
+	while (str[i] != '\n')
 	{
 		if (str[i] == '$' && !is_open(str, i))
 			return (1);
