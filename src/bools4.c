@@ -6,7 +6,7 @@
 /*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/09 14:59:13 by gimartin          #+#    #+#             */
-/*   Updated: 2022/06/18 18:25:06 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/06/21 11:41:05 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ int	env_exists(char *line, t_terminfo *terminfo)
 	tmp = terminfo->env;
 	while (tmp)
 	{
-		if (!ft_strncmp(line, tmp->key, ft_strlen(line) + 1))
+		if (!ft_strncmp(ret, tmp->key, ft_strlen(ret) + 1))
 		{
 			free(ret);
 			return (1);
@@ -64,7 +64,7 @@ int	env_exists(char *line, t_terminfo *terminfo)
 	tmp = terminfo->var;
 	while (tmp)
 	{
-		if (!ft_strncmp(line, tmp->key, ft_strlen(line) + 1))
+		if (!ft_strncmp(ret, tmp->key, ft_strlen(ret) + 1))
 		{
 			free(ret);
 			return (1);
