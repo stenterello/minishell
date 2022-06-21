@@ -6,7 +6,7 @@
 /*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/27 15:08:51 by gimartin          #+#    #+#             */
-/*   Updated: 2022/06/15 15:07:15 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/06/21 14:54:03 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,8 @@ void	free_single_command(t_command *cmd)
 		free(cmd->input_line);
 		cmd->input_line = NULL;
 	}
+	if (cmd->redirections)
+		free_array_of_array(cmd->redirections);
 	if (cmd)
 	{
 		free(cmd);

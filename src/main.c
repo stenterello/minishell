@@ -6,7 +6,7 @@
 /*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/03 21:54:41 by ddelladi          #+#    #+#             */
-/*   Updated: 2022/06/21 13:40:56 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/06/21 15:24:49 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,6 @@ int	main(int argc, char **argv)
 /*
 
 > out2 > out4 cat Makefile | grep all | wc -l > out5
-cat > new Makefile
 Segnali
 Verificare la dicitura: "Command not found" su bash
 Premendo tab in un prompt vuoto, vengono presentate le varie opzioni di selezione: è questo il comportamento nella bash?
