@@ -6,7 +6,7 @@
 /*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/28 17:00:03 by gimartin          #+#    #+#             */
-/*   Updated: 2022/06/15 10:14:27 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/06/21 11:51:51 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,16 +83,12 @@ char	**split_fields(char *s, char c)
 	if (!s)
 		return (NULL);
 	p[2] = count_fields(s, c);
-	ret = malloc(sizeof(char *) * (p[2] + 1));
-	if (!ret)
-		return (NULL);
+	malloc_c_ptr(&ret, p[2] + 1);
 	p[0] = 0;
 	p[1] = find_start(s, c);
 	while (p[0] < p[2] && s[p[1]])
 	{
-		ret[p[0]] = malloc(sizeof(char) * count_len(&s[p[1]], c) + 1);
-		if (!ret[p[0]])
-			return (NULL);
+		malloc_c(&ret[p[0]], count_len(&s[p[1]], c) + 1);
 		sup_split(ret, s, p, c);
 		p[1] += find_next_start(&s[p[1]], c);
 		p[0]++;

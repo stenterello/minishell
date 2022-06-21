@@ -6,7 +6,7 @@
 /*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/03 21:54:58 by ddelladi          #+#    #+#             */
-/*   Updated: 2022/06/20 13:31:23 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/06/21 13:55:12 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,7 @@ typedef struct s_command
 	char	*input_line;
 	void	*next;
 	void	*prev;
+	char	**redirections;
 	int		redir_in;
 	int		redir_out;
 	int		saved_in;
@@ -268,5 +269,11 @@ char	*take_heredoc_input(char *tmp, char *d,
 			t_command *cmd, t_terminfo *terminfo);
 void	update_pwd(t_terminfo *terminfo);
 void	cd_error(char *dest, t_terminfo *terminfo);
+int		other_cmds(char **tmp, int *c);
+int		env_exists(char *line, t_terminfo *terminfo);
+char	**clean_command(char **tmp, t_command *cmd,
+			int start, t_terminfo *terminfo);
+void	filling_chain(char **original, t_command *cmd,
+			int *c, t_terminfo *terminfo);
 
 #endif

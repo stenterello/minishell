@@ -6,7 +6,7 @@
 /*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/27 15:10:12 by gimartin          #+#    #+#             */
-/*   Updated: 2022/06/20 12:50:47 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/06/21 12:15:12 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,22 +61,48 @@ void	split_var_decl(char *line, t_command *cmd)
 	cmd->args[meas[2]] = NULL;
 }
 
-void	free_array_of_array(char **arr)
+int	split_command(char *line, t_command *cmd, t_terminfo *terminfo)
 {
-	int	i;
+	char	**tmp;
 
-	i = 0;
-	if (arr[i])
+	if (ft_strchr(line, '|') != NULL)
+		check_pipe(line, cmd);
+	if (is_var_def(line))
+		split_var_decl(line, cmd);
+	else
 	{
-		while (arr[i])
-		{
-			free(arr[i]);
-			arr[i++] = NULL;
-		}
+		tmp = split_fields(line, ' ');
+		cmd->first = 1;
+		if (fill_cmd_fields(tmp, cmd, 0, terminfo) == -1)
+			return (0);
 	}
-	if (arr)
+	return (1);
+}
+
+int	fill_cmd_fields(char **tmp, t_command *cmd, int start, t_terminfo *terminfo)
+{
+	int		c[3];
+	char	**cleaned;
+	char	**original;
+
+	original = tmp;
+	cleaned = clean_command(tmp, cmd, start, terminfo);
+	if (!cleaned)
+		return (-1);
+	tmp = cleaned;
+	if (!tmp[0])
 	{
-		free(arr);
-		arr = NULL;
+		free(tmp);
+		restore_fd(cmd, terminfo);
+		return (-1);
 	}
+	c[2] = count_args(tmp);
+	malloc_c_ptr(&cmd->args, c[2] + 1);
+	c[0] = start;
+	c[1] = 0;
+	cpy_and_slide(tmp, c, start, cmd);
+	c[0] += start;
+	filling_chain(original, cmd, c, terminfo);
+	free_array_of_array(tmp);
+	return (0);
 }

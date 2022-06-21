@@ -6,7 +6,7 @@
 /*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/09 14:59:13 by gimartin          #+#    #+#             */
-/*   Updated: 2022/06/21 11:41:05 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/06/21 12:16:08 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,39 +74,3 @@ int	env_exists(char *line, t_terminfo *terminfo)
 	return (0);
 }
 
-void	sup_sup_check(char *typed, int i, t_terminfo *terminfo, int *open)
-{
-	if (typed[i] == '\'' && !terminfo->input->s_quot && !terminfo->input->d_quot)
-		terminfo->input->s_quot = 1;
-	else if (typed[i] == '\'' && terminfo->input->s_quot && !terminfo->input->d_quot)
-		terminfo->input->s_quot = 0;
-	else if (typed[i] == '$' && !terminfo->input->s_quot && typed[i + 1] && (typed[i + 1] == '?' || typed[i + 1] == '$' || env_exists(&typed[i + 1], terminfo)))
-		terminfo->input->to_expand = 1;
-	else if (typed[i] == '\"' && !terminfo->input->d_quot && !terminfo->input->s_quot)
-		terminfo->input->d_quot = 1;
-	else if (typed[i] == '\"' && terminfo->input->d_quot && !terminfo->input->s_quot)
-		terminfo->input->d_quot = 0;
-	else if (typed[i] == '|' && !terminfo->input->d_quot && !terminfo->input->s_quot)
-		open[0] = 1;
-	else if (ft_isalnum(typed[i]) && open[0])
-		open[0] = 0;
-	else if (!open[1] && (!ft_strncmp(&typed[i], "&&", 2)
-			|| !ft_strncmp(&typed[i], "||", 2)))
-		open[1] = 1;
-	else if (typed[i] == '(' && !is_open(typed, i))
-		open[2]++;
-	else if (typed[i] == ')' && !is_open(typed, i))
-		open[3]++;
-	if (ft_isalnum(typed[i]) && open[1])
-		open[1] = 0;
-}
-
-int	sup_check(char *typed, int i, t_terminfo *terminfo, int *open)
-{
-	while (typed[i])
-	{
-		sup_sup_check(typed, i, terminfo, open);
-		i++;
-	}
-	return (i);
-}

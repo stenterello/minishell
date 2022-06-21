@@ -6,7 +6,7 @@
 /*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/27 15:06:53 by gimartin          #+#    #+#             */
-/*   Updated: 2022/06/17 14:38:14 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/06/21 13:55:31 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ void	init_cmd(t_command *cmd)
 	cmd->input_line = NULL;
 	cmd->next = NULL;
 	cmd->prev = NULL;
+	cmd->redirections = NULL;
 	cmd->redir_in = 0;
 	cmd->redir_out = 0;
 	cmd->to_pipe = 0;

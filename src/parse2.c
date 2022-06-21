@@ -6,7 +6,7 @@
 /*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/28 15:51:58 by gimartin          #+#    #+#             */
-/*   Updated: 2022/06/14 18:24:06 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/06/21 12:15:42 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,6 @@ void	fill_prev(t_command *cmd, int *c, char **tmp)
 {
 	t_command	*prev;
 
-	if (cmd->redir_in || cmd->redir_out)
-		c[0] += 2;
 	if (tmp[c[0]] && tmp[c[0]][0] == '|')
 		cmd->to_pipe = 1;
 	cmd->args[c[1]] = NULL;
@@ -57,7 +55,7 @@ void	fill_next(t_command *cmd, int *c, char **tmp, t_terminfo *terminfo)
 {
 	t_command	*next;
 
-	if (tmp[c[0]] && (cmd->to_pipe || cmd->to_pipe_to))
+	if (tmp[c[0]] && other_cmds(&tmp[c[0]], c))
 	{
 		next = malloc(sizeof(t_command));
 		if (!next)

@@ -6,7 +6,7 @@
 /*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/27 15:11:01 by gimartin          #+#    #+#             */
-/*   Updated: 2022/06/15 10:27:16 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/06/21 14:23:05 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,21 +19,38 @@ void	define_pipe(t_command *cmd)
 
 	if (pipe(piped) == -1)
 		die(strerror(errno));
-	cmd->output_fd = piped[1];
+	if (!cmd->redir_out)
+	{
+		cmd->output_fd = piped[1];
+		cmd->saved_out = dup(STDOUT_FILENO);
+		close(STDOUT_FILENO);
+		dup2(cmd->output_fd, STDOUT_FILENO);
+		close(cmd->output_fd);
+	}
+	else
+	{
+		cmd->to_pipe = 0;
+		close(piped[1]);
+	}
 	tmp = cmd->next;
-	tmp->input_fd = piped[0];
-	cmd->saved_out = dup(STDOUT_FILENO);
-	close(STDOUT_FILENO);
-	dup2(cmd->output_fd, STDOUT_FILENO);
-	close(cmd->output_fd);
+	if (!tmp->redir_in)
+		tmp->input_fd = piped[0];
+	else
+	{
+		tmp->to_pipe_to = 0;
+		close(piped[0]);
+	}
 }
 
 void	define_pipe_to(t_command *cmd)
 {
-	cmd->saved_in = dup(STDIN_FILENO);
-	close(STDIN_FILENO);
-	dup2(cmd->input_fd, STDIN_FILENO);
-	close(cmd->input_fd);
+	if (!cmd->redir_in)
+	{
+		cmd->saved_in = dup(STDIN_FILENO);
+		close(STDIN_FILENO);
+		dup2(cmd->input_fd, STDIN_FILENO);
+		close(cmd->input_fd);
+	}
 }
 
 void	define_heredoc_pipe(t_command *cmd)
