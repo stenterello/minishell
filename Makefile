@@ -67,7 +67,7 @@ BUILTIN_OBJS=$(BUILTINS:.c=.o)
 LIBFT=./include/libft/libft.a
 
 $(NAME): $(LIBFT) $(OBJS) $(BUILTIN_OBJS)
-	$(CC) $(FLAGS) $(SRCS) $(BUILTINS) $(LIBFT) -lreadline -lncurses -o $(NAME) 
+	$(CC) $(FLAGS) $(OBJS) $(BUILTINS) $(LIBFT) -lreadline -lncurses -o $(NAME) 
 
 $(LIBFT):
 	$(MAKE) bonus -C ./include/libft
