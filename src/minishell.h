@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
+/*   By: gimartin <gimartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/03 21:54:58 by ddelladi          #+#    #+#             */
-/*   Updated: 2022/06/21 13:55:12 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/06/22 19:18:32 by gimartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ typedef struct s_command
 	char	*input_line;
 	void	*next;
 	void	*prev;
-	char	**redirections;
+	char	**redi;
 	int		redir_in;
 	int		redir_out;
 	int		saved_in;
@@ -275,5 +275,12 @@ char	**clean_command(char **tmp, t_command *cmd,
 			int start, t_terminfo *terminfo);
 void	filling_chain(char **original, t_command *cmd,
 			int *c, t_terminfo *terminfo);
+void	suspended_cat(t_terminfo *terminfo);
+void	parent_signals_heredoc(int sig);
+void	child_signals(int sig);
+void	parent_signals(int sig);
+void	define_input_redirection(char **tmp, t_command *cmd, t_terminfo *t);
+void	define_output_redirection(char **tmp, t_command *cmd);
+void	maieutica(t_command *tmp, int status, t_terminfo *terminfo);
 
 #endif

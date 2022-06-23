@@ -3,36 +3,36 @@
 /*                                                        :::      ::::::::   */
 /*   chain.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
+/*   By: gimartin <gimartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/28 14:29:19 by gimartin          #+#    #+#             */
-/*   Updated: 2022/06/20 13:12:30 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/06/22 18:58:21 by gimartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	unit_len(char *line)
+int	unit_len(char *l)
 {
 	int	i;
 	int	ret;
 
-	i = skip_spaces(line, 0);
+	i = skip_spaces(l, 0);
 	ret = 0;
-	if ((line[i] == '(' || line[i] == ')') && !is_open(line, i))
+	if ((l[i] == '(' || l[i] == ')') && !is_open(l, i))
 		return (1);
-	else if ((!ft_strncmp("&&", &line[i], 2)
-			|| !ft_strncmp("||", &line[i], 2)) && !is_open(line, i))
+	else if ((!ft_strncmp("&&", &l[i], 2)
+			|| !ft_strncmp("||", &l[i], 2)) && !is_open(l, i))
 		return (2);
 	else
 	{
-		while (line[i] && (ft_strncmp("&&", &line[i], 2) && ft_strncmp("||", &line[i], 2)
-				&& line[i] != '(' && line[i] != ')'))
+		while (l[i] && (ft_strncmp("&&", &l[i], 2) && ft_strncmp("||", &l[i], 2)
+				&& l[i] != '(' && l[i] != ')'))
 		{
 			i++;
 			ret++;
 		}
-		while (line[i - 1] == ' ')
+		while (l[i - 1] == ' ')
 		{
 			i--;
 			ret--;
@@ -41,30 +41,30 @@ int	unit_len(char *line)
 	}
 }
 
-int	next_unit(char *line)
+int	next_unit(char *l)
 {
 	int	i;
 	int	ret;
 
-	i = skip_spaces(line, 0);
+	i = skip_spaces(l, 0);
 	ret = 0;
-	if (line[i] == '(' || line[i] == ')')
+	if (l[i] == '(' || l[i] == ')')
 	{
 		increment_couple(&i, &ret);
-		ret += skip_spaces(line, 0);
+		ret += skip_spaces(l, 0);
 		return (ret);
 	}
-	else if ((!ft_strncmp(&line[i], "&&", 2)
-			|| !ft_strncmp(&line[i], "||", 2)) && !is_open(line, i))
+	else if ((!ft_strncmp(&l[i], "&&", 2)
+			|| !ft_strncmp(&l[i], "||", 2)) && !is_open(l, i))
 	{
 		ret = 2;
-		ret += skip_spaces(&line[ret], 0);
+		ret += skip_spaces(&l[ret], 0);
 		return (ret);
 	}
 	else
 	{
-		while (line[i] && (ft_strncmp("&&", &line[i], 2) && ft_strncmp("||", &line[i], 2)
-				&& line[i] != '(' && line[i] != ')'))
+		while (l[i] && (ft_strncmp("&&", &l[i], 2) && ft_strncmp("||", &l[i], 2)
+				&& l[i] != '(' && l[i] != ')'))
 			increment_couple(&i, &ret);
 		return (ret);
 	}

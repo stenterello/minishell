@@ -1,8 +1,9 @@
 NAME=minishell
 CC=gcc
-FLAGS=-Wall -Werror -Wextra -L$(HOME)/.brew/opt/readline/lib -I$(HOME)/.brew/opt/readline/include -g -ffunction-sections -Wl,--gc-sections -Wl,--print-gc-sections
+FLAGS=-Wall -Werror -Wextra -L$(HOME)/.brew/opt/readline/lib -I$(HOME)/.brew/opt/readline/include -g
 SRC=main.c \
 	special_run.c \
+	special_run2.c \
 	special_childs.c \
 	utils.c \
 	utils2.c \
@@ -37,6 +38,7 @@ SRC=main.c \
 	split_fields.c \
 	split_fields2.c \
 	signal.c \
+	signal2.c \
 	error_handling.c \
 	chain.c \
 	chain2.c \
@@ -50,7 +52,8 @@ SRC=main.c \
 	wildcards_utils.c \
 	wildcards_utils2.c \
 	wildcards_utils3.c \
-	child_process.c
+	child_process.c \
+	child_process2.c
 SRCS=$(addprefix src/, $(SRC))
 OBJS=$(SRCS:.c=.o)
 BUILTIN=pwd.c \
@@ -67,7 +70,7 @@ BUILTIN_OBJS=$(BUILTINS:.c=.o)
 LIBFT=./include/libft/libft.a
 
 $(NAME): $(LIBFT) $(OBJS) $(BUILTIN_OBJS)
-	$(CC) $(FLAGS) $(OBJS) $(BUILTINS) $(LIBFT) -lreadline -lncurses -o $(NAME) 
+	$(CC) $(FLAGS) $(SRCS) $(BUILTINS) $(LIBFT) -lreadline -lncurses -o $(NAME) 
 
 $(LIBFT):
 	$(MAKE) bonus -C ./include/libft

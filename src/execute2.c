@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute2.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
+/*   By: gimartin <gimartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/27 15:05:46 by gimartin          #+#    #+#             */
-/*   Updated: 2022/06/17 18:11:02 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/06/22 19:04:06 by gimartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,3 +39,17 @@ void	restore_all(t_command *cmd, t_terminfo *terminfo)
 	return ;
 }
 
+void	execute_tree(t_command *cmd, t_terminfo *terminfo)
+{
+	t_command	*tmp;
+	int			ret;
+
+	tmp = cmd;
+	if (preliminary(tmp, terminfo))
+		return ;
+	ret = standard_execution(tmp, terminfo);
+	if (!ret)
+		return ;
+	if (!terminfo->delimiter)
+		free_commands(cmd);
+}

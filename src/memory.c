@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   memory.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
+/*   By: gimartin <gimartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/27 15:08:51 by gimartin          #+#    #+#             */
-/*   Updated: 2022/06/21 14:54:03 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/06/22 19:18:20 by gimartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,8 +70,8 @@ void	free_single_command(t_command *cmd)
 		free(cmd->input_line);
 		cmd->input_line = NULL;
 	}
-	if (cmd->redirections)
-		free_array_of_array(cmd->redirections);
+	if (cmd->redi)
+		free_array_of_array(cmd->redi);
 	if (cmd)
 	{
 		free(cmd);

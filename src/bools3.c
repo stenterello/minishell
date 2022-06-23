@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   bools3.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
+/*   By: gimartin <gimartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/27 15:04:58 by gimartin          #+#    #+#             */
-/*   Updated: 2022/06/21 12:16:14 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/06/22 18:55:19 by gimartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,19 +67,21 @@ int	other_cmds(char **tmp, int *c)
 	return (0);
 }
 
-void	sup_sup_check(char *typed, int i, t_terminfo *terminfo, int *open)
+void	sup_sup_check(char *typed, int i, t_terminfo *t, int *open)
 {
-	if (typed[i] == '\'' && !terminfo->input->s_quot && !terminfo->input->d_quot)
-		terminfo->input->s_quot = 1;
-	else if (typed[i] == '\'' && terminfo->input->s_quot && !terminfo->input->d_quot)
-		terminfo->input->s_quot = 0;
-	else if (typed[i] == '$' && !terminfo->input->s_quot && typed[i + 1] && (typed[i + 1] == '?' || typed[i + 1] == '$' || env_exists(&typed[i + 1], terminfo)))
-		terminfo->input->to_expand = 1;
-	else if (typed[i] == '\"' && !terminfo->input->d_quot && !terminfo->input->s_quot)
-		terminfo->input->d_quot = 1;
-	else if (typed[i] == '\"' && terminfo->input->d_quot && !terminfo->input->s_quot)
-		terminfo->input->d_quot = 0;
-	else if (typed[i] == '|' && !terminfo->input->d_quot && !terminfo->input->s_quot)
+	if (typed[i] == '\'' && !t->input->s_quot && !t->input->d_quot)
+		t->input->s_quot = 1;
+	else if (typed[i] == '\'' && t->input->s_quot && !t->input->d_quot)
+		t->input->s_quot = 0;
+	else if (typed[i] == '$' && !t->input->s_quot && typed[i + 1]
+		&& (typed[i + 1] == '?' || typed[i + 1] == '$'
+			|| env_exists(&typed[i + 1], t)))
+		t->input->to_expand = 1;
+	else if (typed[i] == '\"' && !t->input->d_quot && !t->input->s_quot)
+		t->input->d_quot = 1;
+	else if (typed[i] == '\"' && t->input->d_quot && !t->input->s_quot)
+		t->input->d_quot = 0;
+	else if (typed[i] == '|' && !t->input->d_quot && !t->input->s_quot)
 		open[0] = 1;
 	else if (ft_isalnum(typed[i]) && open[0])
 		open[0] = 0;

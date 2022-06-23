@@ -6,7 +6,7 @@
 /*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/28 16:35:00 by gimartin          #+#    #+#             */
-/*   Updated: 2022/06/20 16:13:06 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/06/23 10:31:44 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,8 @@ char	*take_heredoc_input(char *tmp, char *d,
 	if (terminfo->last_exit == 130)
 		terminfo->last_exit = 0;
 	tmp = readline("> ");
-	while (terminfo->last_exit != 130 && tmp && ft_strncmp(tmp, d, ft_strlen(d)))
+	while (terminfo->last_exit != 130 && tmp
+		&& ft_strncmp(tmp, d, ft_strlen(d)) && g_child != -1)
 	{
 		if (cmd->input_line)
 			sup1_sup1(cmd, tmp);
@@ -44,11 +45,13 @@ char	*take_heredoc_input(char *tmp, char *d,
 		free(tmp);
 		i++;
 		tmp = readline("> ");
-		// if (terminfo->signaled)
-		// 	break ;
+		if (g_child == -1)
+			break ;
 	}
 	if (!tmp)
 		print_here(d, i, terminfo);
+	if (g_child == -1)
+		g_child = 0;
 	return (tmp);
 }
 

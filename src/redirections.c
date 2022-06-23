@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirections.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
+/*   By: gimartin <gimartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/27 15:10:22 by gimartin          #+#    #+#             */
-/*   Updated: 2022/06/21 13:39:34 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/06/22 18:51:25 by gimartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,4 +73,25 @@ void	define_append_output(char *line, t_command *cmd)
 	dup2(cmd->output_fd, STDOUT_FILENO);
 	close(cmd->output_fd);
 	cmd->redir_out = 1;
+}
+
+int	sup_check_red(char **tmp, int i, t_command *cmd, t_terminfo *terminfo)
+{
+	while (tmp[i] && is_redir(tmp[i]) == 0)
+	{
+		if (access(tmp[i + 1], F_OK))
+		{
+			ft_putstr_fd("minishell: ", STDERR_FILENO);
+			ft_putstr_fd(tmp[i + 1], STDERR_FILENO);
+			ft_putstr_fd(": ", STDERR_FILENO);
+			ft_putendl_fd(strerror(errno), STDERR_FILENO);
+			restore_fd(cmd, terminfo);
+			return (-1);
+		}
+		else if (define_input(tmp[++i], cmd, terminfo) != -1)
+			i++;
+		else
+			return (-1);
+	}
+	return (0);
 }

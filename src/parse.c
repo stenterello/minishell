@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
+/*   By: gimartin <gimartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/27 15:10:12 by gimartin          #+#    #+#             */
-/*   Updated: 2022/06/21 14:30:26 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/06/22 18:53:19 by gimartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,34 +78,6 @@ int	split_command(char *line, t_command *cmd, t_terminfo *terminfo)
 	}
 	return (1);
 }
-
-// int	fill_cmd_fields(char **tmp, t_command *cmd, int start, t_terminfo *terminfo)
-// {
-// 	int		c[3];
-// 	char	**cleaned;
-// 	char	**original;
-
-// 	original = tmp;
-// 	cleaned = clean_command(tmp, cmd, start, terminfo);
-// 	if (!cleaned)
-// 		return (-1);
-// 	tmp = cleaned;
-// 	if (!tmp[0])
-// 	{
-// 		free(tmp);
-// 		restore_fd(cmd, terminfo);
-// 		return (-1);
-// 	}
-// 	c[2] = count_args(tmp);
-// 	malloc_c_ptr(&cmd->args, c[2] + 1);
-// 	c[0] = start;
-// 	c[1] = 0;
-// 	cpy_and_slide(tmp, c, start, cmd);
-// 	c[0] += start;
-// 	filling_chain(original, cmd, c, terminfo);
-// 	free_array_of_array(tmp);
-// 	return (0);
-// }
 
 int	fill_cmd_fields(char **tmp, t_command *cmd, int start, t_terminfo *terminfo)
 {

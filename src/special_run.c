@@ -6,27 +6,20 @@
 /*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/24 12:33:48 by ddelladi          #+#    #+#             */
-/*   Updated: 2022/06/20 10:39:54 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/06/23 10:15:16 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	c_run(char **argv, t_terminfo *terminfo)
+void	sup_c_run(char **argv, int i, char *help, t_terminfo *terminfo)
 {
-	int		i;
-	char	*help;
-
-	i = 0;
-	while (argv[i])
-		i++;
-	argv[i] = NULL;
-	transform_environ(terminfo);
-	i = 2;
 	while (argv[i])
 	{
-		malloc_c(&help, ft_strlen(terminfo->input->line) + ft_strlen(argv[i]) + 1);
-		ft_strlcpy(help, terminfo->input->line, ft_strlen(terminfo->input->line) + 1);
+		malloc_c(&help, ft_strlen(terminfo->input->line)
+			+ ft_strlen(argv[i]) + 1);
+		ft_strlcpy(help, terminfo->input->line,
+			ft_strlen(terminfo->input->line) + 1);
 		ft_strlcat(help, " ", ft_strlen(help) + 2);
 		ft_strlcat(help, argv[i], ft_strlen(help) + ft_strlen(argv[i]) + 1);
 		if (terminfo->input->line)
@@ -39,6 +32,20 @@ int	c_run(char **argv, t_terminfo *terminfo)
 	execution_loop(terminfo);
 	free(terminfo->input->line);
 	reset_term(terminfo);
+}
+
+int	c_run(char **argv, t_terminfo *terminfo)
+{
+	int		i;
+	char	*help;
+
+	i = 0;
+	while (argv[i])
+		i++;
+	argv[i] = NULL;
+	help = NULL;
+	transform_environ(terminfo);
+	sup_c_run(argv, 2, help, terminfo);
 	return (0);
 }
 
@@ -84,20 +91,4 @@ int	script_run(char **argv, t_terminfo *terminfo)
 	close(fd);
 	reset_term(terminfo);
 	return (0);
-}
-
-void	suspended_cat(t_terminfo *terminfo)
-{
-	int	i;
-
-	i = 0;
-	while (i < terminfo->suspended_cat)
-	{
-		terminfo->input->line = readline("");
-		if (!ft_strlen(terminfo->input->line))
-			ft_putchar_fd('\n', STDOUT_FILENO);
-		free(terminfo->input->line);
-		terminfo->input->line = NULL;
-		i++;
-	}
 }

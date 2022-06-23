@@ -6,7 +6,7 @@
 /*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/27 15:06:02 by gimartin          #+#    #+#             */
-/*   Updated: 2022/06/20 15:47:29 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/06/23 10:29:54 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ static void	treat_heredoc(t_command *cmd, t_command *cmd2,
 
 	tmp = NULL;
 	d = prepare_heredoc(cmd, cmd2, typed, &exp);
-	//d = take_delimiter(cmd2->cmd);
+	add_signals(terminfo, cmd);
 	tmp = take_heredoc_input(tmp, d, cmd, terminfo);
 	if (exp && !is_open(typed, ft_strlen(typed)))
 	{

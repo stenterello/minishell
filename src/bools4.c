@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   bools4.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
+/*   By: gimartin <gimartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/09 14:59:13 by gimartin          #+#    #+#             */
-/*   Updated: 2022/06/21 12:16:08 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/06/22 19:03:06 by gimartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,21 @@ char	*get_var_name(char *line)
 	return (ret);
 }
 
+int	sup_env_ex(t_terminfo *terminfo, t_dict *tmp, char *ret)
+{
+	tmp = terminfo->var;
+	while (tmp)
+	{
+		if (!ft_strncmp(ret, tmp->key, ft_strlen(ret) + 1))
+		{
+			free(ret);
+			return (1);
+		}
+		tmp = tmp->next;
+	}
+	return (0);
+}
+
 int	env_exists(char *line, t_terminfo *terminfo)
 {
 	char	*ret;
@@ -61,16 +76,5 @@ int	env_exists(char *line, t_terminfo *terminfo)
 		}
 		tmp = tmp->next;
 	}
-	tmp = terminfo->var;
-	while (tmp)
-	{
-		if (!ft_strncmp(ret, tmp->key, ft_strlen(ret) + 1))
-		{
-			free(ret);
-			return (1);
-		}
-		tmp = tmp->next;
-	}
-	return (0);
+	return (sup_env_ex(terminfo, tmp, ret));
 }
-

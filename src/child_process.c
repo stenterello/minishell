@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   child_process.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
+/*   By: gimartin <gimartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/17 13:10:50 by ddelladi          #+#    #+#             */
-/*   Updated: 2022/06/21 15:03:58 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/06/22 18:59:29 by gimartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ void	maieutica(t_command *tmp, int status, t_terminfo *terminfo)
 	}
 }
 
-void	define_input_redirection(char **tmp, t_command *cmd, t_terminfo *terminfo)
+void	define_input_redirection(char **tmp, t_command *cmd, t_terminfo *t)
 {
 	int	i;
 
@@ -76,7 +76,7 @@ void	define_input_redirection(char **tmp, t_command *cmd, t_terminfo *terminfo)
 	while (tmp[i])
 	{
 		if (!ft_strncmp(tmp[i], "<\0", 2))
-			define_input(tmp[++i], cmd, terminfo);
+			define_input(tmp[++i], cmd, t);
 		i++;
 	}
 }
@@ -94,24 +94,4 @@ void	define_output_redirection(char **tmp, t_command *cmd)
 			define_append_output(tmp[++i], cmd);
 		i++;
 	}
-}
-
-void	born_child(t_command *tmp, t_terminfo *terminfo)
-{
-	int			status;
-
-	status = 0;
-	if (!cmd_exists(tmp->cmd, terminfo))
-		return ;
-	if (tmp->redir_in)
-		define_input_redirection(tmp->redirections, tmp, terminfo);
-	if (tmp->redir_out)
-		define_output_redirection(tmp->redirections, tmp);
-	if (tmp->to_pipe)
-		define_pipe(tmp);
-	if (tmp->to_pipe_to)
-		define_pipe_to(tmp);
-	if (!ft_strncmp(&tmp->cmd[ft_strlen(tmp->cmd) - 3], "top", 3))
-		terminfo->top = 1;
-	maieutica(tmp, status, terminfo);
 }
