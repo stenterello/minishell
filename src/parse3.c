@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse3.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gimartin <gimartin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/13 15:49:35 by gimartin          #+#    #+#             */
-/*   Updated: 2022/06/22 19:19:27 by gimartin         ###   ########.fr       */
+/*   Updated: 2022/06/23 11:21:43 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int	count_redirections_fields(char **tmp)
 	return (ret);
 }
 
-void	sup_cleanig_loop(char **t, t_command **c, int j[2], char ***cleaned)
+void	sup_cleaning_loop(char **t, t_command **c, int j[2], char ***cleaned)
 {
 	int	i;
 
@@ -57,22 +57,19 @@ void	sup_cleanig_loop(char **t, t_command **c, int j[2], char ***cleaned)
 		}
 		j[0]++;
 	}
+	(*c)->redi[i] = NULL;
 }
 
 static char	**cleaning_loop(char **tmp, int j[2],
 	t_command *cmd)
 {
 	char	**cleaned;
-	int		i;
 
 	cleaned = NULL;
-	i = 0;
 	malloc_c_ptr(&cleaned, count_cleaned_cmd(&tmp[j[0]]) + 1);
 	if (count_redirections_fields(tmp) > 0)
 		malloc_c_ptr(&cmd->redi, count_redirections_fields(tmp) + 1);
-	sup_cleanig_loop(tmp, &cmd, j, &cleaned);
-	if (cmd->redi)
-		cmd->redi[i] = NULL;
+	sup_cleaning_loop(tmp, &cmd, j, &cleaned);
 	cleaned[j[1]] = NULL;
 	return (cleaned);
 }
