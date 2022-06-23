@@ -6,7 +6,7 @@
 /*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/27 15:05:05 by gimartin          #+#    #+#             */
-/*   Updated: 2022/06/15 15:46:36 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/06/23 10:54:07 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,9 @@
 void	cmd_not_found(t_command *cmd, t_terminfo *terminfo)
 {
 	ft_putstr_fd(ft_getenv("SHELL", terminfo), STDERR_FILENO);
-	ft_putstr_fd(": command not found: ", STDERR_FILENO);
-	ft_putendl_fd(cmd->cmd, STDERR_FILENO);
+	ft_putstr_fd(": ", STDERR_FILENO);
+	ft_putstr_fd(cmd->cmd, STDERR_FILENO);
+	ft_putendl_fd(": command not found", STDERR_FILENO);
 	terminfo->last_exit = 127;
 }
 

@@ -6,7 +6,7 @@
 /*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/03 21:54:41 by ddelladi          #+#    #+#             */
-/*   Updated: 2022/06/23 09:58:23 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/06/23 11:05:00 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,9 +98,7 @@ int	main(int argc, char **argv)
 
 /*
 
-Segnali (ctrl\ su cat interattivo fa giustamente la stampa di ˆ\Quit: 3 ma non esce se non con un ctrl C (secondo me gli si può mandare brutalmente il SIGINT))
 HEREDOC - ctrl C su heredoc non chiude - ctrl D  manda il messaggio "minishell: attention: here-document on line 1 is delimited by an EOF ("eof" was required)" mentre la bash "> bash-3.2$" (LA BASH MANTIENE IN HISTORY cat << eof)
-Verificare la dicitura: "Command not found" su bash: bash: ciao: command not found ---- minishell: command not found: ciao
 Premendo tab in un prompt vuoto, vengono presentate le varie opzioni di selezione: è questo il comportamento nella bash? fa cose strane
 
 Display all 1412 possibilities? (y or n) "PREMENDO y"
@@ -137,8 +135,6 @@ SetFile                      dnsextd                      kill                  
 SplitForks                   do                           kill.d                       pictd                        ssh
 UnRezWack                    done                         killall                      pidpersec.d                  ssh-add
 
-
-Al momento con sigquit il segnale inviato è un SIGINT perché con il SIGQUIT non viene terminato il processo (nella bash il SIGQUIT viene ignorato): verificare se è questo il comportamento da mantenere: è un problema soprattutto per quanto riguarda l'exit code (130 con SIGINT, 131 con SIGQUIT)
 
 Il comando top restituisce exit code 0 anche quando interrotto da segnali: verificare che il comportamento sia così anche su mac, attualmente è già implementata la funzione
 

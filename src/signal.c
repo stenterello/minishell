@@ -6,7 +6,7 @@
 /*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/27 15:04:37 by gimartin          #+#    #+#             */
-/*   Updated: 2022/06/23 10:36:41 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/06/23 10:47:35 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,10 @@ extern void	rl_replace_line(const char *str, int n);
 
 void	heredoc_sigint(void)
 {
+	ft_putstr_fd("^C", STDOUT_FILENO);
 	ioctl(STDIN_FILENO, TIOCSTI, "\n");
-	// rl_replace_line("", 0);
-	// rl_on_new_line();
+	rl_replace_line("", 0);
+	rl_on_new_line();
 	g_child = -1;
 }
 
