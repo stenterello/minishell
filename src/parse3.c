@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse3.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
+/*   By: gimartin <gimartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/13 15:49:35 by gimartin          #+#    #+#             */
-/*   Updated: 2022/06/23 11:21:43 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/06/24 17:37:15 by gimartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,7 @@ void	sup_cleaning_loop(char **t, t_command **c, int j[2], char ***cleaned)
 			ft_strlcpy((*c)->redi[i++], t[j[0]], ft_strlen(t[j[0]]) + 1);
 			j[0]++;
 			malloc_c(&(*c)->redi[i], ft_strlen(t[j[0]]) + 1);
-			ft_strlcpy((*c)->redi[i++], t[j[0]],
-				ft_strlen(t[j[0]]) + 1);
+			ft_strlcpy((*c)->redi[i++], t[j[0]], ft_strlen(t[j[0]]) + 1);
 		}
 		else
 		{

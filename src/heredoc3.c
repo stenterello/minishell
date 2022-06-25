@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc3.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
+/*   By: gimartin <gimartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/28 16:35:00 by gimartin          #+#    #+#             */
-/*   Updated: 2022/06/23 10:49:12 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/06/24 17:36:58 by gimartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,13 +48,7 @@ char	*take_heredoc_input(char *tmp, char *d,
 		if (g_child == -1)
 			break ;
 	}
-	if (!tmp)
-		print_here(d, i, terminfo);
-	if (g_child == -1)
-	{
-		terminfo->last_exit = 130;
-		g_child = 0;
-	}
+	end_take(tmp, i, d, terminfo);
 	return (tmp);
 }
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc4.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
+/*   By: gimartin <gimartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/15 12:13:03 by ddelladi          #+#    #+#             */
-/*   Updated: 2022/06/15 12:13:33 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/06/24 17:36:49 by gimartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,4 +45,15 @@ int	ft_strlen_rl(char *str)
 		i++;
 	}
 	return (i);
+}
+
+void	end_take(char *tmp, int i, char *d, t_terminfo *terminfo)
+{
+	if (!tmp)
+		print_here(d, i, terminfo);
+	if (g_child == -1)
+	{
+		terminfo->last_exit = 130;
+		g_child = 0;
+	}
 }

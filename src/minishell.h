@@ -6,7 +6,7 @@
 /*   By: gimartin <gimartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/03 21:54:58 by ddelladi          #+#    #+#             */
-/*   Updated: 2022/06/22 19:18:32 by gimartin         ###   ########.fr       */
+/*   Updated: 2022/06/24 18:08:10 by gimartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -282,5 +282,6 @@ void	parent_signals(int sig);
 void	define_input_redirection(char **tmp, t_command *cmd, t_terminfo *t);
 void	define_output_redirection(char **tmp, t_command *cmd);
 void	maieutica(t_command *tmp, int status, t_terminfo *terminfo);
+void	end_take(char *tmp, int i, char *d, t_terminfo *terminfo);
 
 #endif

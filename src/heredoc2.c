@@ -6,7 +6,7 @@
 /*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/27 15:16:53 by gimartin          #+#    #+#             */
-/*   Updated: 2022/06/20 15:49:36 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/06/25 10:18:46 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int	delimiter_len(char *line)
 	int	i;
 
 	i = 0;
-	while (ft_isalnum(line[i]))
+	while (line[i] && (line[i] < 8 || line[i] > 14) && line[i] != 32)
 		i++;
 	return (i);
 }
@@ -32,7 +32,7 @@ char	*take_delimiter(char *line)
 	while (line[i] && ft_strncmp(&line[i], "<<", 2))
 		i++;
 	i += 2;
-	while (!ft_isalnum(line[i]) && line[i] != '\'' && line[i] != '"')
+	while (line[i] && ((line[i] > 8 && line[i] < 14) || line[i] == 32))
 		i++;
 	if (line[i] == '\'' || line[i] == '"')
 		i++;
