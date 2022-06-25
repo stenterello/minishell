@@ -6,7 +6,7 @@
 /*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/03 21:54:41 by ddelladi          #+#    #+#             */
-/*   Updated: 2022/06/25 10:20:26 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/06/25 11:45:13 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ void	execution_loop(t_terminfo *terminfo)
 	else if (split_command(terminfo->input->line, &cmd, terminfo))
 		execute_tree(&cmd, terminfo);
 	free(terminfo->input->line);
+	terminfo->input->line = NULL;
 	suspended_cat(terminfo);
 	if (cmd.portions)
 		free_array_of_array(cmd.portions);
@@ -44,7 +45,7 @@ void	init_and_take_input(t_terminfo *terminfo)
 		transform_environ(terminfo);
 		add_signals(terminfo, NULL);
 		take_input(terminfo);
-		if (terminfo->input->line && terminfo->delimiter == 0)
+		if (terminfo->input->line && ft_strlen(terminfo->input->line) > 0 && terminfo->delimiter == 0)
 			execution_loop(terminfo);
 		if (terminfo->input->line)
 		{
