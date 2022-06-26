@@ -53,7 +53,8 @@ SRC=main.c \
 	wildcards_utils2.c \
 	wildcards_utils3.c \
 	child_process.c \
-	child_process2.c
+	child_process2.c \
+	clean_heredoc.c
 SRCS=$(addprefix src/, $(SRC))
 OBJS=$(SRCS:.c=.o)
 BUILTIN=pwd.c \

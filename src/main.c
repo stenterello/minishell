@@ -6,7 +6,7 @@
 /*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/03 21:54:41 by ddelladi          #+#    #+#             */
-/*   Updated: 2022/06/25 11:45:13 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/06/26 18:09:26 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,8 @@ void	init_and_take_input(t_terminfo *terminfo)
 		transform_environ(terminfo);
 		add_signals(terminfo, NULL);
 		take_input(terminfo);
-		if (terminfo->input->line && ft_strlen(terminfo->input->line) > 0 && terminfo->delimiter == 0)
+		if (terminfo->input->line && ft_strlen(terminfo->input->line) > 0
+			&& terminfo->delimiter == 0)
 			execution_loop(terminfo);
 		if (terminfo->input->line)
 		{
@@ -98,11 +99,3 @@ int	main(int argc, char **argv)
 	free_array_of_array(terminfo.glob_environ);
 	return (0);
 }
-
-/*
-
-cat << eof ciao
-
-Il comando top restituisce exit code 0 anche quando interrotto da segnali: verificare che il comportamento sia così anche su mac, attualmente è già implementata la funzione
-
-*/

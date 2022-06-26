@@ -6,7 +6,7 @@
 /*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/27 15:16:53 by gimartin          #+#    #+#             */
-/*   Updated: 2022/06/25 10:18:46 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/06/26 18:40:32 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,23 +17,50 @@ int	delimiter_len(char *line)
 	int	i;
 
 	i = 0;
-	while (line[i] && (line[i] < 8 || line[i] > 14) && line[i] != 32)
+	while (line[i] && line[i] != 32)
 		i++;
 	return (i);
 }
 
-char	*take_delimiter(char *line)
+void	false_take_heredoc_input(char *d, t_terminfo *terminfo)
+{
+	char	*tmp;
+
+	if (terminfo->last_exit == 130)
+		terminfo->last_exit = 0;
+	tmp = readline("> ");
+	while (terminfo->last_exit != 130 && tmp
+		&& ft_strncmp(tmp, d, ft_strlen(d)) && g_child != -1)
+	{
+		free(tmp);
+		tmp = readline("> ");
+		if (g_child == -1)
+			break ;
+	}
+	free(tmp);
+}
+
+char	*take_delimiter(char *line, t_terminfo *terminfo)
 {
 	int		i;
 	char	*ret;
+	char	*tmp_delmtr;
 
 	i = 0;
 	ret = NULL;
-	while (line[i] && ft_strncmp(&line[i], "<<", 2))
-		i++;
-	i += 2;
-	while (line[i] && ((line[i] > 8 && line[i] < 14) || line[i] == 32))
-		i++;
+	while (another_heredoc(&line[i]))
+	{
+		while (line[i] && ft_strncmp(&line[i], "<<", 2))
+			i++;
+		i = skip_spaces(line, i + 2);
+		if (another_heredoc(&line[i]))
+		{
+			malloc_c(&tmp_delmtr, delimiter_len(&line[i]) + 1);
+			ft_strlcpy(tmp_delmtr, &line[i], delimiter_len(&line[i]) + 1);
+			false_take_heredoc_input(tmp_delmtr, terminfo);
+			free(tmp_delmtr);
+		}
+	}
 	if (line[i] == '\'' || line[i] == '"')
 		i++;
 	malloc_c(&ret, delimiter_len(&line[i]) + 1);
@@ -41,27 +68,18 @@ char	*take_delimiter(char *line)
 	return (ret);
 }
 
-void	clean_heredoc(char *line, char *bench)
+void	execute_free_here(char *tmp, t_command *cmd2,
+	char *d, t_terminfo *terminfo)
 {
-	int	i;
+	t_command	*cmd;
 
-	i = 0;
-	while (ft_strncmp(&line[i], bench, ft_strlen(bench))
-		&& i <= (int)(ft_strlen(line) - (int)ft_strlen(bench)))
-		i++;
-	while (!ft_isalnum(line[i]))
-		i--;
-	line[++i] = '\0';
-}
-
-void	execute_free_here(char *tmp, t_command *cmd,
-	t_command *cmd2, t_terminfo *terminfo)
-{
+	cmd = (t_command *)cmd2->next;
 	if (tmp)
 	{
 		free(tmp);
 		tmp = NULL;
 	}
+	free(d);
 	cmd->next = cmd2;
 	cmd2->prev = cmd;
 	cmd2->next = NULL;
@@ -80,5 +98,6 @@ void	free_here(char *tmp, char *delimiter, t_command *cmd, t_command *cmd2)
 	}
 	free(delimiter);
 	free_single_command(cmd);
-	free_single_command(cmd2);
+	if (cmd2->cmd)
+		free_single_command(cmd2);
 }

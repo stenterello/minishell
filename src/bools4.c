@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   bools4.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gimartin <gimartin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/09 14:59:13 by gimartin          #+#    #+#             */
-/*   Updated: 2022/06/22 19:03:06 by gimartin         ###   ########.fr       */
+/*   Updated: 2022/06/26 18:25:45 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,4 +77,16 @@ int	env_exists(char *line, t_terminfo *terminfo)
 		tmp = tmp->next;
 	}
 	return (sup_env_ex(terminfo, tmp, ret));
+}
+
+int	another_heredoc(char *line)
+{
+	int	i;
+
+	i = 0;
+	while (line[i] && ft_strncmp(&line[i], "<<", 2))
+		i++;
+	if (!line[i])
+		return (0);
+	return (1);
 }

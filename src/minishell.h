@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gimartin <gimartin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/03 21:54:58 by ddelladi          #+#    #+#             */
-/*   Updated: 2022/06/24 18:08:10 by gimartin         ###   ########.fr       */
+/*   Updated: 2022/06/26 18:46:02 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,8 +145,8 @@ void	malloc_and_check_dict(t_dict **dst, int len);
 void	malloc_and_copy(char **dst, char *src);
 int		init_heredoc(char *typed, t_terminfo *terminfo);
 void	treat_heredoc_child(int *status, t_command *tmp, t_terminfo *terminfo);
-char	*take_delimiter(char *line);
-void	clean_heredoc(char *line, char *bench);
+char	*take_delimiter(char *line, t_terminfo *terminfo);
+void	clean_heredoc(t_command *cmd);
 int		count_params(char *line);
 int		count_args(char **tmp);
 int		next_arg_len(char *line);
@@ -250,8 +250,10 @@ int		sup_guess(t_command *cmd, int i, int j, int k);
 int		free_hidden_guess(char **tmp, t_command *cmd);
 void	free_single_command(t_command *cmd);
 void	sup1_sup1(t_command *cmd, char *tmp);
-void	execute_free_here(char *tmp, t_command *cmd,
-			t_command *cmd2, t_terminfo *terminfo);
+void	treat_heredoc(t_command *cmd, t_command *cmd2,
+			char *typed, t_terminfo *terminfo);
+void	execute_free_here(char *tmp, t_command *cmd2,
+			char *d, t_terminfo *terminfo);
 void	search_value_for_key(t_command *cmd, int *i,
 			int ind, t_terminfo *terminfo);
 int		var_exists(t_dict *new, t_command *cmd, t_terminfo *terminfo);
@@ -283,5 +285,9 @@ void	define_input_redirection(char **tmp, t_command *cmd, t_terminfo *t);
 void	define_output_redirection(char **tmp, t_command *cmd);
 void	maieutica(t_command *tmp, int status, t_terminfo *terminfo);
 void	end_take(char *tmp, int i, char *d, t_terminfo *terminfo);
+int		delimiter_len(char *line);
+int		more_args_heredoc(char *line);
+int		another_heredoc(char *line);
+void	false_take_heredoc_input(char *d, t_terminfo *terminfo);
 
 #endif

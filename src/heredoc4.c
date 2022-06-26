@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc4.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gimartin <gimartin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/15 12:13:03 by ddelladi          #+#    #+#             */
-/*   Updated: 2022/06/24 17:36:49 by gimartin         ###   ########.fr       */
+/*   Updated: 2022/06/26 18:44:49 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,4 +56,24 @@ void	end_take(char *tmp, int i, char *d, t_terminfo *terminfo)
 		terminfo->last_exit = 130;
 		g_child = 0;
 	}
+}
+
+int	init_heredoc(char *typed, t_terminfo *terminfo)
+{
+	t_command	*cmd;
+	t_command	*cmd2;
+
+	terminfo->delimiter = 1;
+	cmd = malloc(sizeof(t_command));
+	if (!cmd)
+		die("Malloc error");
+	cmd2 = malloc(sizeof(t_command));
+	if (!cmd2)
+		die("Malloc error");
+	init_cmd(cmd);
+	init_cmd(cmd2);
+	cmd->first = 1;
+	cmd2->next = cmd;
+	treat_heredoc(cmd, cmd2, typed, terminfo);
+	return (1);
 }
