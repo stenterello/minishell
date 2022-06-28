@@ -6,7 +6,7 @@
 /*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/03 21:54:41 by ddelladi          #+#    #+#             */
-/*   Updated: 2022/06/26 18:09:26 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/06/28 20:46:06 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,3 +99,12 @@ int	main(int argc, char **argv)
 	free_array_of_array(terminfo.glob_environ);
 	return (0);
 }
+
+/*
+
+- aggiustare segnali heredoc
+- forse la raccolta di terminfo->input->line, per heredoc, deve essere presa dentro a standard execution (altrimenti la terminfo->input->line eventuale non è detto si riferisca al comando corrente, nel caso di più comandi di heredoc). Update: adesso lo fa ma è comunque da aggiustare, per esempio per quanto riguarda la history e l'output degli errori
+- heredoc aggiorna la history!
+- confrontare output di bash e minishell della stringa: cat ciao << eof | grep << foe
+
+*/

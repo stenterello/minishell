@@ -6,7 +6,7 @@
 /*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/27 15:04:34 by gimartin          #+#    #+#             */
-/*   Updated: 2022/05/11 12:27:32 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/06/28 15:59:07 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int	count_len(char *s, char c)
 	int	i;
 
 	i = 0;
-	if (!ft_strncmp(s, ">>", 2))
+	if (!ft_strncmp(s, ">>", 2) || !ft_strncmp(s, "<<", 2))
 		return (2);
 	if (s[i] == '|' || s[i] == '>' || s[i] == '<')
 		return (1);
@@ -61,7 +61,7 @@ int	find_next_start(char *s, char c)
 	int	i;
 
 	i = 0;
-	if (!ft_strncmp(s, ">>", 2))
+	if (!ft_strncmp(s, ">>", 2) || !ft_strncmp(s, "<<", 2))
 	{
 		i += 2;
 		while (!ft_isalnum(s[i]))

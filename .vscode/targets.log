@@ -8,11 +8,8 @@ make bonus -C ./include/libft
 # License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
- 
-make[1]: *** No rule to make target 'ft_isalpha.o', needed by 'bonus'.  Stop.
 
-
-# Make data base, printed on Sun Jun 26 18:23:38 2022
+# Make data base, printed on Tue Jun 28 20:20:33 2022
 
 # Variables
 
@@ -91,7 +88,7 @@ PG_OF_PATH = /home/davide/Programmi/OpenFrameworks/of_v0.11.2_linux64gcc6_releas
 # makefile (from 'Makefile', line 64)
 OBJSB = $(BONUSFLS:.c=.o)
 # environment
-SESSION_MANAGER = local/ThinkPad-E550:@/tmp/.ICE-unix/2225,unix/ThinkPad-E550:/tmp/.ICE-unix/2225
+SESSION_MANAGER = local/ThinkPad-E550:@/tmp/.ICE-unix/1406,unix/ThinkPad-E550:/tmp/.ICE-unix/1406
 # environment
 XDG_RUNTIME_DIR = /run/user/1000
 # environment
@@ -111,7 +108,7 @@ XDG_SESSION_DESKTOP = cinnamon
 # environment
 SSH_AUTH_SOCK = /run/user/1000/keyring/ssh
 # environment
-GIO_LAUNCHED_DESKTOP_FILE_PID = 30980
+GIO_LAUNCHED_DESKTOP_FILE_PID = 2849
 # automatic
 %F = $(notdir $%)
 # environment
@@ -127,7 +124,7 @@ QT_QPA_PLATFORMTHEME = qt5ct
 # environment
 XDG_SEAT = seat0
 # environment
-SSH_AGENT_PID = 2295
+SSH_AGENT_PID = 1476
 # environment
 ORIGINAL_XDG_CURRENT_DESKTOP = X-Cinnamon
 # environment
@@ -165,7 +162,7 @@ SHLVL = 0
 # makefile (from 'Makefile', line 62)
 CC = gcc
 # environment
-VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-5437a6ba-aab3-4079-88b4-d2b3f1ac4b55.sock
+VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-43b2ae3a-b788-4135-bedb-2a83f1dc70a4.sock
 # environment
 XDG_SESSION_ID = c2
 # environment
@@ -192,7 +189,6 @@ XDG_SEAT_PATH = /org/freedesktop/DisplayManager/Seat0
 VSCODE_IPC_HOOK = /run/user/1000/vscode-c5f300b3-1.68.1-main.sock
 # makefile
 MAKEFLAGS = pqrRw
- 
 # environment
 MFLAGS = -pqrRw
 # automatic
@@ -209,6 +205,9 @@ CINNAMON_VERSION = 5.2.7
 QT_ACCESSIBILITY = 1
 # environment
 DEFAULTS_PATH = /usr/share/gconf/cinnamon.default.path
+ 
+make[1]: *** No rule to make target 'ft_isalpha.o', needed by 'bonus'.  Stop.
+
 # default
 MAKEFILES := 
 # automatic
@@ -238,7 +237,7 @@ BONUSFLS = ft_lstnew.c ft_lstadd_front.c ft_lstsize.c ft_lstlast.c ft_lstadd_bac
 # environment
 LANG = C
 # environment
-VSCODE_PID = 30980
+VSCODE_PID = 2849
 # variable set hash-table stats:
 # Load=111/1024=11%, Rehash=0, Collisions=16/145=11%
 
@@ -248,7 +247,7 @@ VSCODE_PID = 30980
 
 # Directories
 
-# . (device 2049, inode 17303055): 50 files, no impossibilities.
+# . (device 2049, inode 17564022): 50 files, no impossibilities.
 
 # 50 files, no impossibilities in 1 directories.
 
@@ -258,7 +257,6 @@ VSCODE_PID = 30980
 
 # Files
 
- 
 # Not a target:
 ft_strmapi.o:
 #  Implicit rule search has not been done.
@@ -306,7 +304,6 @@ all: libft.a
 #  Modification time never checked.
 #  File has not been updated.
 
- 
 # Not a target:
 ft_lstlast.o:
 #  Implicit rule search has not been done.
@@ -339,7 +336,6 @@ ft_strrchr.o:
 
 # Not a target:
 ft_strjoin.o:
- 
 #  Implicit rule search has not been done.
 #  Modification time never checked.
 #  File has not been updated.
@@ -365,8 +361,7 @@ ft_strlcat.o:
 # Not a target:
 Makefile:
 #  Implicit rule search has been done.
-#  Last modified 2022-06-25 11:47:00.171863471
- 
+#  Last modified 2022-06-28 15:55:56.691232843
 #  File has been updated.
 #  Successfully updated.
 
@@ -397,7 +392,6 @@ ft_bzero.o:
 #  File has not been updated.
 
 # Not a target:
- 
 ft_lstnew.o:
 #  Implicit rule search has not been done.
 #  Modification time never checked.
@@ -413,7 +407,6 @@ bonus: ft_isalpha.o ft_isdigit.o ft_isalnum.o ft_isascii.o ft_isprint.o ft_strle
 
 # Not a target:
 ft_putnbr_fd.o:
- 
 #  Implicit rule search has not been done.
 #  Modification time never checked.
 #  File has not been updated.
@@ -493,6 +486,7 @@ clean:
 
 # Not a target:
 ft_isalnum.o:
+ 
 #  Implicit rule search has not been done.
 #  Modification time never checked.
 #  File has not been updated.
@@ -601,10 +595,9 @@ ft_putendl_fd.o:
 # strcache performance: lookups = 121 / hit rate = 12%
 # hash-table stats:
 # Load=106/8192=1%, Rehash=0, Collisions=2/121=2%
-# Finished Make data base on Sun Jun 26 18:23:38 2022
+# Finished Make data base on Tue Jun 28 20:20:33 2022
 
 # make[1]: Leaving directory '/home/davide/Documenti/Codici/42/minishell/include/libft'
- 
 # GNU Make 4.2.1
 # Built for x86_64-pc-linux-gnu
 # Copyright (C) 1988-2016 Free Software Foundation, Inc.
@@ -612,7 +605,7 @@ ft_putendl_fd.o:
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Sun Jun 26 18:23:38 2022
+# Make data base, printed on Tue Jun 28 20:20:33 2022
 
 # Variables
 
@@ -691,7 +684,7 @@ GPG_AGENT_INFO = /run/user/1000/gnupg/S.gpg-agent:0:1
 # environment
 PG_OF_PATH = /home/davide/Programmi/OpenFrameworks/of_v0.11.2_linux64gcc6_release
 # environment
-SESSION_MANAGER = local/ThinkPad-E550:@/tmp/.ICE-unix/2225,unix/ThinkPad-E550:/tmp/.ICE-unix/2225
+SESSION_MANAGER = local/ThinkPad-E550:@/tmp/.ICE-unix/1406,unix/ThinkPad-E550:/tmp/.ICE-unix/1406
 # environment
 XDG_RUNTIME_DIR = /run/user/1000
 # environment
@@ -711,7 +704,7 @@ XDG_SESSION_DESKTOP = cinnamon
 # environment
 SSH_AUTH_SOCK = /run/user/1000/keyring/ssh
 # environment
-GIO_LAUNCHED_DESKTOP_FILE_PID = 30980
+GIO_LAUNCHED_DESKTOP_FILE_PID = 2849
 # automatic
 %F = $(notdir $%)
 # environment
@@ -729,13 +722,10 @@ BUILTINS = $(addprefix src/builtin/, $(BUILTIN))
 # environment
 XDG_SEAT = seat0
 # environment
-SSH_AGENT_PID = 2295
+SSH_AGENT_PID = 1476
 # environment
 ORIGINAL_XDG_CURRENT_DESKTOP = X-Cinnamon
 # environment
- 
-make: *** [Makefile:77: include/libft/libft.a] Error 2
-
 GTK_MODULES = gail:atk-bridge
 # environment
 VSCODE_AMD_ENTRYPOINT = vs/workbench/api/node/extensionHostProcess
@@ -772,10 +762,13 @@ LIBFT = ./include/libft/libft.a
 # makefile (from 'Makefile', line 2)
 CC = gcc
 # environment
-VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-5437a6ba-aab3-4079-88b4-d2b3f1ac4b55.sock
+VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-43b2ae3a-b788-4135-bedb-2a83f1dc70a4.sock
 # environment
 XDG_SESSION_ID = c2
 # environment
+ 
+make: *** [Makefile:77: include/libft/libft.a] Error 2
+
 USER = davide
 # makefile
 .DEFAULT_GOAL := minishell
@@ -846,7 +839,7 @@ NAME = minishell
 # environment
 LANG = C
 # environment
-VSCODE_PID = 30980
+VSCODE_PID = 2849
 # variable set hash-table stats:
 # Load=114/1024=11%, Rehash=0, Collisions=15/154=10%
 
@@ -856,7 +849,7 @@ VSCODE_PID = 30980
 
 # Directories
 
-# . (device 2049, inode 17303142): 7 files, no impossibilities.
+# . (device 2049, inode 17563878): 7 files, no impossibilities.
 
 # 7 files, no impossibilities in 1 directories.
 
@@ -960,7 +953,6 @@ src/builtin/env.o:
 
 # Not a target:
 src/init_utils.o:
- 
 #  Implicit rule search has not been done.
 #  Modification time never checked.
 #  File has not been updated.
@@ -1010,7 +1002,7 @@ src/bools4.o:
 # Not a target:
 Makefile:
 #  Implicit rule search has been done.
-#  Last modified 2022-06-26 18:23:04.547596366
+#  Last modified 2022-06-28 15:55:56.691232843
 #  File has been updated.
 #  Successfully updated.
 
@@ -1030,7 +1022,6 @@ src/memory.o:
 src/wildcards_count.o:
 #  Implicit rule search has not been done.
 #  Modification time never checked.
- 
 #  File has not been updated.
 
 # Not a target:
@@ -1057,6 +1048,7 @@ src/heredoc4.o:
 #  Modification time never checked.
 #  File has not been updated.
 
+ 
 minishell: include/libft/libft.a src/main.o src/special_run.o src/special_run2.o src/special_childs.o src/utils.o src/utils2.o src/utils3.o src/dict_utils.o src/execute.o src/execute2.o src/find_script.o src/init_utils.o src/init_utils2.o src/init_utils3.o src/set_var.o src/set_var2.o src/term.o src/parse.o src/parse2.o src/parse3.o src/bools.o src/bools2.o src/bools3.o src/bools4.o src/count.o src/memory.o src/memory2.o src/redirections.o src/redirections_utils.o src/redirections_utils2.o src/heredoc.o src/heredoc2.o src/heredoc3.o src/heredoc4.o src/split_fields.o src/split_fields2.o src/signal.o src/signal2.o src/error_handling.o src/chain.o src/chain2.o src/chain3.o src/wildcards.o src/wildcards2.o src/wildcards_bools.o src/wildcards_bools2.o src/wildcards_count.o src/wildcards_count2.o src/wildcards_utils.o src/wildcards_utils2.o src/wildcards_utils3.o src/child_process.o src/child_process2.o src/clean_heredoc.o src/builtin/pwd.o src/builtin/cd.o src/builtin/cd2.o src/builtin/echo.o src/builtin/exit.o src/builtin/env.o src/builtin/export.o src/builtin/export_utils.o src/builtin/unset.o
 #  Implicit rule search has not been done.
 #  File does not exist.
@@ -1322,7 +1314,6 @@ src/wildcards_utils3.o:
 #  File has not been updated.
 
 # Not a target:
- 
 src/parse2.o:
 #  Implicit rule search has not been done.
 #  Modification time never checked.
@@ -1334,6 +1325,7 @@ src/set_var2.o:
 #  Modification time never checked.
 #  File has not been updated.
 
+ 
 # Not a target:
 src/find_script.o:
 #  Implicit rule search has not been done.
@@ -1354,6 +1346,6 @@ src/find_script.o:
 # strcache performance: lookups = 103 / hit rate = 21%
 # hash-table stats:
 # Load=81/8192=1%, Rehash=0, Collisions=1/103=1%
-# Finished Make data base on Sun Jun 26 18:23:38 2022
+# Finished Make data base on Tue Jun 28 20:20:33 2022
 
  

@@ -6,7 +6,7 @@
 /*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/22 18:59:14 by gimartin          #+#    #+#             */
-/*   Updated: 2022/06/23 11:12:39 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/06/28 20:22:30 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,11 @@ void	born_child(t_command *tmp, t_terminfo *terminfo)
 	int			status;
 
 	status = 0;
+	if (terminfo->delimiter && terminfo->input->line && !tmp->redir_out && !tmp->to_pipe)
+		write_and_close(tmp, terminfo);
 	if (!cmd_exists(tmp->cmd, terminfo))
 		return ;
-	if (tmp->redir_in)
+	if (tmp->redir_in && !tmp->input_fd)
 		define_input_redirection(tmp->redi, tmp, terminfo);
 	if (tmp->redir_out)
 		define_output_redirection(tmp->redi, tmp);

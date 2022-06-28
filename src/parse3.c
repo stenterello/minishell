@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse3.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gimartin <gimartin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/13 15:49:35 by gimartin          #+#    #+#             */
-/*   Updated: 2022/06/24 17:37:15 by gimartin         ###   ########.fr       */
+/*   Updated: 2022/06/28 20:42:17 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,9 @@ int	count_redirections_fields(char **tmp)
 	while (tmp[i] && tmp[i][0] != '|')
 	{
 		if (!ft_strncmp(tmp[i], "<\0", 2)
-			|| ft_strncmp(tmp[i], ">\0", 2)
-			|| !ft_strncmp(tmp[i], ">>\0", 3))
+			|| !ft_strncmp(tmp[i], ">\0", 2)
+			|| !ft_strncmp(tmp[i], ">>\0", 3)
+			|| !ft_strncmp(tmp[i], "<<\0", 3))
 			ret += 2;
 		i++;
 	}
@@ -37,7 +38,7 @@ void	sup_cleaning_loop(char **t, t_command **c, int j[2], char ***cleaned)
 	i = 0;
 	while (t[j[0]] && ft_strncmp(t[j[0]], "|\0", 2))
 	{
-		if (is_redir(t[j[0]]) > 0)
+		if (is_redir(t[j[0]]) > 0 && is_redir(t[j[0]]) < 3)
 			(*c)->redir_out = 1;
 		else if (is_redir(t[j[0]]) == 0)
 			(*c)->redir_in = 1;
@@ -56,7 +57,8 @@ void	sup_cleaning_loop(char **t, t_command **c, int j[2], char ***cleaned)
 		}
 		j[0]++;
 	}
-	(*c)->redi[i] = NULL;
+	if ((*c)->redi)
+		(*c)->redi[i] = NULL;
 }
 
 static char	**cleaning_loop(char **tmp, int j[2],
@@ -71,6 +73,46 @@ static char	**cleaning_loop(char **tmp, int j[2],
 	sup_cleaning_loop(tmp, &cmd, j, &cleaned);
 	cleaned[j[1]] = NULL;
 	return (cleaned);
+}
+
+int	is_heredoc2(char **redi)
+{
+	int	i;
+
+	i = 0;
+	if (!redi)
+		return (0);
+	while (redi[i])
+	{
+		if (!ft_strncmp(redi[i], "<<\0", 3))
+			return (1);
+		i++;
+	}
+	return (0);
+}
+
+char	*find_delimiter(char **redi)
+{
+	int		i;
+
+	i = 0;
+	while (redi[i])
+	{
+		if (!ft_strncmp(redi[i], "<<\0", 3))
+			return (redi[++i]);
+		i++;
+	}
+	return (NULL);
+}
+
+void	get_heredoc_input(t_command *cmd, t_terminfo *terminfo)
+{
+	char	*d;
+	char	*inp_line;
+
+	inp_line = NULL;
+	d = find_delimiter(cmd->redi);
+	return (take_heredoc_input(inp_line, d, terminfo));
 }
 
 char	**clean_command(char **tmp, t_command *cmd,

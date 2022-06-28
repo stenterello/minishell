@@ -6,7 +6,7 @@
 /*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/27 15:04:52 by gimartin          #+#    #+#             */
-/*   Updated: 2022/06/15 10:13:27 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/06/28 16:05:59 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,9 @@ int	is_heredoc(char *line)
 
 int	is_redir(char *line)
 {
-	if (!ft_strncmp(line, ">>\0", 3))
+	if (!ft_strncmp(line, "<<\0", 3))
+		return (3);
+	else if (!ft_strncmp(line, ">>\0", 3))
 		return (2);
 	else if (!ft_strncmp(line, ">\0", 2))
 		return (1);

@@ -6,7 +6,7 @@
 /*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/24 12:43:37 by ddelladi          #+#    #+#             */
-/*   Updated: 2022/06/20 10:19:20 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/06/28 16:51:05 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,9 +35,8 @@ void	treat_heredoc_child(int *status, t_command *tmp, t_terminfo *terminfo)
 	else
 		terminfo->last_exit = *status;
 	g_child = 0;
-	dup2(tmp->saved_in, STDIN_FILENO);
-	close(tmp->saved_in);
 	terminfo->is_suspended = 0;
+	restore_fd(tmp, terminfo);
 }
 
 int	cmd_exists(char *line, t_terminfo *terminfo)

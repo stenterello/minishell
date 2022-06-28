@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gimartin <gimartin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/27 15:05:42 by gimartin          #+#    #+#             */
-/*   Updated: 2022/06/22 19:04:14 by gimartin         ###   ########.fr       */
+/*   Updated: 2022/06/28 20:42:43 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,22 +75,48 @@ int	preliminary(t_command *tmp, t_terminfo *terminfo)
 	return (0);
 }
 
-void	write_and_close(t_command *tmp)
+void	write_and_close(t_command *tmp, t_terminfo *terminfo)
 {
-	ft_putstr_fd(tmp->input_line, tmp->output_fd);
-	close(tmp->output_fd);
+	int	piped[2];
+
+	if (pipe(piped) == -1)
+		die("Error while piping");
+	ft_putstr_fd(terminfo->input->line, piped[1]);
+	close(piped[1]);
+	tmp->input_fd = piped[0];
+	tmp->saved_in = dup(STDIN_FILENO);
+	close(STDIN_FILENO);
+	dup2(tmp->input_fd, STDIN_FILENO);
+	close(tmp->input_fd);
+}
+
+int	heredoc_to_avoid(char **args)
+{
+	if (!args)
+		return (0);
+	if (args[1])
+		return (1);
+	return (0);
 }
 
 int	standard_execution(t_command *tmp, t_terminfo *terminfo)
 {
 	while (tmp)
 	{
+		if (is_heredoc2(tmp->redi))
+		{
+			terminfo->delimiter = 1;
+			free(terminfo->input->line);
+			terminfo->input->line = NULL;
+			get_heredoc_input(tmp, terminfo);
+			if (heredoc_to_avoid(tmp->args))
+				terminfo->delimiter = 0;
+			else
+				terminfo->delimiter = 1;
+		}
 		if (!builtin(tmp, terminfo))
 		{
-			if (tmp->input_line || (terminfo->delimiter
-					&& !tmp->input_line && !tmp->cmd))
-				write_and_close(tmp);
-			else if (ft_strchr(tmp->cmd, '/') == NULL)
+			if (ft_strchr(tmp->cmd, '/') == NULL)
 			{
 				if (find_script(tmp, terminfo) == -1)
 					cmd_not_found(tmp, terminfo);

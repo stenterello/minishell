@@ -6,7 +6,7 @@
 /*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/28 15:51:58 by gimartin          #+#    #+#             */
-/*   Updated: 2022/06/21 12:15:42 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/06/28 16:04:45 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ int	count_cleaned_cmd(char **tmp)
 	while (tmp[i] && ft_strncmp(tmp[i], "|\0", 2))
 	{
 		if (!ft_strncmp(tmp[i], ">\0", 2) || !ft_strncmp(tmp[i], ">>\0", 3)
-			|| !ft_strncmp(tmp[i], "<\0", 2))
+			|| !ft_strncmp(tmp[i], "<<\0", 3) || !ft_strncmp(tmp[i], "<\0", 2))
 			i++;
 		else
 			ret++;

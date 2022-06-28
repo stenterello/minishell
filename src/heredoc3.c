@@ -6,7 +6,7 @@
 /*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/28 16:35:00 by gimartin          #+#    #+#             */
-/*   Updated: 2022/06/26 17:40:25 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/06/28 20:31:02 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,7 @@ void	print_here(char *delimiter, int i, t_terminfo *terminfo)
 	ft_putendl_fd("\" was required)", 2);
 }
 
-char	*take_heredoc_input(char *tmp, char *d,
-	t_command *cmd, t_terminfo *terminfo)
+void	take_heredoc_input(char *tmp, char *d, t_terminfo *terminfo)
 {
 	int	i;
 
@@ -34,22 +33,24 @@ char	*take_heredoc_input(char *tmp, char *d,
 	while (terminfo->last_exit != 130 && tmp
 		&& ft_strncmp(tmp, d, ft_strlen(d)) && g_child != -1)
 	{
-		if (cmd->input_line)
-			sup1_sup1(cmd, tmp);
+		if (terminfo->input->line)
+			sup1_sup1(terminfo, tmp);
 		else
 		{
-			malloc_c(&cmd->input_line, ft_strlen(tmp) + 1);
-			ft_strlcpy(cmd->input_line, tmp, ft_strlen(tmp) + 1);
-			ft_strlcat(cmd->input_line, "\n", ft_strlen(cmd->input_line) + 2);
+			malloc_c(&terminfo->input->line, ft_strlen(tmp) + 1);
+			ft_strlcpy(terminfo->input->line, tmp, ft_strlen(tmp) + 1);
+			ft_strlcat(terminfo->input->line, "\n", ft_strlen(terminfo->input->line) + 2);
 		}
 		free(tmp);
+		tmp = NULL;
 		i++;
 		tmp = readline("> ");
 		if (g_child == -1)
 			break ;
 	}
+	if (tmp)
+		free(tmp);
 	end_take(tmp, i, d, terminfo);
-	return (tmp);
 }
 
 int	to_exp(char *str)

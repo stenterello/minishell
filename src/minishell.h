@@ -6,7 +6,7 @@
 /*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/03 21:54:58 by ddelladi          #+#    #+#             */
-/*   Updated: 2022/06/26 18:46:02 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/06/28 20:43:39 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -249,7 +249,7 @@ int		free_guess(char **tmp, t_command *cmd);
 int		sup_guess(t_command *cmd, int i, int j, int k);
 int		free_hidden_guess(char **tmp, t_command *cmd);
 void	free_single_command(t_command *cmd);
-void	sup1_sup1(t_command *cmd, char *tmp);
+void	sup1_sup1(t_terminfo *terminfo, char *tmp);
 void	treat_heredoc(t_command *cmd, t_command *cmd2,
 			char *typed, t_terminfo *terminfo);
 void	execute_free_here(char *tmp, t_command *cmd2,
@@ -267,8 +267,7 @@ int		ft_strlen_rl(char *str);
 int		key_here_len(char *str);
 int		to_expand_str(char *str);
 int		to_exp(char *str);
-char	*take_heredoc_input(char *tmp, char *d,
-			t_command *cmd, t_terminfo *terminfo);
+void	take_heredoc_input(char *tmp, char *d, t_terminfo *terminfo);
 void	update_pwd(t_terminfo *terminfo);
 void	cd_error(char *dest, t_terminfo *terminfo);
 int		other_cmds(char **tmp, int *c);
@@ -289,5 +288,8 @@ int		delimiter_len(char *line);
 int		more_args_heredoc(char *line);
 int		another_heredoc(char *line);
 void	false_take_heredoc_input(char *d, t_terminfo *terminfo);
+void	write_and_close(t_command *tmp, t_terminfo *terminfo);
+int		is_heredoc2(char **redi);
+void	get_heredoc_input(t_command *cmd, t_terminfo *terminfo);
 
 #endif

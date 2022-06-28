@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gimartin <gimartin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/27 15:06:53 by gimartin          #+#    #+#             */
-/*   Updated: 2022/06/22 19:18:20 by gimartin         ###   ########.fr       */
+/*   Updated: 2022/06/28 15:56:27 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,11 +59,11 @@ void	take_input(t_terminfo *terminfo)
 	tmp = NULL;
 	typed = readline("whisper_hole: ");
 	check(typed, terminfo);
-	if (is_heredoc(typed))
-	{
-		if (init_heredoc(typed, terminfo))
-			return ;
-	}
+	// if (is_heredoc(typed))
+	// {
+	// 	if (init_heredoc(typed, terminfo))
+	// 		return ;
+	// }
 	while (terminfo->input->is_open)
 		more_take_input(typed, tmp, terminfo);
 	tmp = ft_strtrim(typed, " ");

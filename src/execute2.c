@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute2.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gimartin <gimartin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/27 15:05:46 by gimartin          #+#    #+#             */
-/*   Updated: 2022/06/22 19:04:06 by gimartin         ###   ########.fr       */
+/*   Updated: 2022/06/28 20:20:51 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,5 @@ void	execute_tree(t_command *cmd, t_terminfo *terminfo)
 	ret = standard_execution(tmp, terminfo);
 	if (!ret)
 		return ;
-	if (!terminfo->delimiter)
-		free_commands(cmd);
+	free_commands(cmd);
 }

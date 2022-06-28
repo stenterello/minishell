@@ -6,7 +6,7 @@
 /*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/27 15:10:18 by gimartin          #+#    #+#             */
-/*   Updated: 2022/06/15 10:19:41 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/06/28 20:41:12 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void	restore_fd(t_command *cmd, t_terminfo *terminfo)
 	if (cmd->redir_in || cmd->to_pipe_to)
 		restore_input(cmd);
 	if (terminfo->delimiter)
-		restore_output(cmd);
+		restore_input(cmd);
 }
 
 void	control_define1(char **tmp, t_command *cmd, int i)
