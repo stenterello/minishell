@@ -6,7 +6,7 @@
 /*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/03 21:54:41 by ddelladi          #+#    #+#             */
-/*   Updated: 2022/06/28 20:46:06 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/06/29 13:24:40 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,8 @@ void	execution_loop(t_terminfo *terminfo)
 	t_command	cmd;
 
 	init_cmd(&cmd);
-	add_history(terminfo->input->line);
+	if (!is_heredoc(terminfo->input->line))
+		add_history(terminfo->input->line);
 	if (terminfo->input->with_error)
 		return ;
 	while (terminfo->input->to_expand)
@@ -45,8 +46,7 @@ void	init_and_take_input(t_terminfo *terminfo)
 		transform_environ(terminfo);
 		add_signals(terminfo, NULL);
 		take_input(terminfo);
-		if (terminfo->input->line && ft_strlen(terminfo->input->line) > 0
-			&& terminfo->delimiter == 0)
+		if (terminfo->input->line && ft_strlen(terminfo->input->line) > 0)
 			execution_loop(terminfo);
 		if (terminfo->input->line)
 		{
@@ -54,7 +54,6 @@ void	init_and_take_input(t_terminfo *terminfo)
 			terminfo->input->line = NULL;
 		}
 		free_array_of_array(terminfo->glob_environ);
-		terminfo->delimiter = 0;
 		terminfo->suspended_cat = 0;
 		terminfo->is_suspended = 1;
 		terminfo->top = 0;
@@ -68,7 +67,6 @@ void	init_terminfo(t_terminfo *terminfo)
 	terminfo->input = malloc(sizeof(t_input));
 	if (!terminfo->input)
 		die("Malloc error");
-	terminfo->delimiter = 0;
 	terminfo->suspended_cat = 0;
 	terminfo->is_suspended = 0;
 	terminfo->top = 0;
@@ -103,8 +101,7 @@ int	main(int argc, char **argv)
 /*
 
 - aggiustare segnali heredoc
-- forse la raccolta di terminfo->input->line, per heredoc, deve essere presa dentro a standard execution (altrimenti la terminfo->input->line eventuale non è detto si riferisca al comando corrente, nel caso di più comandi di heredoc). Update: adesso lo fa ma è comunque da aggiustare, per esempio per quanto riguarda la history e l'output degli errori
-- heredoc aggiorna la history!
-- confrontare output di bash e minishell della stringa: cat ciao << eof | grep << foe
+- confrontare output di bash e minishell della stringa: cat ciao << eof | grep << foe  ( fare la verifica di più heredoc su tutta la stringa, ovvero terminfo->input->line )
+- gestire multipli heredoc nello stesso comando
 
 */

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirections.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gimartin <gimartin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/27 15:10:22 by gimartin          #+#    #+#             */
-/*   Updated: 2022/06/22 18:51:25 by gimartin         ###   ########.fr       */
+/*   Updated: 2022/06/29 11:21:41 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ int	sup_check_red(char **tmp, int i, t_command *cmd, t_terminfo *terminfo)
 			ft_putstr_fd(tmp[i + 1], STDERR_FILENO);
 			ft_putstr_fd(": ", STDERR_FILENO);
 			ft_putendl_fd(strerror(errno), STDERR_FILENO);
-			restore_fd(cmd, terminfo);
+			restore_fd(cmd);
 			return (-1);
 		}
 		else if (define_input(tmp[++i], cmd, terminfo) != -1)

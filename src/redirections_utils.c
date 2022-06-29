@@ -6,7 +6,7 @@
 /*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/27 15:10:18 by gimartin          #+#    #+#             */
-/*   Updated: 2022/06/28 20:41:12 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/06/29 11:19:49 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,13 +29,13 @@ void	restore_input(t_command *cmd)
 	close(cmd->saved_in);
 }
 
-void	restore_fd(t_command *cmd, t_terminfo *terminfo)
+void	restore_fd(t_command *cmd)
 {
 	if (cmd->redir_out || cmd->to_pipe)
 		restore_output(cmd);
 	if (cmd->redir_in || cmd->to_pipe_to)
 		restore_input(cmd);
-	if (terminfo->delimiter)
+	if (cmd->delimiter)
 		restore_input(cmd);
 }
 

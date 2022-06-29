@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gimartin <gimartin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/27 15:10:12 by gimartin          #+#    #+#             */
-/*   Updated: 2022/06/22 18:53:19 by gimartin         ###   ########.fr       */
+/*   Updated: 2022/06/29 11:24:03 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,14 +86,14 @@ int	fill_cmd_fields(char **tmp, t_command *cmd, int start, t_terminfo *terminfo)
 	char	**original;
 
 	original = tmp;
-	cleaned = clean_command(tmp, cmd, start, terminfo);
+	cleaned = clean_command(tmp, cmd, start);
 	if (!cleaned)
 		return (-1);
 	tmp = cleaned;
 	if (!tmp[0])
 	{
 		free(tmp);
-		restore_fd(cmd, terminfo);
+		restore_fd(cmd);
 		return (-1);
 	}
 	c[2] = count_args(tmp);

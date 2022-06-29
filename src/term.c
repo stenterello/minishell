@@ -6,7 +6,7 @@
 /*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/27 15:04:30 by gimartin          #+#    #+#             */
-/*   Updated: 2022/06/23 11:25:46 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/06/29 11:20:19 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,6 @@ void	init_terminal(char *line, t_terminfo *terminfo)
 	ret = tcsetattr(STDIN_FILENO, TCSAFLUSH, terminfo->new_term);
 	if (ret < 0)
 		die(strerror(errno));
-	terminfo->delimiter = 0;
 	terminfo->suspended_cat = 0;
 	terminfo->is_suspended = 1;
 	terminfo->top = 0;

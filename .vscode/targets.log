@@ -1,6 +1,5 @@
 make all --print-data-base --no-builtin-variables --no-builtin-rules --question
 make bonus -C ./include/libft
- 
 # make[1]: Entering directory '/home/davide/Documenti/Codici/42/minishell/include/libft'
 # GNU Make 4.2.1
 # Built for x86_64-pc-linux-gnu
@@ -9,7 +8,7 @@ make bonus -C ./include/libft
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Tue Jun 28 20:20:33 2022
+# Make data base, printed on Wed Jun 29 13:19:05 2022
 
 # Variables
 
@@ -88,7 +87,7 @@ PG_OF_PATH = /home/davide/Programmi/OpenFrameworks/of_v0.11.2_linux64gcc6_releas
 # makefile (from 'Makefile', line 64)
 OBJSB = $(BONUSFLS:.c=.o)
 # environment
-SESSION_MANAGER = local/ThinkPad-E550:@/tmp/.ICE-unix/1406,unix/ThinkPad-E550:/tmp/.ICE-unix/1406
+SESSION_MANAGER = local/ThinkPad-E550:@/tmp/.ICE-unix/2235,unix/ThinkPad-E550:/tmp/.ICE-unix/2235
 # environment
 XDG_RUNTIME_DIR = /run/user/1000
 # environment
@@ -108,7 +107,7 @@ XDG_SESSION_DESKTOP = cinnamon
 # environment
 SSH_AUTH_SOCK = /run/user/1000/keyring/ssh
 # environment
-GIO_LAUNCHED_DESKTOP_FILE_PID = 2849
+GIO_LAUNCHED_DESKTOP_FILE_PID = 53369
 # automatic
 %F = $(notdir $%)
 # environment
@@ -124,7 +123,7 @@ QT_QPA_PLATFORMTHEME = qt5ct
 # environment
 XDG_SEAT = seat0
 # environment
-SSH_AGENT_PID = 1476
+SSH_AGENT_PID = 2305
 # environment
 ORIGINAL_XDG_CURRENT_DESKTOP = X-Cinnamon
 # environment
@@ -162,7 +161,7 @@ SHLVL = 0
 # makefile (from 'Makefile', line 62)
 CC = gcc
 # environment
-VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-43b2ae3a-b788-4135-bedb-2a83f1dc70a4.sock
+VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-b0626d64-3f0a-4a79-9ed0-2c36a9115e87.sock
 # environment
 XDG_SESSION_ID = c2
 # environment
@@ -205,9 +204,6 @@ CINNAMON_VERSION = 5.2.7
 QT_ACCESSIBILITY = 1
 # environment
 DEFAULTS_PATH = /usr/share/gconf/cinnamon.default.path
- 
-make[1]: *** No rule to make target 'ft_isalpha.o', needed by 'bonus'.  Stop.
-
 # default
 MAKEFILES := 
 # automatic
@@ -237,7 +233,7 @@ BONUSFLS = ft_lstnew.c ft_lstadd_front.c ft_lstsize.c ft_lstlast.c ft_lstadd_bac
 # environment
 LANG = C
 # environment
-VSCODE_PID = 2849
+VSCODE_PID = 53369
 # variable set hash-table stats:
 # Load=111/1024=11%, Rehash=0, Collisions=16/145=11%
 
@@ -280,6 +276,9 @@ ft_itoa.o:
 #  Implicit rule search has not been done.
 #  Modification time never checked.
 #  File has not been updated.
+
+ 
+make[1]: *** No rule to make target 'ft_isalpha.o', needed by 'bonus'.  Stop.
 
 # Not a target:
 ft_memcmp.o:
@@ -486,7 +485,6 @@ clean:
 
 # Not a target:
 ft_isalnum.o:
- 
 #  Implicit rule search has not been done.
 #  Modification time never checked.
 #  File has not been updated.
@@ -559,6 +557,7 @@ ft_isascii.o:
 
 # Not a target:
 get_next_line.o:
+ 
 #  Implicit rule search has not been done.
 #  Modification time never checked.
 #  File has not been updated.
@@ -595,7 +594,7 @@ ft_putendl_fd.o:
 # strcache performance: lookups = 121 / hit rate = 12%
 # hash-table stats:
 # Load=106/8192=1%, Rehash=0, Collisions=2/121=2%
-# Finished Make data base on Tue Jun 28 20:20:33 2022
+# Finished Make data base on Wed Jun 29 13:19:05 2022
 
 # make[1]: Leaving directory '/home/davide/Documenti/Codici/42/minishell/include/libft'
 # GNU Make 4.2.1
@@ -605,7 +604,7 @@ ft_putendl_fd.o:
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Tue Jun 28 20:20:33 2022
+# Make data base, printed on Wed Jun 29 13:19:05 2022
 
 # Variables
 
@@ -620,7 +619,7 @@ DESKTOP_SESSION = cinnamon
 # environment
 XDG_SESSION_CLASS = user
 # makefile (from 'Makefile', line 4)
-SRC = main.c special_run.c special_run2.c special_childs.c utils.c utils2.c utils3.c dict_utils.c execute.c execute2.c find_script.c init_utils.c init_utils2.c init_utils3.c set_var.c set_var2.c term.c parse.c parse2.c parse3.c bools.c bools2.c bools3.c bools4.c count.c memory.c memory2.c redirections.c redirections_utils.c redirections_utils2.c heredoc.c heredoc2.c heredoc3.c heredoc4.c split_fields.c split_fields2.c signal.c signal2.c error_handling.c chain.c chain2.c chain3.c wildcards.c wildcards2.c wildcards_bools.c wildcards_bools2.c wildcards_count.c wildcards_count2.c wildcards_utils.c wildcards_utils2.c wildcards_utils3.c child_process.c child_process2.c clean_heredoc.c
+SRC = main.c special_run.c special_run2.c special_childs.c utils.c utils2.c utils3.c dict_utils.c execute.c execute2.c find_script.c init_utils.c init_utils2.c init_utils3.c set_var.c set_var2.c term.c parse.c parse2.c parse3.c bools.c bools2.c bools3.c bools4.c count.c memory.c memory2.c redirections.c redirections_utils.c redirections_utils2.c heredoc.c heredoc2.c heredoc3.c heredoc4.c split_fields.c split_fields2.c signal.c signal2.c error_handling.c chain.c chain2.c chain3.c wildcards.c wildcards2.c wildcards_bools.c wildcards_bools2.c wildcards_count.c wildcards_count2.c wildcards_utils.c wildcards_utils2.c wildcards_utils3.c child_process.c child_process2.c
 # environment
 XDG_SESSION_TYPE = x11
 # environment
@@ -667,7 +666,7 @@ XDG_DATA_DIRS = /usr/share/cinnamon:/usr/share/gnome:/home/davide/.local/share/f
 DBUS_SESSION_BUS_ADDRESS = unix:path=/run/user/1000/bus
 # environment
 VSCODE_VERBOSE_LOGGING = true
-# makefile (from 'Makefile', line 59)
+# makefile (from 'Makefile', line 58)
 OBJS = $(SRCS:.c=.o)
 # environment
 LESSOPEN = | /usr/bin/lesspipe %s
@@ -684,7 +683,7 @@ GPG_AGENT_INFO = /run/user/1000/gnupg/S.gpg-agent:0:1
 # environment
 PG_OF_PATH = /home/davide/Programmi/OpenFrameworks/of_v0.11.2_linux64gcc6_release
 # environment
-SESSION_MANAGER = local/ThinkPad-E550:@/tmp/.ICE-unix/1406,unix/ThinkPad-E550:/tmp/.ICE-unix/1406
+SESSION_MANAGER = local/ThinkPad-E550:@/tmp/.ICE-unix/2235,unix/ThinkPad-E550:/tmp/.ICE-unix/2235
 # environment
 XDG_RUNTIME_DIR = /run/user/1000
 # environment
@@ -704,7 +703,7 @@ XDG_SESSION_DESKTOP = cinnamon
 # environment
 SSH_AUTH_SOCK = /run/user/1000/keyring/ssh
 # environment
-GIO_LAUNCHED_DESKTOP_FILE_PID = 2849
+GIO_LAUNCHED_DESKTOP_FILE_PID = 53369
 # automatic
 %F = $(notdir $%)
 # environment
@@ -717,12 +716,12 @@ PWD = /home/davide/Documenti/Codici/42/minishell
 QT_QPA_PLATFORMTHEME = qt5ct
 # default
 .LOADED := 
-# makefile (from 'Makefile', line 69)
+# makefile (from 'Makefile', line 68)
 BUILTINS = $(addprefix src/builtin/, $(BUILTIN))
 # environment
 XDG_SEAT = seat0
 # environment
-SSH_AGENT_PID = 1476
+SSH_AGENT_PID = 2305
 # environment
 ORIGINAL_XDG_CURRENT_DESKTOP = X-Cinnamon
 # environment
@@ -753,22 +752,19 @@ MAKELEVEL := 0
 MAKE = $(MAKE_COMMAND)
 # default
 MAKECMDGOALS := all
-# makefile (from 'Makefile', line 58)
+# makefile (from 'Makefile', line 57)
 SRCS = $(addprefix src/, $(SRC))
 # environment
 SHLVL = 0
-# makefile (from 'Makefile', line 71)
+# makefile (from 'Makefile', line 70)
 LIBFT = ./include/libft/libft.a
 # makefile (from 'Makefile', line 2)
 CC = gcc
 # environment
-VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-43b2ae3a-b788-4135-bedb-2a83f1dc70a4.sock
+VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-b0626d64-3f0a-4a79-9ed0-2c36a9115e87.sock
 # environment
 XDG_SESSION_ID = c2
 # environment
- 
-make: *** [Makefile:77: include/libft/libft.a] Error 2
-
 USER = davide
 # makefile
 .DEFAULT_GOAL := minishell
@@ -792,7 +788,7 @@ XDG_SEAT_PATH = /org/freedesktop/DisplayManager/Seat0
 VSCODE_IPC_HOOK = /run/user/1000/vscode-c5f300b3-1.68.1-main.sock
 # makefile
 MAKEFLAGS = pqrR
-# makefile (from 'Makefile', line 70)
+# makefile (from 'Makefile', line 69)
 BUILTIN_OBJS = $(BUILTINS:.c=.o)
 # environment
 MFLAGS = -pqrR
@@ -814,7 +810,7 @@ DEFAULTS_PATH = /usr/share/gconf/cinnamon.default.path
 MAKEFILES := 
 # automatic
 <F = $(notdir $<)
-# makefile (from 'Makefile', line 60)
+# makefile (from 'Makefile', line 59)
 BUILTIN = pwd.c cd.c cd2.c echo.c exit.c env.c export.c export_utils.c unset.c
 # environment
 LC_ALL = C
@@ -825,7 +821,7 @@ GJS_DEBUG_TOPICS = JS ERROR;JS LOG
 # default
 SUFFIXES := 
 # makefile (from 'Makefile', line 3)
-FLAGS = -Wall -Werror -Wextra -L$(HOME)/.brew/opt/readline/lib -I$(HOME)/.brew/opt/readline/include -g
+FLAGS = -Wall -Werror -Wextra -L$(HOME)/.brew/opt/readline/lib -I$(HOME)/.brew/opt/readline/include -g -ffunction-sections -Wl,--gc-sections -Wl,--print-gc-sections
 # environment
 CHROME_DESKTOP = code-url-handler.desktop
 # default
@@ -839,7 +835,7 @@ NAME = minishell
 # environment
 LANG = C
 # environment
-VSCODE_PID = 2849
+VSCODE_PID = 53369
 # variable set hash-table stats:
 # Load=114/1024=11%, Rehash=0, Collisions=15/154=10%
 
@@ -850,6 +846,9 @@ VSCODE_PID = 2849
 # Directories
 
 # . (device 2049, inode 17563878): 7 files, no impossibilities.
+
+ 
+make: *** [Makefile:76: include/libft/libft.a] Error 2
 
 # 7 files, no impossibilities in 1 directories.
 
@@ -1002,7 +1001,7 @@ src/bools4.o:
 # Not a target:
 Makefile:
 #  Implicit rule search has been done.
-#  Last modified 2022-06-28 15:55:56.691232843
+#  Last modified 2022-06-29 11:43:47.052148676
 #  File has been updated.
 #  Successfully updated.
 
@@ -1048,14 +1047,13 @@ src/heredoc4.o:
 #  Modification time never checked.
 #  File has not been updated.
 
- 
-minishell: include/libft/libft.a src/main.o src/special_run.o src/special_run2.o src/special_childs.o src/utils.o src/utils2.o src/utils3.o src/dict_utils.o src/execute.o src/execute2.o src/find_script.o src/init_utils.o src/init_utils2.o src/init_utils3.o src/set_var.o src/set_var2.o src/term.o src/parse.o src/parse2.o src/parse3.o src/bools.o src/bools2.o src/bools3.o src/bools4.o src/count.o src/memory.o src/memory2.o src/redirections.o src/redirections_utils.o src/redirections_utils2.o src/heredoc.o src/heredoc2.o src/heredoc3.o src/heredoc4.o src/split_fields.o src/split_fields2.o src/signal.o src/signal2.o src/error_handling.o src/chain.o src/chain2.o src/chain3.o src/wildcards.o src/wildcards2.o src/wildcards_bools.o src/wildcards_bools2.o src/wildcards_count.o src/wildcards_count2.o src/wildcards_utils.o src/wildcards_utils2.o src/wildcards_utils3.o src/child_process.o src/child_process2.o src/clean_heredoc.o src/builtin/pwd.o src/builtin/cd.o src/builtin/cd2.o src/builtin/echo.o src/builtin/exit.o src/builtin/env.o src/builtin/export.o src/builtin/export_utils.o src/builtin/unset.o
+minishell: include/libft/libft.a src/main.o src/special_run.o src/special_run2.o src/special_childs.o src/utils.o src/utils2.o src/utils3.o src/dict_utils.o src/execute.o src/execute2.o src/find_script.o src/init_utils.o src/init_utils2.o src/init_utils3.o src/set_var.o src/set_var2.o src/term.o src/parse.o src/parse2.o src/parse3.o src/bools.o src/bools2.o src/bools3.o src/bools4.o src/count.o src/memory.o src/memory2.o src/redirections.o src/redirections_utils.o src/redirections_utils2.o src/heredoc.o src/heredoc2.o src/heredoc3.o src/heredoc4.o src/split_fields.o src/split_fields2.o src/signal.o src/signal2.o src/error_handling.o src/chain.o src/chain2.o src/chain3.o src/wildcards.o src/wildcards2.o src/wildcards_bools.o src/wildcards_bools2.o src/wildcards_count.o src/wildcards_count2.o src/wildcards_utils.o src/wildcards_utils2.o src/wildcards_utils3.o src/child_process.o src/child_process2.o src/builtin/pwd.o src/builtin/cd.o src/builtin/cd2.o src/builtin/echo.o src/builtin/exit.o src/builtin/env.o src/builtin/export.o src/builtin/export_utils.o src/builtin/unset.o
 #  Implicit rule search has not been done.
 #  File does not exist.
 #  File has not been updated.
 # variable set hash-table stats:
 # Load=0/32=0%, Rehash=0, Collisions=0/5=0%
-#  recipe to execute (from 'Makefile', line 74):
+#  recipe to execute (from 'Makefile', line 73):
 	$(CC) $(FLAGS) $(SRCS) $(BUILTINS) $(LIBFT) -lreadline -lncurses -o $(NAME) 
 
 # Not a target:
@@ -1081,7 +1079,7 @@ fclean: clean
 #  Implicit rule search has not been done.
 #  File does not exist.
 #  File has not been updated.
-#  recipe to execute (from 'Makefile', line 86):
+#  recipe to execute (from 'Makefile', line 85):
 	rm -f $(NAME)
 	$(MAKE) fclean -C ./include/libft
 
@@ -1128,6 +1126,7 @@ src/utils.o:
 #  File has not been updated.
 
 # Not a target:
+ 
 .DEFAULT:
 #  Implicit rule search has not been done.
 #  Modification time never checked.
@@ -1169,7 +1168,7 @@ include/libft/libft.a:
 # ? := 
 # variable set hash-table stats:
 # Load=8/32=25%, Rehash=0, Collisions=2/13=15%
-#  recipe to execute (from 'Makefile', line 77):
+#  recipe to execute (from 'Makefile', line 76):
 	$(MAKE) bonus -C ./include/libft
 
 # Not a target:
@@ -1207,7 +1206,7 @@ clean:
 #  Implicit rule search has not been done.
 #  File does not exist.
 #  File has not been updated.
-#  recipe to execute (from 'Makefile', line 82):
+#  recipe to execute (from 'Makefile', line 81):
 	rm -f $(BUILTIN_OBJS) $(OBJS)
 	$(MAKE) clean -C ./include/libft
 
@@ -1231,12 +1230,6 @@ src/memory2.o:
 
 # Not a target:
 src/builtin/pwd.o:
-#  Implicit rule search has not been done.
-#  Modification time never checked.
-#  File has not been updated.
-
-# Not a target:
-src/clean_heredoc.o:
 #  Implicit rule search has not been done.
 #  Modification time never checked.
 #  File has not been updated.
@@ -1325,7 +1318,6 @@ src/set_var2.o:
 #  Modification time never checked.
 #  File has not been updated.
 
- 
 # Not a target:
 src/find_script.o:
 #  Implicit rule search has not been done.
@@ -1333,19 +1325,19 @@ src/find_script.o:
 #  File has not been updated.
 
 # files hash-table stats:
-# Load=73/1024=7%, Rehash=0, Collisions=2/159=1%
+# Load=72/1024=7%, Rehash=0, Collisions=2/157=1%
 # VPATH Search Paths
 
 # No 'vpath' search paths.
 
 # No general ('VPATH' variable) search path.
 
-# strcache buffers: 1 (0) / strings = 81 / storage = 1224 B / avg = 15 B
-# current buf: size = 8162 B / used = 1224 B / count = 81 / avg = 15 B
+# strcache buffers: 1 (0) / strings = 80 / storage = 1204 B / avg = 15 B
+# current buf: size = 8162 B / used = 1204 B / count = 80 / avg = 15 B
 
-# strcache performance: lookups = 103 / hit rate = 21%
+# strcache performance: lookups = 102 / hit rate = 21%
 # hash-table stats:
-# Load=81/8192=1%, Rehash=0, Collisions=1/103=1%
-# Finished Make data base on Tue Jun 28 20:20:33 2022
+# Load=80/8192=1%, Rehash=0, Collisions=1/102=1%
+# Finished Make data base on Wed Jun 29 13:19:05 2022
 
  

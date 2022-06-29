@@ -6,7 +6,7 @@
 /*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/27 15:05:42 by gimartin          #+#    #+#             */
-/*   Updated: 2022/06/28 20:42:43 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/06/29 11:49:24 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ int	preliminary(t_command *tmp, t_terminfo *terminfo)
 	t_command	*bench;
 
 	bench = tmp->next;
-	if (!tmp->cmd && !terminfo->delimiter)
+	if (!tmp->cmd && !tmp->delimiter)
 	{
 		treat_var_decl(tmp, terminfo);
 		return (1);
@@ -75,13 +75,13 @@ int	preliminary(t_command *tmp, t_terminfo *terminfo)
 	return (0);
 }
 
-void	write_and_close(t_command *tmp, t_terminfo *terminfo)
+void	write_and_close(t_command *tmp)
 {
 	int	piped[2];
 
 	if (pipe(piped) == -1)
 		die("Error while piping");
-	ft_putstr_fd(terminfo->input->line, piped[1]);
+	ft_putstr_fd(tmp->input_line, piped[1]);
 	close(piped[1]);
 	tmp->input_fd = piped[0];
 	tmp->saved_in = dup(STDIN_FILENO);
@@ -105,14 +105,13 @@ int	standard_execution(t_command *tmp, t_terminfo *terminfo)
 	{
 		if (is_heredoc2(tmp->redi))
 		{
-			terminfo->delimiter = 1;
-			free(terminfo->input->line);
-			terminfo->input->line = NULL;
+			tmp->delimiter = 1;
+			add_signals(terminfo, tmp);
 			get_heredoc_input(tmp, terminfo);
 			if (heredoc_to_avoid(tmp->args))
-				terminfo->delimiter = 0;
+				tmp->delimiter = 0;
 			else
-				terminfo->delimiter = 1;
+				tmp->delimiter = 1;
 		}
 		if (!builtin(tmp, terminfo))
 		{

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   bools3.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gimartin <gimartin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/27 15:04:58 by gimartin          #+#    #+#             */
-/*   Updated: 2022/06/22 18:55:19 by gimartin         ###   ########.fr       */
+/*   Updated: 2022/06/29 11:21:26 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ int	builtin(t_command *cmd, t_terminfo *terminfo)
 	else
 		return (0);
 	if (cmd->to_pipe || cmd->to_pipe_to || cmd->redir_in || cmd->redir_out)
-		restore_fd(cmd, terminfo);
+		restore_fd(cmd);
 	return (1);
 }
 

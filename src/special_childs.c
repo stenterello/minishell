@@ -6,7 +6,7 @@
 /*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/24 12:43:37 by ddelladi          #+#    #+#             */
-/*   Updated: 2022/06/28 16:51:05 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/06/29 11:30:07 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	treat_suspended_cat(t_command *tmp, t_terminfo *terminfo)
 	kill(g_child, 15);
 	wait(&status);
 	waitpid(g_child, &status, 0);
-	restore_fd(tmp, terminfo);
+	restore_fd(tmp);
 	terminfo->suspended_cat++;
 	return ;
 }
@@ -27,7 +27,7 @@ void	treat_suspended_cat(t_command *tmp, t_terminfo *terminfo)
 void	treat_heredoc_child(int *status, t_command *tmp, t_terminfo *terminfo)
 {
 	close(STDIN_FILENO);
-	if (!terminfo->delimiter)
+	if (!tmp->delimiter)
 		close(tmp->output_fd);
 	waitpid(g_child, status, 0);
 	if (WIFEXITED(*status))
@@ -36,7 +36,7 @@ void	treat_heredoc_child(int *status, t_command *tmp, t_terminfo *terminfo)
 		terminfo->last_exit = *status;
 	g_child = 0;
 	terminfo->is_suspended = 0;
-	restore_fd(tmp, terminfo);
+	restore_fd(tmp);
 }
 
 int	cmd_exists(char *line, t_terminfo *terminfo)

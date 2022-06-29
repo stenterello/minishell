@@ -1,6 +1,6 @@
 NAME=minishell
 CC=gcc
-FLAGS=-Wall -Werror -Wextra -L$(HOME)/.brew/opt/readline/lib -I$(HOME)/.brew/opt/readline/include -g
+FLAGS=-Wall -Werror -Wextra -L$(HOME)/.brew/opt/readline/lib -I$(HOME)/.brew/opt/readline/include -g -ffunction-sections -Wl,--gc-sections -Wl,--print-gc-sections
 SRC=main.c \
 	special_run.c \
 	special_run2.c \
@@ -53,8 +53,7 @@ SRC=main.c \
 	wildcards_utils2.c \
 	wildcards_utils3.c \
 	child_process.c \
-	child_process2.c \
-	clean_heredoc.c
+	child_process2.c
 SRCS=$(addprefix src/, $(SRC))
 OBJS=$(SRCS:.c=.o)
 BUILTIN=pwd.c \

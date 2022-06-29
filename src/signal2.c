@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signal2.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gimartin <gimartin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/22 18:46:40 by gimartin          #+#    #+#             */
-/*   Updated: 2022/06/22 18:48:41 by gimartin         ###   ########.fr       */
+/*   Updated: 2022/06/29 11:25:08 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,13 +21,13 @@ void	top_child_signal(int sig)
 	}
 }
 
-void	first_struct(struct sigaction act, t_command *cmd, t_terminfo *terminfo)
+void	first_struct(struct sigaction act, t_command *cmd)
 {
 	int	sig;
 
 	ft_memset(&act, 0, sizeof(struct sigaction));
 	sigemptyset(&act.sa_mask);
-	if (terminfo->delimiter)
+	if (cmd && cmd->delimiter)
 		act.sa_handler = &parent_signals_heredoc;
 	else if (g_child && cmd->cmd
 		&& (!ft_strncmp("top\0", &cmd->cmd[ft_strlen(cmd->cmd) - 3], 4)
@@ -54,14 +54,13 @@ void	second_struct_ign(struct sigaction act)
 		die("Signal error");
 }
 
-void	second_struct_quit(struct sigaction act, t_command *cmd,
-	t_terminfo *terminfo)
+void	second_struct_quit(struct sigaction act, t_command *cmd)
 {
 	int	sig;
 
 	ft_memset(&act, 0, sizeof(struct sigaction));
 	sigemptyset(&act.sa_mask);
-	if (terminfo->delimiter)
+	if (cmd->delimiter)
 		act.sa_handler = &parent_signals_heredoc;
 	else if (g_child && cmd->cmd && !ft_strncmp("top\0",
 			&cmd->cmd[ft_strlen(cmd->cmd) - 3], 4))
@@ -77,9 +76,9 @@ void	second_struct_quit(struct sigaction act, t_command *cmd,
 
 void	add_signals(t_terminfo *terminfo, t_command *cmd)
 {
-	first_struct(terminfo->acts[0], cmd, terminfo);
+	first_struct(terminfo->acts[0], cmd);
 	if (!cmd)
 		second_struct_ign(terminfo->acts[1]);
 	else
-		second_struct_quit(terminfo->acts[1], cmd, terminfo);
+		second_struct_quit(terminfo->acts[1], cmd);
 }

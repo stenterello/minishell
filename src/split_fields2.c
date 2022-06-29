@@ -6,7 +6,7 @@
 /*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/28 17:00:03 by gimartin          #+#    #+#             */
-/*   Updated: 2022/06/28 15:57:21 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/06/29 11:37:51 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,8 @@ void	sup_count_fields(int *p, char *s, char c)
 {
 	if (s[p[0]] == c && !is_open(s, p[0]))
 		p[2] = 1;
-	else if ((!ft_strncmp(&s[p[0]], ">>", 2) || (!ft_strncmp(&s[p[0]], "<<", 2))) && !is_open(s, p[0]))
+	else if ((!ft_strncmp(&s[p[0]], ">>", 2)
+			|| (!ft_strncmp(&s[p[0]], "<<", 2))) && !is_open(s, p[0]))
 	{
 		p[1]++;
 		p[0]++;

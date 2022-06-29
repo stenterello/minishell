@@ -6,7 +6,7 @@
 /*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/13 15:49:35 by gimartin          #+#    #+#             */
-/*   Updated: 2022/06/28 20:42:17 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/06/29 11:51:00 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,11 +112,11 @@ void	get_heredoc_input(t_command *cmd, t_terminfo *terminfo)
 
 	inp_line = NULL;
 	d = find_delimiter(cmd->redi);
-	return (take_heredoc_input(inp_line, d, terminfo));
+	cmd->to_exp = to_exp(terminfo->input->line);
+	return (take_heredoc_input(inp_line, d, cmd, terminfo));
 }
 
-char	**clean_command(char **tmp, t_command *cmd,
-	int start, t_terminfo *terminfo)
+char	**clean_command(char **tmp, t_command *cmd, int start)
 {
 	int		j[2];
 	char	**cleaned;
@@ -131,7 +131,7 @@ char	**clean_command(char **tmp, t_command *cmd,
 	else
 	{
 		free(cleaned);
-		restore_all(cmd, terminfo);
+		restore_all(cmd);
 		return (NULL);
 	}
 	return (cleaned);

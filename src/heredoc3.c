@@ -6,52 +6,11 @@
 /*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/28 16:35:00 by gimartin          #+#    #+#             */
-/*   Updated: 2022/06/28 20:31:02 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/06/29 11:56:35 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-void	print_here(char *delimiter, int i, t_terminfo *terminfo)
-{
-	ft_putstr_fd(last_field(ft_getenv("SHELL", terminfo)), 2);
-	ft_putstr_fd(": attention: here-document on line ", 2);
-	ft_putnbr_fd(i, 2);
-	ft_putstr_fd(" is delimited by an EOF (\"", 2);
-	ft_putstr_fd(delimiter, 2);
-	ft_putendl_fd("\" was required)", 2);
-}
-
-void	take_heredoc_input(char *tmp, char *d, t_terminfo *terminfo)
-{
-	int	i;
-
-	i = 1;
-	if (terminfo->last_exit == 130)
-		terminfo->last_exit = 0;
-	tmp = readline("> ");
-	while (terminfo->last_exit != 130 && tmp
-		&& ft_strncmp(tmp, d, ft_strlen(d)) && g_child != -1)
-	{
-		if (terminfo->input->line)
-			sup1_sup1(terminfo, tmp);
-		else
-		{
-			malloc_c(&terminfo->input->line, ft_strlen(tmp) + 1);
-			ft_strlcpy(terminfo->input->line, tmp, ft_strlen(tmp) + 1);
-			ft_strlcat(terminfo->input->line, "\n", ft_strlen(terminfo->input->line) + 2);
-		}
-		free(tmp);
-		tmp = NULL;
-		i++;
-		tmp = readline("> ");
-		if (g_child == -1)
-			break ;
-	}
-	if (tmp)
-		free(tmp);
-	end_take(tmp, i, d, terminfo);
-}
 
 int	to_exp(char *str)
 {
@@ -89,7 +48,33 @@ int	key_here_len(char *str)
 	int	i;
 
 	i = 0;
-	while (str[i] && ft_isalnum(str[i]))
+	while (str[i] && (ft_isalnum(str[i])
+			|| str[i] == '?' || str[i] == '$'))
 		i++;
 	return (i);
+}
+
+int	ft_strlen_rl(char *str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] == '\n')
+			return (++i);
+		i++;
+	}
+	return (i);
+}
+
+void	end_take(char *tmp, int i, char *d, t_terminfo *terminfo)
+{
+	if (!tmp)
+		print_here(d, i, terminfo);
+	if (g_child == -1)
+	{
+		terminfo->last_exit = 130;
+		g_child = 0;
+	}
 }

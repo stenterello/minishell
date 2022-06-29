@@ -6,7 +6,7 @@
 /*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/27 15:05:46 by gimartin          #+#    #+#             */
-/*   Updated: 2022/06/28 20:20:51 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/06/29 11:22:40 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,14 +26,14 @@ int	infinite_exit(t_command *tmp)
 	return (1);
 }
 
-void	restore_all(t_command *cmd, t_terminfo *terminfo)
+void	restore_all(t_command *cmd)
 {
 	t_command	*tmp;
 
 	tmp = cmd;
 	while (tmp)
 	{
-		restore_fd(tmp, terminfo);
+		restore_fd(tmp);
 		tmp = tmp->next;
 	}
 	return ;

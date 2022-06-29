@@ -6,7 +6,7 @@
 /*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/09 14:59:13 by gimartin          #+#    #+#             */
-/*   Updated: 2022/06/26 18:25:45 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/06/29 10:55:19 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ int	another_heredoc(char *line)
 	int	i;
 
 	i = 0;
-	while (line[i] && ft_strncmp(&line[i], "<<", 2))
+	while (line[i] && ft_strncmp(&line[i], "<<", 2) && !is_token(&line[i]))
 		i++;
 	if (!line[i])
 		return (0);

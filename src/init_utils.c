@@ -6,7 +6,7 @@
 /*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/27 15:06:53 by gimartin          #+#    #+#             */
-/*   Updated: 2022/06/28 15:56:27 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/06/29 11:48:35 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,8 @@ void	init_cmd(t_command *cmd)
 	cmd->input_fd = 0;
 	cmd->output_fd = 1;
 	cmd->portions = NULL;
+	cmd->delimiter = 0;
+	cmd->to_exp = 0;
 }
 
 void	more_take_input(char *typed, char *tmp, t_terminfo *terminfo)
@@ -59,11 +61,6 @@ void	take_input(t_terminfo *terminfo)
 	tmp = NULL;
 	typed = readline("whisper_hole: ");
 	check(typed, terminfo);
-	// if (is_heredoc(typed))
-	// {
-	// 	if (init_heredoc(typed, terminfo))
-	// 		return ;
-	// }
 	while (terminfo->input->is_open)
 		more_take_input(typed, tmp, terminfo);
 	tmp = ft_strtrim(typed, " ");

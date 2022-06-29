@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   child_process.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gimartin <gimartin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/17 13:10:50 by ddelladi          #+#    #+#             */
-/*   Updated: 2022/06/22 18:59:29 by gimartin         ###   ########.fr       */
+/*   Updated: 2022/06/29 11:21:29 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,11 +25,11 @@ void	next_level(t_terminfo *terminfo)
 
 void	parent_behaviour(t_command *tmp, int status, t_terminfo *terminfo)
 {
-	if (terminfo->is_suspended && !terminfo->delimiter
+	if (terminfo->is_suspended && !tmp->delimiter
 		&& !ft_strncmp("cat\0", &tmp->cmd[ft_strlen(tmp->cmd) - 3], 4)
 		&& tmp->next != NULL && !tmp->args[1])
 		return (treat_suspended_cat(tmp, terminfo));
-	else if (!terminfo->delimiter)
+	else if (!tmp->delimiter)
 	{
 		wait(&status);
 		waitpid(g_child, &status, 0);
@@ -42,7 +42,7 @@ void	parent_behaviour(t_command *tmp, int status, t_terminfo *terminfo)
 			else
 				terminfo->last_exit = status;
 		}
-		restore_fd(tmp, terminfo);
+		restore_fd(tmp);
 		terminfo->is_suspended = 0;
 	}
 	else
