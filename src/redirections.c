@@ -6,7 +6,7 @@
 /*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/27 15:10:22 by gimartin          #+#    #+#             */
-/*   Updated: 2022/06/30 16:34:55 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/06/30 16:53:47 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ void	define_append_output(char *line, t_command *cmd)
 
 void	define_pipe_to(t_command *cmd)
 {
-	if (!cmd->redir_in)
+	if (!cmd->redir_in && !cmd->delimiter)
 	{
 		cmd->saved_in = dup(STDIN_FILENO);
 		close(STDIN_FILENO);

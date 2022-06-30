@@ -6,7 +6,7 @@
 /*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/27 15:05:42 by gimartin          #+#    #+#             */
-/*   Updated: 2022/06/30 16:31:02 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/06/30 16:45:20 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,8 @@ void	write_and_close(t_command *tmp)
 {
 	int	piped[2];
 
+	if (tmp->to_pipe_to)
+		close(tmp->input_fd);
 	if (pipe(piped) == -1)
 		die("Error while piping");
 	ft_putstr_fd(tmp->input_line, piped[1]);
