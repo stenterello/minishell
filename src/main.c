@@ -6,7 +6,7 @@
 /*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/03 21:54:41 by ddelladi          #+#    #+#             */
-/*   Updated: 2022/06/30 16:19:07 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/06/30 16:54:44 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,9 +97,3 @@ int	main(int argc, char **argv)
 	free_array_of_array(terminfo.glob_environ);
 	return (0);
 }
-
-/*
-
-- con cat << eof | cat << foe, minishell si chiude perché al termine lo stdin è chiuso
-
-*/
