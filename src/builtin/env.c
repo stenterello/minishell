@@ -6,7 +6,7 @@
 /*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/27 15:03:23 by gimartin          #+#    #+#             */
-/*   Updated: 2022/06/29 12:03:34 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/06/30 17:15:25 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,6 @@ char	*ft_getenv(char *line, t_terminfo *terminfo)
 	t_dict	*tmp;
 	t_dict	*tmp2;
 
-	if (!ft_strncmp(line, "$\0", 2))
-		return ("can't use getpid()!");
 	if (terminfo->env)
 	{
 		tmp = terminfo->env;

@@ -6,7 +6,7 @@
 /*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/28 14:11:38 by gimartin          #+#    #+#             */
-/*   Updated: 2022/06/14 14:16:32 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/06/30 17:22:50 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,4 +61,15 @@ char	*define_var_name(char *line)
 	malloc_c(&ret, i - j + 2);
 	ft_strlcpy(ret, &line[j], i - j + 1);
 	return (ret);
+}
+
+void	print_here(char *delimiter, int i, t_terminfo *terminfo)
+{
+	ft_putstr_fd(last_field(ft_getenv("SHELL", terminfo)), 2);
+	ft_putstr_fd(": attention: here-document on line ", 2);
+	ft_putnbr_fd(i, 2);
+	ft_putstr_fd(" is delimited by an EOF (\"", 2);
+	ft_putstr_fd(delimiter, 2);
+	ft_putendl_fd("\" was required)", 2);
+	g_child = -1;
 }

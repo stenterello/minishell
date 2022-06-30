@@ -6,7 +6,7 @@
 /*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/13 15:49:35 by gimartin          #+#    #+#             */
-/*   Updated: 2022/06/30 16:37:56 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/06/30 17:19:38 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,7 @@ void	sup_cleaning_loop(char **t, t_command **c, int j[2], char ***cleaned)
 		{
 			malloc_c(&(*c)->redi[i], ft_strlen(t[j[0]]) + 1);
 			ft_strlcpy((*c)->redi[i++], t[j[0]], ft_strlen(t[j[0]]) + 1);
-			j[0]++;
-			malloc_c(&(*c)->redi[i], ft_strlen(t[j[0]]) + 1);
+			malloc_c(&(*c)->redi[i], ft_strlen(t[++j[0]]) + 1);
 			ft_strlcpy((*c)->redi[i++], t[j[0]], ft_strlen(t[j[0]]) + 1);
 		}
 		else

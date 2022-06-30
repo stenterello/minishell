@@ -6,7 +6,7 @@
 /*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/30 16:33:49 by ddelladi          #+#    #+#             */
-/*   Updated: 2022/06/30 16:34:08 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/06/30 19:00:09 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,4 +87,21 @@ void	filling_chain(char **original, t_command *cmd,
 	else
 		cmd->to_pipe_to = 1;
 	check_wildcards(cmd);
+}
+
+int	treat_heredoc(t_command *tmp, t_terminfo *terminfo)
+{
+	tmp->delimiter = 1;
+	add_signals(terminfo, tmp);
+	get_heredoc_input(tmp, terminfo);
+	if (heredoc_to_avoid(tmp->args))
+		tmp->delimiter = 0;
+	else
+		tmp->delimiter = 1;
+	if (g_child == -1)
+	{
+		terminfo->last_exit = 130;
+		return (1);
+	}
+	return (0);
 }

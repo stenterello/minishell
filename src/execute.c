@@ -6,7 +6,7 @@
 /*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/27 15:05:42 by gimartin          #+#    #+#             */
-/*   Updated: 2022/06/30 16:45:20 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/06/30 19:00:02 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,18 +98,8 @@ int	standard_execution(t_command *tmp, t_terminfo *terminfo)
 	{
 		if (is_heredoc2(tmp->redi))
 		{
-			tmp->delimiter = 1;
-			add_signals(terminfo, tmp);
-			get_heredoc_input(tmp, terminfo);
-			if (heredoc_to_avoid(tmp->args))
-				tmp->delimiter = 0;
-			else
-				tmp->delimiter = 1;
-			if (g_child == -1)
-			{
-				terminfo->last_exit = 130;
+			if (treat_heredoc(tmp, terminfo))
 				return (1);
-			}
 		}
 		if (!builtin(tmp, terminfo) && g_child != -1)
 		{

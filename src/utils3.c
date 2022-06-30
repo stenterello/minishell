@@ -6,7 +6,7 @@
 /*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/09 15:46:45 by gimartin          #+#    #+#             */
-/*   Updated: 2022/06/15 14:33:30 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/06/30 18:58:05 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,4 +98,33 @@ char	*get_path(char *line)
 	malloc_c(&ret, ft_strlen(line) - i + 1);
 	ft_strlcpy(ret, &line[i], ft_strlen(line) - i + 1);
 	return (ret);
+}
+
+int	more_args_heredoc(char *line)
+{
+	int	i;
+
+	i = skip_spaces(line, delimiter_len(&line[0]));
+	if (!ft_strncmp(&line[i], "<<", 2))
+	{
+		while (another_heredoc(&line[i]))
+		{
+			i = skip_spaces(line, i + 2)
+				+ delimiter_len(&line[skip_spaces(line, i + 2)]);
+			i = skip_spaces(line, i);
+		}
+		return (0);
+	}
+	else
+	{
+		while (line[i] && line[i] != '<')
+		{
+			i += delimiter_len(&line[i]);
+			i = skip_spaces(line, i);
+		}
+		i = skip_spaces(line, i + 2)
+			+ delimiter_len(&line[skip_spaces(line, i + 2)]);
+		i = skip_spaces(line, i);
+		return (1);
+	}
 }
