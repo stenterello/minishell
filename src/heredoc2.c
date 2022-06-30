@@ -6,7 +6,7 @@
 /*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/27 15:16:53 by gimartin          #+#    #+#             */
-/*   Updated: 2022/06/26 18:40:32 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/06/30 16:31:59 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,87 +17,57 @@ int	delimiter_len(char *line)
 	int	i;
 
 	i = 0;
-	while (line[i] && line[i] != 32)
+	while (line[i] && line[i] != 32 && ft_strncmp(&line[i], "<<", 2))
 		i++;
 	return (i);
 }
 
-void	false_take_heredoc_input(char *d, t_terminfo *terminfo)
+int	to_exp(char *str)
 {
-	char	*tmp;
-
-	if (terminfo->last_exit == 130)
-		terminfo->last_exit = 0;
-	tmp = readline("> ");
-	while (terminfo->last_exit != 130 && tmp
-		&& ft_strncmp(tmp, d, ft_strlen(d)) && g_child != -1)
-	{
-		free(tmp);
-		tmp = readline("> ");
-		if (g_child == -1)
-			break ;
-	}
-	free(tmp);
-}
-
-char	*take_delimiter(char *line, t_terminfo *terminfo)
-{
-	int		i;
-	char	*ret;
-	char	*tmp_delmtr;
+	int	i;
 
 	i = 0;
-	ret = NULL;
-	while (another_heredoc(&line[i]))
-	{
-		while (line[i] && ft_strncmp(&line[i], "<<", 2))
-			i++;
-		i = skip_spaces(line, i + 2);
-		if (another_heredoc(&line[i]))
-		{
-			malloc_c(&tmp_delmtr, delimiter_len(&line[i]) + 1);
-			ft_strlcpy(tmp_delmtr, &line[i], delimiter_len(&line[i]) + 1);
-			false_take_heredoc_input(tmp_delmtr, terminfo);
-			free(tmp_delmtr);
-		}
-	}
-	if (line[i] == '\'' || line[i] == '"')
+	while (str[i] && ft_strncmp(&str[i], "<<", 2))
 		i++;
-	malloc_c(&ret, delimiter_len(&line[i]) + 1);
-	ft_strlcpy(ret, &line[i], delimiter_len(&line[i]) + 1);
-	return (ret);
+	i += 2;
+	while (str[i] == ' ')
+		i++;
+	if (str[i] == '\'')
+		return (0);
+	return (1);
 }
 
-void	execute_free_here(char *tmp, t_command *cmd2,
-	char *d, t_terminfo *terminfo)
+int	key_here_len(char *str)
 {
-	t_command	*cmd;
+	int	i;
 
-	cmd = (t_command *)cmd2->next;
-	if (tmp)
-	{
-		free(tmp);
-		tmp = NULL;
-	}
-	free(d);
-	cmd->next = cmd2;
-	cmd2->prev = cmd;
-	cmd2->next = NULL;
-	define_heredoc_pipe(cmd);
-	execute_tree(cmd, terminfo);
-	free_single_command(cmd);
-	free_single_command(cmd2);
+	i = 0;
+	while (str[i] && (ft_isalnum(str[i])
+			|| str[i] == '?' || str[i] == '$'))
+		i++;
+	return (i);
 }
 
-void	free_here(char *tmp, char *delimiter, t_command *cmd, t_command *cmd2)
+int	ft_strlen_rl(char *str)
 {
-	if (tmp)
+	int	i;
+
+	i = 0;
+	while (str[i])
 	{
-		free(tmp);
-		tmp = NULL;
+		if (str[i] == '\n')
+			return (++i);
+		i++;
 	}
-	free(delimiter);
-	free_single_command(cmd);
-	if (cmd2->cmd)
-		free_single_command(cmd2);
+	return (i);
+}
+
+void	end_take(char *tmp, int i, char *d, t_terminfo *terminfo)
+{
+	if (!tmp)
+		print_here(d, i, terminfo);
+	if (g_child == -1)
+	{
+		terminfo->last_exit = 130;
+	}
 }

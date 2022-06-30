@@ -6,7 +6,7 @@
 /*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/24 12:43:37 by ddelladi          #+#    #+#             */
-/*   Updated: 2022/06/29 11:30:07 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/06/30 16:36:04 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,4 +52,19 @@ int	cmd_exists(char *line, t_terminfo *terminfo)
 		return (0);
 	}
 	return (1);
+}
+
+void	suspended_cat(t_terminfo *terminfo)
+{
+	int	i;
+
+	i = 0;
+	while (i < terminfo->suspended_cat)
+	{
+		terminfo->input->line = readline("");
+		if (!ft_strlen(terminfo->input->line))
+			ft_putchar_fd('\n', STDOUT_FILENO);
+		free(terminfo->input->line);
+		i++;
+	}
 }

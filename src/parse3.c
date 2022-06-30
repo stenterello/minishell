@@ -6,7 +6,7 @@
 /*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/13 15:49:35 by gimartin          #+#    #+#             */
-/*   Updated: 2022/06/29 11:51:00 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/06/30 16:37:56 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ void	sup_cleaning_loop(char **t, t_command **c, int j[2], char ***cleaned)
 		(*c)->redi[i] = NULL;
 }
 
-static char	**cleaning_loop(char **tmp, int j[2],
+char	**cleaning_loop(char **tmp, int j[2],
 	t_command *cmd)
 {
 	char	**cleaned;
@@ -91,63 +91,13 @@ int	is_heredoc2(char **redi)
 	return (0);
 }
 
-char	*find_delimiter(char **redi)
+char	*find_delimiter(char **redi, int *j)
 {
-	int		i;
-
-	i = 0;
-	while (redi[i])
+	while (redi[*j])
 	{
-		if (!ft_strncmp(redi[i], "<<\0", 3))
-			return (redi[++i]);
-		i++;
+		if (!ft_strncmp(redi[*j], "<<\0", 3))
+			return (redi[++(*j)]);
+		(*j)++;
 	}
 	return (NULL);
-}
-
-void	get_heredoc_input(t_command *cmd, t_terminfo *terminfo)
-{
-	char	*d;
-	char	*inp_line;
-
-	inp_line = NULL;
-	d = find_delimiter(cmd->redi);
-	cmd->to_exp = to_exp(terminfo->input->line);
-	return (take_heredoc_input(inp_line, d, cmd, terminfo));
-}
-
-char	**clean_command(char **tmp, t_command *cmd, int start)
-{
-	int		j[2];
-	char	**cleaned;
-
-	j[0] = start;
-	j[1] = 0;
-	cleaned = cleaning_loop(tmp, j, cmd);
-	if (cleaned == NULL)
-		return (NULL);
-	if (cleaned[0])
-		cleaned[j[1]] = NULL;
-	else
-	{
-		free(cleaned);
-		restore_all(cmd);
-		return (NULL);
-	}
-	return (cleaned);
-}
-
-void	filling_chain(char **original, t_command *cmd,
-	int *c, t_terminfo *terminfo)
-{
-	if (original[c[0]])
-	{
-		fill_prev(cmd, c, original);
-		fill_next(cmd, c, original, terminfo);
-	}
-	if (cmd->first)
-		free_array_of_array(original);
-	else
-		cmd->to_pipe_to = 1;
-	check_wildcards(cmd);
 }

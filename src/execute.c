@@ -6,7 +6,7 @@
 /*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/27 15:05:42 by gimartin          #+#    #+#             */
-/*   Updated: 2022/06/29 11:49:24 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/06/30 16:31:02 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,15 +90,6 @@ void	write_and_close(t_command *tmp)
 	close(tmp->input_fd);
 }
 
-int	heredoc_to_avoid(char **args)
-{
-	if (!args)
-		return (0);
-	if (args[1])
-		return (1);
-	return (0);
-}
-
 int	standard_execution(t_command *tmp, t_terminfo *terminfo)
 {
 	while (tmp)
@@ -112,8 +103,13 @@ int	standard_execution(t_command *tmp, t_terminfo *terminfo)
 				tmp->delimiter = 0;
 			else
 				tmp->delimiter = 1;
+			if (g_child == -1)
+			{
+				terminfo->last_exit = 130;
+				return (1);
+			}
 		}
-		if (!builtin(tmp, terminfo))
+		if (!builtin(tmp, terminfo) && g_child != -1)
 		{
 			if (ft_strchr(tmp->cmd, '/') == NULL)
 			{

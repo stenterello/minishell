@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   memory.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gimartin <gimartin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/27 15:08:51 by gimartin          #+#    #+#             */
-/*   Updated: 2022/06/22 19:18:20 by gimartin         ###   ########.fr       */
+/*   Updated: 2022/06/30 16:20:38 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,27 +54,4 @@ void	malloc_and_check_dict(t_dict **dst, int len)
 	dst[0]->key = NULL;
 	dst[0]->value = NULL;
 	dst[0]->next = NULL;
-}
-
-void	free_single_command(t_command *cmd)
-{
-	if (cmd->args)
-		free_array_of_array(cmd->args);
-	if (cmd->cmd)
-	{
-		free(cmd->cmd);
-		cmd->cmd = NULL;
-	}
-	if (cmd->input_line)
-	{
-		free(cmd->input_line);
-		cmd->input_line = NULL;
-	}
-	if (cmd->redi)
-		free_array_of_array(cmd->redi);
-	if (cmd)
-	{
-		free(cmd);
-		cmd = NULL;
-	}
 }

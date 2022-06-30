@@ -6,7 +6,7 @@
 /*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/27 15:10:22 by gimartin          #+#    #+#             */
-/*   Updated: 2022/06/29 11:21:41 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/06/30 16:34:55 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,23 +75,39 @@ void	define_append_output(char *line, t_command *cmd)
 	cmd->redir_out = 1;
 }
 
-int	sup_check_red(char **tmp, int i, t_command *cmd, t_terminfo *terminfo)
+void	define_pipe_to(t_command *cmd)
 {
-	while (tmp[i] && is_redir(tmp[i]) == 0)
+	if (!cmd->redir_in)
 	{
-		if (access(tmp[i + 1], F_OK))
-		{
-			ft_putstr_fd("minishell: ", STDERR_FILENO);
-			ft_putstr_fd(tmp[i + 1], STDERR_FILENO);
-			ft_putstr_fd(": ", STDERR_FILENO);
-			ft_putendl_fd(strerror(errno), STDERR_FILENO);
-			restore_fd(cmd);
-			return (-1);
-		}
-		else if (define_input(tmp[++i], cmd, terminfo) != -1)
-			i++;
-		else
-			return (-1);
+		cmd->saved_in = dup(STDIN_FILENO);
+		close(STDIN_FILENO);
+		dup2(cmd->input_fd, STDIN_FILENO);
+		close(cmd->input_fd);
 	}
-	return (0);
+}
+
+void	check_pipe(char *line, t_command *cmd)
+{
+	int			i;
+	int			s_quot;
+	int			d_quot;
+
+	i = 0;
+	s_quot = 0;
+	d_quot = 0;
+	while (line[i])
+	{
+		if (line[i] == '\'' && !s_quot && !d_quot)
+			s_quot = 1;
+		else if (line[i] == '\'' && s_quot && !d_quot)
+			s_quot = 0;
+		else if (line[i] == '"' && !d_quot && !s_quot)
+			d_quot = 1;
+		else if (line[i] == '"' && d_quot && !s_quot)
+			d_quot = 0;
+		else if (line[i] == '|' && !d_quot && !s_quot
+			&& line[i + 1] != '|' && line[i - 1] != '|')
+			cmd->to_pipe = 1;
+		i++;
+	}
 }

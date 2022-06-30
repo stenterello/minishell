@@ -6,7 +6,7 @@
 /*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/03 21:54:41 by ddelladi          #+#    #+#             */
-/*   Updated: 2022/06/29 13:24:40 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/06/30 16:19:07 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,8 +100,6 @@ int	main(int argc, char **argv)
 
 /*
 
-- aggiustare segnali heredoc
-- confrontare output di bash e minishell della stringa: cat ciao << eof | grep << foe  ( fare la verifica di più heredoc su tutta la stringa, ovvero terminfo->input->line )
-- gestire multipli heredoc nello stesso comando
+- con cat << eof | cat << foe, minishell si chiude perché al termine lo stdin è chiuso
 
 */

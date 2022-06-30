@@ -6,7 +6,7 @@
 /*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/27 15:06:02 by gimartin          #+#    #+#             */
-/*   Updated: 2022/06/29 13:22:37 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/06/30 16:20:11 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,9 +99,11 @@ void	print_here(char *delimiter, int i, t_terminfo *terminfo)
 	ft_putstr_fd(" is delimited by an EOF (\"", 2);
 	ft_putstr_fd(delimiter, 2);
 	ft_putendl_fd("\" was required)", 2);
+	g_child = -1;
 }
 
-void	take_heredoc_input(char *tmp, char *d, t_command *cmd, t_terminfo *terminfo)
+void	take_heredoc_input(char *tmp, char *d,
+	t_command *cmd, t_terminfo *terminfo)
 {
 	int	i;
 
@@ -109,8 +111,7 @@ void	take_heredoc_input(char *tmp, char *d, t_command *cmd, t_terminfo *terminfo
 	if (terminfo->last_exit == 130)
 		terminfo->last_exit = 0;
 	tmp = readline("> ");
-	while (terminfo->last_exit != 130 && tmp
-		&& ft_strncmp(tmp, d, ft_strlen(d)) && g_child != -1)
+	while (tmp && ft_strncmp(tmp, d, ft_strlen(d)) && g_child != -1)
 	{
 		if (cmd->input_line)
 			join_input_line(cmd, tmp);

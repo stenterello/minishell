@@ -6,7 +6,7 @@
 /*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/24 18:58:48 by gimartin          #+#    #+#             */
-/*   Updated: 2022/06/17 18:07:05 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/06/30 16:32:58 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,4 +88,25 @@ void	transform_environ(t_terminfo *terminfo)
 		tmp = tmp->next;
 	}
 	terminfo->glob_environ[i] = NULL;
+}
+
+char	*take_key(char *str)
+{
+	int		i;
+	char	*ret;
+
+	i = 0;
+	ret = NULL;
+	while (str[i])
+	{
+		if (str[i] == '$' && !is_open(str, i))
+		{
+			i++;
+			malloc_c(&ret, key_here_len(&str[i]) + 1);
+			ft_strlcpy(ret, &str[i], key_here_len(&str[i]) + 1);
+			return (ret);
+		}
+		i++;
+	}
+	return (ret);
 }

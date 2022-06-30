@@ -6,7 +6,7 @@
 /*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/27 15:05:46 by gimartin          #+#    #+#             */
-/*   Updated: 2022/06/29 11:22:40 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/06/30 16:31:07 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,4 +51,13 @@ void	execute_tree(t_command *cmd, t_terminfo *terminfo)
 	if (!ret)
 		return ;
 	free_commands(cmd);
+}
+
+int	heredoc_to_avoid(char **args)
+{
+	if (!args)
+		return (0);
+	if (args[1])
+		return (1);
+	return (0);
 }

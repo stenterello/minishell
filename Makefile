@@ -3,7 +3,6 @@ CC=gcc
 FLAGS=-Wall -Werror -Wextra -L$(HOME)/.brew/opt/readline/lib -I$(HOME)/.brew/opt/readline/include -g -ffunction-sections -Wl,--gc-sections -Wl,--print-gc-sections
 SRC=main.c \
 	special_run.c \
-	special_run2.c \
 	special_childs.c \
 	utils.c \
 	utils2.c \
@@ -21,6 +20,7 @@ SRC=main.c \
 	parse.c \
 	parse2.c \
 	parse3.c \
+	parse4.c \
 	bools.c \
 	bools2.c \
 	bools3.c \
@@ -30,11 +30,8 @@ SRC=main.c \
 	memory2.c \
 	redirections.c \
 	redirections_utils.c \
-	redirections_utils2.c \
 	heredoc.c \
 	heredoc2.c \
-	heredoc3.c \
-	heredoc4.c \
 	split_fields.c \
 	split_fields2.c \
 	signal.c \

@@ -6,7 +6,7 @@
 /*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/27 15:10:18 by gimartin          #+#    #+#             */
-/*   Updated: 2022/06/29 11:19:49 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/06/30 16:35:08 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,42 +33,42 @@ void	restore_fd(t_command *cmd)
 {
 	if (cmd->redir_out || cmd->to_pipe)
 		restore_output(cmd);
-	if (cmd->redir_in || cmd->to_pipe_to)
-		restore_input(cmd);
-	if (cmd->delimiter)
+	if (cmd->redir_in || cmd->to_pipe_to || cmd->delimiter)
 		restore_input(cmd);
 }
 
-void	control_define1(char **tmp, t_command *cmd, int i)
+void	sup_def_pipe(t_command *cmd, int *piped, t_command *tmp)
 {
-	while (tmp[i] && is_redir(tmp[i]) == 2)
+	tmp = cmd->next;
+	if (!tmp->redir_in)
+		tmp->input_fd = piped[0];
+	else
 	{
-		define_append_output(tmp[++i], cmd);
-		i++;
+		tmp->to_pipe_to = 0;
+		close(piped[0]);
 	}
 }
 
-int	check_redirection(char **tmp, t_command *cmd, t_terminfo *terminfo)
+void	define_pipe(t_command *cmd)
 {
-	int	i;
+	int			piped[2];
+	t_command	*tmp;
 
-	i = 0;
-	if (!tmp[i + 1])
-		return (-1);
-	if (is_redir(tmp[i]) == 2)
-		control_define1(tmp, cmd, i);
-	else if (is_redir(tmp[i]) == 0)
+	tmp = NULL;
+	if (pipe(piped) == -1)
+		die(strerror(errno));
+	if (!cmd->redir_out)
 	{
-		if (sup_check_red(tmp, i, cmd, terminfo) == -1)
-			return (-1);
+		cmd->output_fd = piped[1];
+		cmd->saved_out = dup(STDOUT_FILENO);
+		close(STDOUT_FILENO);
+		dup2(cmd->output_fd, STDOUT_FILENO);
+		close(cmd->output_fd);
 	}
-	else if (is_redir(tmp[i]) == 1)
+	else
 	{
-		while (tmp[i] && is_redir(tmp[i]) == 1)
-		{
-			define_output(tmp[++i], cmd);
-			i++;
-		}
+		cmd->to_pipe = 0;
+		close(piped[1]);
 	}
-	return (0);
+	sup_def_pipe(cmd, piped, tmp);
 }

@@ -6,7 +6,7 @@
 /*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/03 21:54:58 by ddelladi          #+#    #+#             */
-/*   Updated: 2022/06/29 11:48:21 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/06/30 16:38:28 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,14 +128,12 @@ int		set_env_var(char **args);
 void	set_sh_var(char **args, t_terminfo *terminfo);
 void	check(char *typed, t_terminfo *terminfo);
 void	add_signals(t_terminfo *terminfo, t_command *cmd);
-int		check_redirection(char **tmp, t_command *cmd, t_terminfo *terminfo);
 void	check_pipe(char *line, t_command *cmd);
 int		define_input(char *line, t_command *cmd, t_terminfo *terminfo);
 void	define_output(char *line, t_command *cmd);
 void	define_append_output(char *line, t_command *cmd);
 void	define_pipe(t_command *cmd);
 void	define_pipe_to(t_command *cmd);
-void	define_heredoc_pipe(t_command *cmd);
 void	restore_fd(t_command *cmd);
 void	restore_all(t_command *cmd);
 int		is_redir(char *line);
@@ -143,10 +141,7 @@ int		is_heredoc(char *line);
 void	malloc_c(char **dst, int len);
 void	malloc_c_ptr(char ***dst, int len);
 void	malloc_and_check_dict(t_dict **dst, int len);
-void	malloc_and_copy(char **dst, char *src);
-int		init_heredoc(char *typed, t_terminfo *terminfo);
 void	treat_heredoc_child(int *status, t_command *tmp, t_terminfo *terminfo);
-char	*take_delimiter(char *line, t_terminfo *terminfo);
 int		count_params(char *line);
 int		count_args(char **tmp);
 int		next_arg_len(char *line);
@@ -166,7 +161,6 @@ int		is_chained(char *line);
 void	get_keys(char *line, t_command *cmd, t_terminfo *terminfo);
 void	free_commands(t_command *cmd);
 void	save_old_pwd(t_command *old, char *act, t_terminfo *terminfo);
-void	sup_born(t_command *tmp, int status, t_terminfo *terminfo);
 int		standard_execution(t_command *tmp, t_terminfo *terminfo);
 void	take_variable(char *var1, t_terminfo *terminfo, int init_len);
 int		count_units(char *line, int i);
@@ -212,7 +206,6 @@ void	fill_prev(t_command *cmd, int *c, char **tmp);
 void	fill_next(t_command *cmd, int *c, char **tmp, t_terminfo *terminfo);
 void	cpy_and_slide(char **tmp, int *c, int start, t_command *cmd);
 int		count_cleaned_cmd(char **tmp);
-int		sup_check_red(char **tmp, int i, t_command *cmd, t_terminfo *terminfo);
 int		guess(t_command *cmd, int i);
 void	fd_error(char *line, t_terminfo *terminfo);
 void	read_and_execute(char *line, t_terminfo *terminfo);
@@ -248,26 +241,21 @@ char	**sup_h_res(struct dirent *en, char **ret, char **port, DIR *stream);
 int		free_guess(char **tmp, t_command *cmd);
 int		sup_guess(t_command *cmd, int i, int j, int k);
 int		free_hidden_guess(char **tmp, t_command *cmd);
-void	free_single_command(t_command *cmd);
 void	join_input_line(t_command *cmd, char *tmp);
-void	treat_heredoc(t_command *cmd, t_command *cmd2,
-			char *typed, t_terminfo *terminfo);
 void	execute_free_here(char *tmp, t_command *cmd2,
 			char *d, t_terminfo *terminfo);
 void	search_value_for_key(t_command *cmd, int *i,
 			int ind, t_terminfo *terminfo);
 int		var_exists(t_dict *new, t_command *cmd, t_terminfo *terminfo);
-int		key_len(char *line);
-int		value_len(char *line);
 int		equal_char_index(t_command *cmd, int ind);
 void	save_concatenation(char *dst, char *src1,
 			char *src2, t_dict *save_dict);
 char	*take_key(char *str);
 int		ft_strlen_rl(char *str);
 int		key_here_len(char *str);
-int		to_expand_str(char *str);
 int		to_exp(char *str);
-void	take_heredoc_input(char *tmp, char *d, t_command *cmd, t_terminfo *terminfo);
+void	take_heredoc_input(char *tmp, char *d,
+			t_command *cmd, t_terminfo *terminfo);
 void	update_pwd(t_terminfo *terminfo);
 void	cd_error(char *dest, t_terminfo *terminfo);
 int		other_cmds(char **tmp, int *c);
@@ -286,10 +274,14 @@ void	end_take(char *tmp, int i, char *d, t_terminfo *terminfo);
 int		delimiter_len(char *line);
 int		more_args_heredoc(char *line);
 int		another_heredoc(char *line);
-void	false_take_heredoc_input(char *d, t_terminfo *terminfo);
 void	write_and_close(t_command *tmp);
 int		is_heredoc2(char **redi);
 void	get_heredoc_input(t_command *cmd, t_terminfo *terminfo);
 int		to_exp(char *str);
+int		is_token_char(char c);
+int		heredoc_to_avoid(char **args);
+char	**cleaning_loop(char **tmp, int j[2],
+			t_command *cmd);
+char	*find_delimiter(char **redi, int *j);
 
 #endif
