@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
+/*   By: ddelladi <ddelladi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/03 21:55:20 by ddelladi          #+#    #+#             */
-/*   Updated: 2022/06/15 16:30:36 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/07/01 15:19:02 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	go_to_old_pwd(int ret, t_command *old, char *act, t_terminfo *terminfo)
 		terminfo->last_exit = 1;
 		return ;
 	}
-	ft_putendl_fd(act, STDOUT_FILENO);
+	ft_putendl_fd(ft_getenv("OLDPWD", terminfo), STDOUT_FILENO);
 	save_old_pwd(old, act, terminfo);
 	update_pwd(terminfo);
 }

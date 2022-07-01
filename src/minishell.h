@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
+/*   By: ddelladi <ddelladi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/03 21:54:58 by ddelladi          #+#    #+#             */
-/*   Updated: 2022/06/30 16:38:28 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/07/01 15:20:31 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -283,5 +283,6 @@ int		heredoc_to_avoid(char **args);
 char	**cleaning_loop(char **tmp, int j[2],
 			t_command *cmd);
 char	*find_delimiter(char **redi, int *j);
+int		treat_heredoc(t_command *tmp, t_terminfo *terminfo);
 
 #endif

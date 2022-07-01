@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   child_process2.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
+/*   By: ddelladi <ddelladi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/22 18:59:14 by gimartin          #+#    #+#             */
-/*   Updated: 2022/06/30 15:54:42 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/07/01 15:20:59 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void	born_child(t_command *tmp, t_terminfo *terminfo)
 	int			status;
 
 	status = 0;
-	if (tmp->delimiter && tmp->input_line && !tmp->redir_out
+	if (tmp->delimiter && !tmp->redir_out
 		&& !more_args_heredoc(terminfo->input->line))
 		write_and_close(tmp);
 	if (!cmd_exists(tmp->cmd, terminfo))

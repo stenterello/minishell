@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   child_process.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
+/*   By: ddelladi <ddelladi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/17 13:10:50 by ddelladi          #+#    #+#             */
-/*   Updated: 2022/06/30 15:52:18 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/07/01 16:05:16 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,8 @@ void	maieutica(t_command *tmp, int status, t_terminfo *terminfo)
 	if (g_child == 0)
 	{
 		ft_memset(&terminfo->acts, 0, sizeof(terminfo->acts));
-		if (!ft_strncmp(&tmp->cmd[ft_strlen(tmp->cmd) - 9], "minishell", 9))
+		if (ft_strlen(tmp->cmd) > 9
+			&& !ft_strncmp(&tmp->cmd[ft_strlen(tmp->cmd) - 9], "minishell", 9))
 			next_level(terminfo);
 		execve(tmp->cmd, tmp->args, terminfo->glob_environ);
 	}

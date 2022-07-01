@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   special_childs.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
+/*   By: ddelladi <ddelladi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/24 12:43:37 by ddelladi          #+#    #+#             */
-/*   Updated: 2022/06/30 16:36:04 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/07/01 17:46:32 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ void	suspended_cat(t_terminfo *terminfo)
 		if (!ft_strlen(terminfo->input->line))
 			ft_putchar_fd('\n', STDOUT_FILENO);
 		free(terminfo->input->line);
+		terminfo->input->line = NULL;
 		i++;
 	}
 }

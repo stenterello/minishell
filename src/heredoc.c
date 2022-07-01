@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
+/*   By: ddelladi <ddelladi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/27 15:06:02 by gimartin          #+#    #+#             */
-/*   Updated: 2022/06/30 18:57:44 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/07/01 15:43:16 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,7 @@ int	heredoc_loop(char *tmp, char *d, t_command *cmd, t_terminfo *terminfo)
 		if (g_child == -1)
 			break ;
 	}
+	free(tmp);
 	return (i);
 }
 
@@ -106,7 +107,5 @@ void	take_heredoc_input(char *tmp, char *d,
 		terminfo->last_exit = 0;
 	tmp = readline("> ");
 	i = heredoc_loop(tmp, d, cmd, terminfo);
-	if (tmp)
-		free(tmp);
 	end_take(tmp, i, d, terminfo);
 }

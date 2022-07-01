@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
+/*   By: ddelladi <ddelladi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/03 21:54:41 by ddelladi          #+#    #+#             */
-/*   Updated: 2022/06/30 16:54:44 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/07/01 17:56:39 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,6 @@ void	execution_loop(t_terminfo *terminfo)
 		get_keys(terminfo->input->line, &cmd, terminfo);
 	else if (split_command(terminfo->input->line, &cmd, terminfo))
 		execute_tree(&cmd, terminfo);
-	free(terminfo->input->line);
-	terminfo->input->line = NULL;
 	suspended_cat(terminfo);
 	if (cmd.portions)
 		free_array_of_array(cmd.portions);

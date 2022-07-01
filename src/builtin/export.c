@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ddelladi <ddelladi@student.42roma.it>      +#+  +:+       +#+        */
+/*   By: ddelladi <ddelladi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/27 15:03:30 by gimartin          #+#    #+#             */
-/*   Updated: 2022/06/15 14:14:40 by ddelladi         ###   ########.fr       */
+/*   Updated: 2022/07/01 17:16:05 by ddelladi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,15 @@ void	print_exported_env(t_terminfo *terminfo)
 		ft_putstr_fd(tmp->key, STDOUT_FILENO);
 		if (tmp->value)
 		{
-			ft_putstr_fd("=\"", STDOUT_FILENO);
+			if (tmp->value[0] == '\"')
+				ft_putstr_fd("=", STDOUT_FILENO);
+			else
+				ft_putstr_fd("=\"", STDOUT_FILENO);
 			ft_putstr_fd(tmp->value, STDOUT_FILENO);
-			ft_putstr_fd("\"\n", STDOUT_FILENO);
+			if (tmp->value[0] == '\"')
+				ft_putstr_fd("\n", STDOUT_FILENO);
+			else
+				ft_putstr_fd("\"\n", STDOUT_FILENO);
 		}
 		else
 			ft_putchar_fd('\n', STDOUT_FILENO);
@@ -75,8 +81,15 @@ void	understand_then_export(t_command *cmd, t_dict *new,
 	{
 		i[1]++;
 		malloc_c(&new->value, ft_strlen(&cmd->args[i[2]][i[1]]));
-		ft_strlcpy(new->value, &cmd->args[i[2]][i[1]],
-			ft_strlen(&cmd->args[i[2]][i[1]]) + 1);
+		if (cmd->args[i[2]][i[1]] == '\"' || cmd->args[i[2]][i[1]] == '\'')
+		{
+			i[1]++;
+			ft_strlcpy(new->value, &cmd->args[i[2]][i[1]],
+				ft_strlen(&cmd->args[i[2]][i[1]]));
+		}
+		else
+			ft_strlcpy(new->value, &cmd->args[i[2]][i[1]],
+				ft_strlen(&cmd->args[i[2]][i[1]]) + 1);
 	}
 	new->next = NULL;
 	export_to_env_vars(new, terminfo);
